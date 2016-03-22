@@ -1,7 +1,8 @@
-package songming.straing;
+package songming.straing.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import songming.straing.R;
 
 public class MainActivity extends AppCompatActivity {
 
