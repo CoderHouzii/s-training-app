@@ -27,4 +27,6 @@ dependencies {
     compile 'com.github.bumptech.glide:volley-integration:1.4.0'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.jakewharton:disklrucache:2.0.2'
+    compile 'com.yalantis:ucrop:1.3.+'
 }

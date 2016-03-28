@@ -11,4 +11,10 @@
         <attr name="civ_fill_color"
             format="color"/>
     </declare-styleable>
+
+    <declare-styleable name="TitleBar">
+        <attr name="titleText" format="string|reference"/>
+        <attr name="left_btn_src" format="reference"/>
+        <attr name="right_btn_text" format="string"/>
+    </declare-styleable>
 </resources>
