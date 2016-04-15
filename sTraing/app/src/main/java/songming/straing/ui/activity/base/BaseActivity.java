@@ -23,6 +23,7 @@ public  class BaseActivity extends Activity implements BaseResponseListener {
 
     protected TitleBar mTitleBar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
