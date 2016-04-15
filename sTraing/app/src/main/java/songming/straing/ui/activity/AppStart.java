@@ -7,6 +7,7 @@ import songming.straing.app.cache.CacheManager;
 import songming.straing.app.https.base.VolleyManager;
 import songming.straing.app.thread.ThreadPoolManager;
 import songming.straing.ui.activity.base.BaseActivity;
+import songming.straing.utils.UIHelper;
 
 /**
  * 首页
@@ -29,6 +30,8 @@ public class AppStart extends BaseActivity {
             }
         });
         // TODO: 2016/3/28 跳转页面
+        UIHelper.startToLoginActivity(this);
+        finish();
 
     }
 
