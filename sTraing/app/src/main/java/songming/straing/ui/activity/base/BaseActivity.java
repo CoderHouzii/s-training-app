@@ -20,6 +20,7 @@ import songming.straing.widget.TitleBar;
 public  class BaseActivity extends Activity implements BaseResponseListener {
     private static final String TAG = "BaseActivity";
 
+
     protected TitleBar mTitleBar;
 
     @Override
