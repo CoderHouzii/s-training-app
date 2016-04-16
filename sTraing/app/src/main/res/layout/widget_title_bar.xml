@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/colorPrimary">
+    android:background="#2b2b2b">
     <ImageView
         android:id="@+id/btn_title_left"
         android:layout_width="wrap_content"
@@ -20,13 +20,14 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:textSize="16sp"
-        android:textColor="#1A1A1A"
-        tools:text="这是标题"/>
+        android:textColor="@color/white"
+        android:text="s-training"/>
     <Button
         android:id="@+id/btn_title_right"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@drawable/bg_common_button_selector"
+        android:layout_marginRight="8dp"
         android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

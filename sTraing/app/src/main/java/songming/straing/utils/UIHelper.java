@@ -3,11 +3,9 @@ package songming.straing.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import songming.straing.ui.activity.index.LoginActivity;
-import songming.straing.ui.activity.index.RegisterActivity;
+import songming.straing.ui.activity.index.MainActivity;
+import songming.straing.ui.activity.login.LoginActivity;
+import songming.straing.ui.activity.login.RegisterActivity;
 
 /**
  * ui工具类
@@ -74,5 +72,12 @@ public class UIHelper {
     public static void startToRegisterActivity(Activity c) {
         Intent intent = new Intent(c, RegisterActivity.class);
         c.startActivity(intent);
+    }
+
+    /** 跳转到主页 */
+    public static void startToMainActivity(Activity c) {
+        Intent intent = new Intent(c, MainActivity.class);
+        c.startActivity(intent);
+        c.finish();
     }
 }

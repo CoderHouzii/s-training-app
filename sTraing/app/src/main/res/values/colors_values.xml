@@ -5,4 +5,7 @@
     <color name="transparent">#00000000</color>
     <color name="custom">#335371</color>
     <color name="overlay">#2c000000</color>
+
+    <color name="color_A0A0A0">#A0A0A0</color>
+    <color name="color_f3f3f3">#f3f3f3</color>
 </resources>
