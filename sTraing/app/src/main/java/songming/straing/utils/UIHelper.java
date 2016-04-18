@@ -6,6 +6,7 @@ import android.content.Intent;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
+import songming.straing.ui.activity.person.PersonSettingActivity;
 
 /**
  * ui工具类
@@ -79,5 +80,11 @@ public class UIHelper {
         Intent intent = new Intent(c, MainActivity.class);
         c.startActivity(intent);
         c.finish();
+    }
+
+    /** 跳转到主页 */
+    public static void startToPersonSettingActivity(Activity c,int requestCode) {
+        Intent intent = new Intent(c, PersonSettingActivity.class);
+        c.startActivityForResult(intent,requestCode);
     }
 }

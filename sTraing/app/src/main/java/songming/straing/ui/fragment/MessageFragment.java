@@ -19,4 +19,9 @@ public class MessageFragment extends BaseFragment{
     public void bindData() {
 
     }
+
+    @Override
+    public String getTitle() {
+        return "消息列表";
+    }
 }

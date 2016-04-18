@@ -1,5 +1,6 @@
 package songming.straing.ui.activity.index;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -41,6 +42,8 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
     private static final int FRAG_MESSAGE=0x13;
     private static final int FRAG_ME=0x14;
 
+    private BaseFragment currentFrag;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
 
     private void initView() {
         titlebar = (TitleBar) findViewById(R.id.titlebar);
+        titlebar.setLeftButtonVisible(View.INVISIBLE);
         bottom_bar = (BottomTabBar) findViewById(R.id.bottom_bar);
 
         bottom_bar.setOnBottomBarClickListener(this);
@@ -101,6 +105,12 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
         for (int i = 0; i < mFragments.size(); i++) {
             transaction.hide(mFragments.valueAt(i));
         }
+        currentFrag=mFragments.get(value);
+        if (currentFrag!=null){
+            titlebar.setTitle(currentFrag.getTitle());
+        }else {
+            titlebar.setTitle("s-Training");
+        }
         transaction.show(mFragments.get(value)).commitAllowingStateLoss();
     }
 
@@ -120,5 +130,19 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
                 return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        /**解决fragment的onActivityResult不回调的问题*/
+        if (currentFrag!=null){
+            currentFrag.onActivityResult(requestCode,resultCode,data);
+        }else {
+            for (int i = 0; i < mFragments.size(); i++) {
+                mFragments.valueAt(i).onActivityResult(requestCode,resultCode,data);
+            }
+        }
     }
 }

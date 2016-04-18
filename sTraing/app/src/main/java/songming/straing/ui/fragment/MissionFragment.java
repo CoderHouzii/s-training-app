@@ -19,4 +19,9 @@ public class MissionFragment extends BaseFragment{
     public void bindData() {
 
     }
+
+    @Override
+    public String getTitle() {
+        return "创建任务";
+    }
 }

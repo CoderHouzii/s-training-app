@@ -35,6 +35,12 @@
             android:name=".ui.activity.index.MainActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+        <!--个人资料-->
+        <activity
+            android:name=".ui.activity.person.PersonSettingActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
     </application>
 
 </manifest>

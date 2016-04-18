@@ -19,4 +19,9 @@ public class FriendsFragment extends BaseFragment{
     public void bindData() {
 
     }
+
+    @Override
+    public String getTitle() {
+        return "好友列表";
+    }
 }

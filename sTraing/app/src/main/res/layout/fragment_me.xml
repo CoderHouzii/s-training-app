@@ -4,10 +4,200 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="me"/>
+        android:layout_height="0.5dp"
+        android:background="@color/line_bg"
+        android:layout_marginTop="25dp"/>
 
+    <RelativeLayout
+        android:id="@+id/layout_person_setting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_common_layout_selector"
+        android:padding="16dp">
+
+        <songming.straing.widget.CircleImageView
+            android:id="@+id/avatar"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/test_avatar"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/avatar"
+            android:layout_marginLeft="16dp"
+            android:layout_alignTop="@id/avatar"
+            android:textSize="16sp"
+            android:textColor="@color/front_black"
+            android:text="Ironsongming"/>
+
+        <View
+            android:id="@+id/line_v"
+            android:layout_width="1dp"
+            android:layout_height="20dp"
+            android:background="@color/line_bg"
+            android:layout_toRightOf="@id/nick"
+            android:layout_marginLeft="8dp"
+            android:layout_alignTop="@id/nick"/>
+
+        <TextView
+            android:id="@+id/level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/line_v"
+            android:layout_marginLeft="8dp"
+            android:layout_alignTop="@id/avatar"
+            android:textSize="16sp"
+            android:textColor="@color/front_black"
+            android:text="Lv 10"/>
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_arrow_right"/>
+
+        <TextView
+            android:id="@+id/signature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nick"
+            android:layout_alignLeft="@id/nick"
+            android:layout_toLeftOf="@id/arrow"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            android:textColor="@color/front_gray"
+            android:text="测试测试"
+            android:maxLines="3"
+            android:ellipsize="end"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_bg"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_bg"
+        android:layout_marginTop="15dp"/>
+
+    <LinearLayout
+        android:id="@+id/layout_circle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_common_layout_selector">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_circle"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="圈子"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:drawableRight="@drawable/ic_arrow_right"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_bg"/>
+
+    <LinearLayout
+        android:id="@+id/layout_article"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_common_layout_selector">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_article"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="文章"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:drawableRight="@drawable/ic_arrow_right"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_bg"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_bg"
+        android:layout_marginTop="35dp"/>
+
+    <LinearLayout
+        android:id="@+id/layout_setting"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="16dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_common_layout_selector">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_setting"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="设置"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:drawableRight="@drawable/ic_arrow_right"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_bg"/>
+
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/bg_exit_button"
+        android:textColor="@color/white"
+        android:text="退出登录"
+        android:textSize="15sp"
+        android:layout_marginTop="50dp"/>
 </LinearLayout>

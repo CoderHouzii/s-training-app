@@ -1,5 +1,6 @@
 package songming.straing.ui.fragment.base;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,9 +17,9 @@ import songming.straing.app.interfaces.BaseResponseListener;
  */
 public abstract class BaseFragment<T> extends Fragment implements BaseResponseListener {
     private static final String TAG = "BaseFragment";
-    private View mView;
+    protected View mView;
 
-    protected Context mContext;
+    protected Activity mContext;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,5 +73,9 @@ public abstract class BaseFragment<T> extends Fragment implements BaseResponseLi
     public abstract View initView(LayoutInflater inflater, ViewGroup container);
 
     public abstract void bindData();
+
+    public String getTitle(){
+        return "s-Training";
+    }
 
 }
