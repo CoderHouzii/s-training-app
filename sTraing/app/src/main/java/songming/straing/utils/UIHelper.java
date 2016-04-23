@@ -6,6 +6,7 @@ import android.content.Intent;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
+import songming.straing.ui.activity.person.AvatarSettingActivity;
 import songming.straing.ui.activity.person.PersonSettingActivity;
 
 /**
@@ -82,9 +83,14 @@ public class UIHelper {
         c.finish();
     }
 
-    /** 跳转到主页 */
+    /** 跳转到个人资料页 */
     public static void startToPersonSettingActivity(Activity c,int requestCode) {
         Intent intent = new Intent(c, PersonSettingActivity.class);
+        c.startActivityForResult(intent,requestCode);
+    }
+    /** 跳转到主页 */
+    public static void startToAvatarSettingActivity(Activity c,int requestCode) {
+        Intent intent = new Intent(c, AvatarSettingActivity.class);
         c.startActivityForResult(intent,requestCode);
     }
 }

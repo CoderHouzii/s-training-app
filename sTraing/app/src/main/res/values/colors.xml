@@ -11,11 +11,13 @@
     <color name="front_green">#54cbc5</color>
     <color name="popup_bg">#8f000000</color>
     <color name="line_bg">#CDCDCD</color>
+    <color name="line_bg_green">#54cbc5</color>
 
     <color name="click_bg">#c7c7c7</color>
     <color name="menu_bg">#2b2b2b</color>
     <color name="menu_click_bg">#515151</color>
 
+    <color name="common_selector">#CDD7E2</color>
 
     <!--刷新头头-->
     <color name="ptr_header_bg">#323232</color>

@@ -1,0 +1,45 @@
+<resources>
+
+    <style name="line_margintop0">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/line_bg</item>
+    </style>
+
+    <style name="line_margintop5">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/line_bg</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="line_margintop10">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/line_bg</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+    <style name="line_green_margintop0">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/line_bg_green</item>
+    </style>
+
+    <style name="line_green_margintop5">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/line_bg_green</item>
+        <item name="android:layout_marginTop">5dp</item>
+
+    </style>
+
+    <style name="line_green_margintop10">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/line_bg_green</item>
+        <item name="android:layout_marginTop">10dp</item>
+
+    </style>
+
+</resources>

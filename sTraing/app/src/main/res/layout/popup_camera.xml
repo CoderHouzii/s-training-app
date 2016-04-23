@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/popup_bg"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp">
+
+    <LinearLayout
+        android:id="@+id/popup_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/popup_parent"
+        android:orientation="vertical"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="请选择照片来源"
+            android:textSize="18sp"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/front_green"
+            android:paddingLeft="16dp"/>
+
+        <View
+            style="@style/line_green_margintop0"
+            android:layout_marginRight="16dp"/>
+
+        <TextView
+            android:id="@+id/from_camera"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="拍照"
+            android:textSize="16sp"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/front_black"
+            android:paddingLeft="16dp"
+            android:background="@drawable/bg_comment_selector"/>
+
+        <View
+            style="@style/line_margintop0"
+            android:layout_marginRight="16dp"/>
+
+        <TextView
+            android:id="@+id/from_album"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="从相册选择"
+            android:textSize="16sp"
+            android:gravity="left|center_vertical"
+            android:textColor="@color/front_black"
+            android:paddingLeft="16dp"
+            android:background="@drawable/bg_comment_selector"/>
+    </LinearLayout>
+
+</RelativeLayout>
