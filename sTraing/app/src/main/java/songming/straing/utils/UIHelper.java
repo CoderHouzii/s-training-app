@@ -7,6 +7,7 @@ import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
 import songming.straing.ui.activity.person.AvatarSettingActivity;
+import songming.straing.ui.activity.person.NickAndSignatureSettingActivity;
 import songming.straing.ui.activity.person.PersonSettingActivity;
 
 /**
@@ -84,13 +85,32 @@ public class UIHelper {
     }
 
     /** 跳转到个人资料页 */
-    public static void startToPersonSettingActivity(Activity c,int requestCode) {
+    public static void startToPersonSettingActivity(Activity c, int requestCode) {
         Intent intent = new Intent(c, PersonSettingActivity.class);
-        c.startActivityForResult(intent,requestCode);
+        c.startActivityForResult(intent, requestCode);
     }
-    /** 跳转到主页 */
-    public static void startToAvatarSettingActivity(Activity c,int requestCode) {
+
+    /** 跳转到头像设置 */
+    public static void startToAvatarSettingActivity(Activity c, int requestCode) {
         Intent intent = new Intent(c, AvatarSettingActivity.class);
-        c.startActivityForResult(intent,requestCode);
+        c.startActivityForResult(intent, requestCode);
+    }
+
+    /** 跳转到昵称设置 */
+    public static void startToNickSettingActivity(Activity c, @NickAndSignatureSettingActivity.Mode
+    int mode, String text, int requestCode) {
+        Intent intent = new Intent(c, NickAndSignatureSettingActivity.class);
+        intent.putExtra("mode",mode);
+        switch (mode) {
+            case NickAndSignatureSettingActivity.MODE_NICK:
+                intent.putExtra("nick", text);
+                break;
+            case NickAndSignatureSettingActivity.MODE_SIGNATURE:
+                intent.putExtra("signature", text);
+                break;
+            default:
+                break;
+        }
+        c.startActivityForResult(intent, requestCode);
     }
 }

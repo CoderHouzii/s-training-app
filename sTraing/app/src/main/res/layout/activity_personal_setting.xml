@@ -108,6 +108,7 @@
         android:background="@drawable/bg_common_layout_selector">
 
         <TextView
+            android:id="@+id/tag_sign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/front_black"
@@ -121,6 +122,16 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_arrow_right"/>
+        <TextView
+            android:id="@+id/signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tag_sign"
+            android:layout_marginLeft="16dp"
+            android:gravity="right"
+            android:text="个性签名"
+            android:layout_toLeftOf="@id/arrow3"/>
 
     </RelativeLayout>
     <View

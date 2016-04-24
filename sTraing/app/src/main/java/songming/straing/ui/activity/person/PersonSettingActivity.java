@@ -1,6 +1,8 @@
 package songming.straing.ui.activity.person;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -16,9 +18,10 @@ import songming.straing.widget.CircleImageView;
 public class PersonSettingActivity extends BaseActivity implements View.OnClickListener{
 
     public static final int CODE_AVATAR_SETTING=0x11;
-
+    public static final int CODE_NICK_SETTING=0x12;
 
     private ViewHolder vh;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +33,9 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
     private void initView() {
         vh=new ViewHolder(getWindow().getDecorView());
         vh.layout_avatar.setOnClickListener(this);
+        vh.layout_nick.setOnClickListener(this);
+        vh.layout_signature.setOnClickListener(this);
+
 
     }
 
@@ -45,8 +51,40 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
             case R.id.layout_avatar:
                 UIHelper.startToAvatarSettingActivity(this,CODE_AVATAR_SETTING);
                 break;
+            case R.id.layout_nick:
+                String mPreNick=vh.nick.getText().toString().trim();
+                UIHelper.startToNickSettingActivity(this,NickAndSignatureSettingActivity.MODE_NICK,mPreNick,
+                        CODE_NICK_SETTING);
+                break;
+            case R.id.layout_signature:
+                String mSignature=vh.signature.getText().toString().trim();
+                UIHelper.startToNickSettingActivity(this,NickAndSignatureSettingActivity.MODE_SIGNATURE,mSignature,
+                        CODE_NICK_SETTING);
+                break;
         }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case CODE_AVATAR_SETTING:
+                break;
+            case CODE_NICK_SETTING:
+                if (resultCode==101){
+                    String nick=data.getStringExtra("nick");
+                    if (!TextUtils.isEmpty(nick)) {
+                        vh.nick.setText(nick);
+                    }
+                }
+                if (resultCode==102){
+                    String signature=data.getStringExtra("signature");
+                    if (!TextUtils.isEmpty(signature)) {
+                        vh.signature.setText(signature);
+                    }
+                }
+                break;
+        }
     }
 
     public static class ViewHolder {
@@ -57,6 +95,7 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
         public TextView nick;
         public RelativeLayout layout_nick;
         public RelativeLayout layout_signature;
+        public TextView signature;
         public RelativeLayout layout_tag;
         public RelativeLayout layout_work;
         public RelativeLayout layout_city;
@@ -69,6 +108,7 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
             this.nick = (TextView) rootView.findViewById(R.id.nick);
             this.layout_nick = (RelativeLayout) rootView.findViewById(R.id.layout_nick);
             this.layout_signature = (RelativeLayout) rootView.findViewById(R.id.layout_signature);
+            this.signature= (TextView) rootView.findViewById(R.id.signature);
             this.layout_tag = (RelativeLayout) rootView.findViewById(R.id.layout_tag);
             this.layout_work = (RelativeLayout) rootView.findViewById(R.id.layout_work);
             this.layout_city = (RelativeLayout) rootView.findViewById(R.id.layout_city);
