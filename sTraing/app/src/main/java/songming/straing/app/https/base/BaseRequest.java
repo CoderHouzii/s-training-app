@@ -53,17 +53,15 @@ public class BaseRequest extends Request<BaseResponse> {
             JSONObject json = null;
             json = (JSONObject) jsonParser.nextValue();
             if (json!=null) {
-                baseResponse.setStatus(json.optInt("stateCode"));
-                baseResponse.setErrorMsg(json.optString("errorStr"));
+                baseResponse.setStatus(json.optInt("status"));
                 start=json.optInt("start");
-                hasMore=json.optInt("loadMore")==1;
+                hasMore=json.optInt("more")==1;
             }
-            JSONObject data=json.optJSONObject("data");
             baseResponse.setJsonStr(responseStr);
 
             baseResponse.setStart(start);
             baseResponse.setHasMore(hasMore);
-            mClient.parseResponse(baseResponse, data==null?json:data,start,hasMore);
+            mClient.parseResponse(baseResponse, json,start,hasMore);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(TAG, ">>>>>>json解析失败<<<<<<<<\n\n" + ">>>>>>>>>>>>>>>>>>>>>该json字符串为：" + responseStr + "\n" +
