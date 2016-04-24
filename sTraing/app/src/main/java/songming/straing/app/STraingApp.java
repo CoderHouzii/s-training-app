@@ -8,6 +8,8 @@ import songming.straing.utils.PreferenceUtils;
 public class STraingApp extends Application{
     public static Context appContext;
 
+    public static final String HOST="http://115.28.102.139:80";
+
     @Override
     public void onCreate() {
         super.onCreate();
