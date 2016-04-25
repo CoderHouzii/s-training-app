@@ -22,6 +22,7 @@ import songming.straing.app.interfaces.BaseResponseListener;
 import songming.straing.app.interfaces.OnUploadProgressListener;
 import songming.straing.utils.RequestUrlUtils;
 import songming.straing.utils.ToastUtils;
+import songming.straing.utils.UIHelper;
 import songming.straing.widget.ProgressDialog;
 import songming.straing.widget.ProgressPopup;
 import songming.straing.widget.TitleBar;
@@ -62,7 +63,7 @@ public class BaseActivity extends Activity implements BaseResponseListener {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        mDialogRefreshRunnable=new DialogRefreshRunnable();
+        mDialogRefreshRunnable = new DialogRefreshRunnable();
     }
 
     protected void onTitleLeftClick() {}
@@ -131,7 +132,7 @@ public class BaseActivity extends Activity implements BaseResponseListener {
     protected UploadManager mUploadManager;
 
     protected void uploadImg(String fileName) {
-        if (TextUtils.isEmpty(fileName))return;
+        if (TextUtils.isEmpty(fileName)) return;
         if (mUploadManager == null) {
             mUploadManager = UploadManager.create(new BaseResponseListener() {
                 @Override
@@ -175,8 +176,11 @@ public class BaseActivity extends Activity implements BaseResponseListener {
                 }
             });
         }
-        mUploadManager.setUrl(
-                new RequestUrlUtils.Builder().setHost(Config.HOST).setPath("/moment/like/create").build());
+        mUploadManager.setUrl(new RequestUrlUtils.Builder().setHost(Config.HOST)
+                                                           .setPath("/upload")
+                                                           .addParam("key", LocalHost.INSTANCE.getKey())
+                                                           .addParam("suffix", "jpg")
+                                                           .build());
         mUploadManager.setFileName(fileName);
         mUploadManager.build().post();
     }
@@ -188,6 +192,12 @@ public class BaseActivity extends Activity implements BaseResponseListener {
     @Subscribe
     public void onEventMainThread(Events event) {
 
+    }
+
+    @Subscribe
+    public void onEvent(Events.StartToLoginEvent event) {
+        UIHelper.startToLoginActivity(this);
+        finish();
     }
 
     public <V extends View> V getView(int resId) {

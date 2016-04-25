@@ -115,6 +115,7 @@ public class AvatarSettingActivity extends BaseActivity implements View.OnClickL
                 fileName = jsonObject.optString("fileName");
                 LocalHost.INSTANCE.setUserAvatar(url);
                 avatar_preview.loadImageDefault(url);
+                onBackPressed();
             }
         }else {
             ToastUtils.ToastMessage(this,response.getErrorMsg());

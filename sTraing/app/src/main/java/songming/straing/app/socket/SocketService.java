@@ -153,7 +153,6 @@ public class SocketService extends Service {
     @Subscribe
     // 网络连接成功
     public void onEvent(Events.ConnectEvent event) {
-
         sendLoginPacket();
         KLog.i("socket", "连接成功");
     }
@@ -182,6 +181,8 @@ public class SocketService extends Service {
             msg.key = LocalHost.INSTANCE.getKey();
             send(msg.getMessageData());
             KLog.d("socket", "正在自动登录");
+        }else {
+            return;
         }
     }
 

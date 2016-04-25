@@ -11,9 +11,8 @@ import songming.straing.app.socket.SocketMessageManager;
 import songming.straing.app.socket.SocketService;
 import songming.straing.utils.PreferenceUtils;
 
-public class STraingApp extends Application{
+public class STraingApp extends Application {
     public static Context appContext;
-
 
     @Override
     public void onCreate() {
@@ -26,26 +25,18 @@ public class STraingApp extends Application{
         initPersonalData();
 
         //socket服务
-        SocketService.CallService(appContext, Config.SocketIntent.Types.CONNECT);
-
+        SocketService.startService(appContext);
     }
 
     private void initPersonalData() {
-        String key= (String) PreferenceUtils.INSTANCE.getSharedPreferenceData("key","null");
-        long id= (long) PreferenceUtils.INSTANCE.getSharedPreferenceData("userid",0l);
-        boolean hasLogin= (int)PreferenceUtils.INSTANCE.getSharedPreferenceData("haslogin",0)==1;
-        String avatar= (String) PreferenceUtils.INSTANCE.getSharedPreferenceData("avatar","null");
+        String key = (String) PreferenceUtils.INSTANCE.getSharedPreferenceData("key", "null");
+        long id = (long) PreferenceUtils.INSTANCE.getSharedPreferenceData("userid", 0l);
+        boolean hasLogin = (int) PreferenceUtils.INSTANCE.getSharedPreferenceData("haslogin", 0) == 1;
+        String avatar = (String) PreferenceUtils.INSTANCE.getSharedPreferenceData("avatar", "null");
 
-        if (key!=null&&!key.equals("null")){
-            LocalHost.INSTANCE.setKey(key);
-        }
-        if (id!=0){
-            LocalHost.INSTANCE.setUserId(id);
-        }
+        LocalHost.INSTANCE.setKey(key);
+        LocalHost.INSTANCE.setUserId(id);
         LocalHost.INSTANCE.setHasLogin(hasLogin);
-        if (avatar!=null&&!avatar.equals("null")){
-            LocalHost.INSTANCE.setUserAvatar(avatar);
-        }
+        LocalHost.INSTANCE.setUserAvatar(avatar);
     }
-
 }

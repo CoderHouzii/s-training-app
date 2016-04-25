@@ -109,7 +109,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onSuccess(BaseResponse response) {
         super.onSuccess(response);
-        SocketService.CallService(this, Config.SocketIntent.Types.CONNECT);
-        UIHelper.startToMainActivity(this);
+        if (response.getStatus()==1) {
+            boolean prepare= (boolean) response.getData();
+            if (prepare) {
+                SocketService.CallService(this, Config.SocketIntent.Types.CONNECT);
+                UIHelper.startToMainActivity(this);
+            }
+        }
     }
 }

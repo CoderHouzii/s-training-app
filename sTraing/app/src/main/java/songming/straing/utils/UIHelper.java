@@ -70,6 +70,8 @@ public class UIHelper {
     public static void startToLoginActivity(Activity c) {
         Intent intent = new Intent(c, LoginActivity.class);
         c.startActivity(intent);
+        c.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
+
     }
 
     /** 跳转到注册页面 */

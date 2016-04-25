@@ -29,7 +29,7 @@ public class RegisterRequest extends BaseHttpRequestClient {
             LocalHost.INSTANCE.setKey(json.optString("key"));
             LocalHost.INSTANCE.setUserId(json.optLong("userID"));
             LocalHost.INSTANCE.setHasLogin(true);
-
+            response.setData(true);
         }
 
     }
