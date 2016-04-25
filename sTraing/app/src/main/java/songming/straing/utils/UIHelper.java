@@ -3,6 +3,7 @@ package songming.straing.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import songming.straing.R;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
@@ -81,6 +82,7 @@ public class UIHelper {
     public static void startToMainActivity(Activity c) {
         Intent intent = new Intent(c, MainActivity.class);
         c.startActivity(intent);
+        c.overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
         c.finish();
     }
 

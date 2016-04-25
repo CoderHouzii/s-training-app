@@ -2,6 +2,7 @@ package songming.straing.app.https.base;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.json.JSONObject;
 
 /**
  * 网络请求回调bean封装
@@ -23,6 +24,8 @@ public class BaseResponse {
     private Object data;
     //是否展示dialog
     private boolean showDialog;
+
+    private JSONObject mJSONObject;
 
     private int start;
     private boolean hasMore;
@@ -106,5 +109,13 @@ public class BaseResponse {
     public void setDatas(List<?> datas) {
         this.datas.clear();
         this.datas.addAll(datas);
+    }
+
+    public JSONObject getJSONObject() {
+        return mJSONObject;
+    }
+
+    public void setJSONObject(JSONObject JSONObject) {
+        mJSONObject = JSONObject;
     }
 }

@@ -10,6 +10,10 @@ import java.util.Map;
  */
 public class RequestUrlUtils {
 
+    private static final int api_version = 1;
+    private static final double app_version = 1.0;
+    private static final int platform = 1;
+
     private RequestUrlUtils() {}
 
     public static class Builder {
@@ -35,7 +39,7 @@ public class RequestUrlUtils {
         }
 
         public Builder setPath(String path) {
-            this.path = path;
+            this.path = path + "?api_version=" + api_version + "&app_version=" + app_version + "&platform=" + platform;
             return this;
         }
 
@@ -45,18 +49,13 @@ public class RequestUrlUtils {
         }
 
         public String build() {
-            String url = hosturl + path + "?";
+            String url = hosturl + path;
             int i = 0;
             Iterator iterator = params.entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<String, Object> entity = (Map.Entry<String, Object>) iterator.next();
                 if (entity != null) {
-                    if (i == 0) {
-                        url += entity.getKey() + "=" + entity.getValue();
-                    }
-                    else {
-                        url += "&" + entity.getKey() + "=" + entity.getValue();
-                    }
+                    url += "&" + entity.getKey() + "=" + entity.getValue();
                 }
                 i++;
             }

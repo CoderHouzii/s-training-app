@@ -3,7 +3,6 @@ package songming.straing.app.https.request;
 import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
-import songming.straing.app.STraingApp;
 import songming.straing.app.config.Config;
 import songming.straing.app.config.LocalHost;
 import songming.straing.app.https.base.BaseHttpRequestClient;
@@ -12,15 +11,15 @@ import songming.straing.utils.PreferenceUtils;
 import songming.straing.utils.RequestUrlUtils;
 
 /**
- * 注册请求
+ * 登录
  */
-public class RegisterRequest extends BaseHttpRequestClient {
+public class LoginRequest extends BaseHttpRequestClient{
     public String phone;
     public String password;
 
     @Override
     public String setUrl() {
-        return new RequestUrlUtils.Builder().setHost(Config.HOST).setPath("/user/account/create").build();
+        return new RequestUrlUtils.Builder().setHost(Config.HOST).setPath("/user/login/phone").build();
     }
 
     @Override
@@ -29,7 +28,6 @@ public class RegisterRequest extends BaseHttpRequestClient {
             LocalHost.INSTANCE.setKey(json.optString("key"));
             LocalHost.INSTANCE.setUserId(json.optLong("userID"));
             LocalHost.INSTANCE.setHasLogin(true);
-
         }
 
     }

@@ -34,6 +34,7 @@ public class CameraUtils {
     public static final int WALLPIC = 0x13;
 
     public static Uri tempPhoto;
+    public static String photoPath;
 
     /**
      * 从相机获取
@@ -92,6 +93,7 @@ public class CameraUtils {
                 photoName = MD5Tools.hashKey("avatar" + System.currentTimeMillis()) + ".jpg";
                 file = new File(FileStore.INSTANCE.getHostInfoPath() + "/" + photoName);
                 avatarSaveUri = Uri.fromFile(file);
+                photoPath=file.getAbsolutePath();
                 PreferenceUtils.INSTANCE.setSharedPreferenceData("avatar", String.valueOf(avatarSaveUri));
                 if (file.exists()) {
                     file.delete();
@@ -101,6 +103,7 @@ public class CameraUtils {
                 photoName = MD5Tools.hashKey("wallpic" + System.currentTimeMillis()) + ".jpg";
                 file = new File(FileStore.INSTANCE.getHostInfoPath() + "/" + photoName);
                 wallpicSaveUri = Uri.fromFile(file);
+                photoPath=file.getAbsolutePath();
                 PreferenceUtils.INSTANCE.setSharedPreferenceData("wallpic", String.valueOf(wallpicSaveUri));
                 if (file.exists()) {
                     file.delete();

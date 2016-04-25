@@ -6,6 +6,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import songming.straing.R;
+import songming.straing.app.config.Config;
+import songming.straing.app.config.LocalHost;
+import songming.straing.app.https.base.BaseResponse;
+import songming.straing.app.https.request.LoginRequest;
+import songming.straing.app.socket.SocketService;
 import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.utils.ToastUtils;
 import songming.straing.utils.UIHelper;
@@ -20,12 +25,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private Button login;
     private Button register;
 
+    private LoginRequest mLoginRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
+        initReq();
     }
+
 
     private void initView() {
         user = (EditText) findViewById(R.id.user);
@@ -35,6 +44,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         login.setOnClickListener(this);
         register.setOnClickListener(this);
+    }
+    private void initReq() {
+        mLoginRequest=new LoginRequest();
+        mLoginRequest.setOnResponseListener(this);
     }
 
     private void submit() {
@@ -51,8 +64,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             return;
         }
 
-        // TODO: 2016/4/15 登录请求
-        UIHelper.startToMainActivity(this);
+
+        mLoginRequest.phone=userName;
+        mLoginRequest.password=passWord;
+        mLoginRequest.post(true);
+
+
 
     }
 
@@ -71,5 +88,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
         }
 
+    }
+
+    @Override
+    public void onSuccess(BaseResponse response) {
+        super.onSuccess(response);
+        SocketService.CallService(this, Config.SocketIntent.Types.CONNECT);
+        UIHelper.startToMainActivity(this);
     }
 }

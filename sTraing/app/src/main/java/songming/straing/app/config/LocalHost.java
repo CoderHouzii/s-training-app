@@ -1,5 +1,7 @@
 package songming.straing.app.config;
 
+import songming.straing.utils.PreferenceUtils;
+
 /**
  * 本地账户
  */
@@ -13,6 +15,7 @@ public enum LocalHost {
     }
 
     public void setKey(String key) {
+        PreferenceUtils.INSTANCE.setSharedPreferenceData("key",key);
         sHostInfo.setKey(key);
     }
 
@@ -21,6 +24,7 @@ public enum LocalHost {
     }
 
     public void setUserId(long userid) {
+        PreferenceUtils.INSTANCE.setSharedPreferenceData("userid",userid);
         sHostInfo.setUserID(userid);
     }
 
@@ -32,10 +36,30 @@ public enum LocalHost {
         sHostInfo.setUserName(userName);
     }
 
+    public boolean getIsLogin(){
+        return sHostInfo.isLogin();
+    }
+
+    public void setHasLogin(boolean hasLogin){
+        PreferenceUtils.INSTANCE.setSharedPreferenceData("haslogin",hasLogin?1:0);
+        sHostInfo.setHasLogin(hasLogin);
+    }
+
+    public String getUserAvatar(){
+        return sHostInfo.getAvatar();
+    }
+
+    public void setUserAvatar(String avatar){
+        PreferenceUtils.INSTANCE.setSharedPreferenceData("avatar",avatar);
+        sHostInfo.setAvatar(avatar);
+    }
+
     static class HostInfo {
         private String key;
         private long userID;
         private String userName;
+        private boolean hasLogin;
+        private String avatar;
 
         public String getKey() {
             return key;
@@ -59,6 +83,22 @@ public enum LocalHost {
 
         public void setUserName(String userName) {
             this.userName = userName;
+        }
+
+        public boolean isLogin() {
+            return hasLogin;
+        }
+
+        public void setHasLogin(boolean hasLogin) {
+            this.hasLogin = hasLogin;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
         }
     }
 

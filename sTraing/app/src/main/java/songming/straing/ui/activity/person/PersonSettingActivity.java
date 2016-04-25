@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import songming.straing.R;
+import songming.straing.app.config.LocalHost;
 import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.utils.UIHelper;
 import songming.straing.widget.CircleImageView;
@@ -21,6 +22,8 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
     public static final int CODE_NICK_SETTING=0x12;
 
     private ViewHolder vh;
+
+    private String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +72,12 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case CODE_AVATAR_SETTING:
+                if (resultCode==110){
+                    if (data!=null){
+                        fileName=data.getStringExtra("filename");
+                    }
+                    vh.avatar.loadImageDefault(LocalHost.INSTANCE.getUserAvatar());
+                }
                 break;
             case CODE_NICK_SETTING:
                 if (resultCode==101){

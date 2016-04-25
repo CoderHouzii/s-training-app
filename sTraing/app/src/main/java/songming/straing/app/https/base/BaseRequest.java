@@ -55,9 +55,12 @@ public class BaseRequest extends Request<BaseResponse> {
             if (json!=null) {
                 baseResponse.setStatus(json.optInt("status"));
                 start=json.optInt("start");
+                baseResponse.setErrorMsg(json.optString("msg"));
+                baseResponse.setErrorCode(json.optInt("code"));
                 hasMore=json.optInt("more")==1;
             }
             baseResponse.setJsonStr(responseStr);
+            baseResponse.setJSONObject(json);
 
             baseResponse.setStart(start);
             baseResponse.setHasMore(hasMore);

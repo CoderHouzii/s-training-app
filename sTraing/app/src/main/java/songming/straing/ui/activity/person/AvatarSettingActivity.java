@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import com.yalantis.ucrop.UCrop;
+import org.json.JSONObject;
 import songming.straing.R;
+import songming.straing.app.config.LocalHost;
+import songming.straing.app.https.base.BaseResponse;
 import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.utils.CameraUtils;
 import songming.straing.utils.ToastUtils;
@@ -47,7 +50,7 @@ public class AvatarSettingActivity extends BaseActivity implements View.OnClickL
                 mPhotoSelected.showPopupWindow();
                 break;
             case R.id.btn_ok:
-
+                uploadImg(CameraUtils.photoPath);
                 break;
         }
     }
@@ -55,7 +58,16 @@ public class AvatarSettingActivity extends BaseActivity implements View.OnClickL
     @Override
     protected void onTitleLeftClick() {
         super.onTitleLeftClick();
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent();
+        intent.putExtra("filename",fileName);
+        setResult(110,intent);
         finish();
+        super.onBackPressed();
     }
 
     @Override
@@ -83,12 +95,29 @@ public class AvatarSettingActivity extends BaseActivity implements View.OnClickL
                 case UCrop.REQUEST_CROP:
                     // 裁剪
                     Uri resultUri = UCrop.getOutput(data);
-                    //uploadImg(CameraUtils.photoPath, Config.UploadFileType.TYPE_WALLPIC);
                     avatar_preview.loadImageDefault(String.valueOf(resultUri));
                     break;
                 default:
                     break;
             }
+        }
+    }
+
+    private String fileName;
+
+    @Override
+    public void onUploadSuccess(BaseResponse response) {
+        super.onUploadSuccess(response);
+        if (response.getStatus() == 1) {
+            JSONObject jsonObject = response.getJSONObject();
+            if (jsonObject != null) {
+                String url = jsonObject.optString("url");
+                fileName = jsonObject.optString("fileName");
+                LocalHost.INSTANCE.setUserAvatar(url);
+                avatar_preview.loadImageDefault(url);
+            }
+        }else {
+            ToastUtils.ToastMessage(this,response.getErrorMsg());
         }
     }
 }

@@ -87,7 +87,7 @@ public abstract class BaseHttpRequestClient implements Response.Listener<BaseRes
         postFailure();
     }
 
-    private void postStart() {
+    protected void postStart() {
         BaseResponse response = new BaseResponse();
         response.setRequestType(requestType);
         response.setShowDialog(showDialog);

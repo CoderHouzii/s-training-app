@@ -10,7 +10,10 @@
     tools:context=".ui.activity.AppStart">
 
     <TextView
-        android:text="Hello World!"
+        android:id="@+id/title"
+        android:text="s-Traing"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_centerInParent="true"/>
 </RelativeLayout>
