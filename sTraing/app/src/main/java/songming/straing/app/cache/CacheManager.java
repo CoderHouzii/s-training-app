@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import songming.straing.app.FileStore;
+import songming.straing.app.config.LocalHost;
 import songming.straing.app.thread.ThreadPoolManager;
 import songming.straing.utils.MD5Tools;
 

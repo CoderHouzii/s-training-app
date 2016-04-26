@@ -70,4 +70,18 @@ public final class Events {
 
     }
 
+    /**
+     * 刷新头像
+     */
+    public static class RefreshAvatarEvent{
+
+    }
+
+    /**
+     * 通知更新数据
+     */
+    public static class RefreshDataEvent{
+
+    }
+
 }

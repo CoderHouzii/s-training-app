@@ -10,8 +10,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import java.util.LinkedList;
+import org.greenrobot.eventbus.EventBus;
 import songming.straing.R;
+import songming.straing.app.config.LocalHost;
+import songming.straing.app.eventbus.Events;
+import songming.straing.app.https.base.BaseResponse;
+import songming.straing.app.https.request.PersonDetailRequest;
+import songming.straing.app.interfaces.BaseResponseListener;
+import songming.straing.model.UserDetailInfo;
 import songming.straing.ui.activity.base.BaseActivity;
+import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.fragment.FriendsFragment;
 import songming.straing.ui.fragment.IndexFragment;
 import songming.straing.ui.fragment.MeFragment;
@@ -50,6 +58,7 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
+        initReq();
         initView();
         initFragments();
         transateFragment(FRAG_INDEX);
@@ -61,6 +70,45 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
         bottom_bar = (BottomTabBar) findViewById(R.id.bottom_bar);
 
         bottom_bar.setOnBottomBarClickListener(this);
+    }
+
+    private void initReq() {
+        //请求一次用户详情
+        if (!LocalHost.INSTANCE.getKey().equals("null")&&LocalHost.INSTANCE.getUserId()!=0) {
+            PersonDetailRequest request = new PersonDetailRequest();
+            request.setOnResponseListener(new BaseResponseListener() {
+                @Override
+                public void onStart(BaseResponse response) {
+
+                }
+
+                @Override
+                public void onStop(BaseResponse response) {
+
+                }
+
+                @Override
+                public void onFailure(BaseResponse response) {
+
+                }
+
+                @Override
+                public void onSuccess(BaseResponse response) {
+                    if (response.getStatus() == 1) {
+                        UserDetailInfo info = (UserDetailInfo) response.getData();
+                        if (info != null) {
+                            LocalHost.INSTANCE.setUserAvatar(info.avatar);
+                            LocalHost.INSTANCE.setUserId(info.userID);
+                            LocalHost.INSTANCE.setUserName(info.username);
+                            LocalHost.INSTANCE.setUserSignature(info.signNature);
+                            EventBus.getDefault().post(new Events.RefreshDataEvent());
+                        }
+                    }
+                }
+            });
+            request.userid=LocalHost.INSTANCE.getUserId();
+            request.post();
+        }
     }
 
     private void initFragments() {

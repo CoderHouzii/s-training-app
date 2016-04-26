@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import org.greenrobot.eventbus.EventBus;
 import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.interfaces.BaseResponseListener;
 
@@ -38,6 +39,11 @@ public abstract class BaseFragment<T> extends Fragment implements BaseResponseLi
         return mView;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     public void onStart(BaseResponse response) {

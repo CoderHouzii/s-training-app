@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
+import songming.straing.R;
 
 /**
  * 针对glide的一些封装
@@ -84,7 +85,7 @@ public class SuperImageView extends ImageView {
     }
 
     public void loadImageDefault(String url) {
-        this.loadImageNoFade(url, 0);
+        this.loadImageNoFade(url,R.drawable.ic_no_photo);
     }
 
     public void loadLocalImage(int res){

@@ -7,8 +7,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import org.greenrobot.eventbus.EventBus;
 import songming.straing.R;
 import songming.straing.app.config.LocalHost;
+import songming.straing.app.eventbus.Events;
+import songming.straing.app.https.base.BaseResponse;
+import songming.straing.app.https.request.PersonDataUpdateRequest;
+import songming.straing.app.https.request.PersonDetailRequest;
+import songming.straing.app.interfaces.BaseResponseListener;
+import songming.straing.model.UserDetailInfo;
 import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.utils.UIHelper;
 import songming.straing.widget.CircleImageView;
@@ -25,13 +32,19 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
 
     private String fileName;
 
+    private PersonDataUpdateRequest mDataUpdateRequest;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personal_setting);
         initView();
+        initReq();
 
     }
+
+
+
 
     private void initView() {
         vh=new ViewHolder(getWindow().getDecorView());
@@ -39,13 +52,29 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
         vh.layout_nick.setOnClickListener(this);
         vh.layout_signature.setOnClickListener(this);
 
+        vh.avatar.loadImageDefault(LocalHost.INSTANCE.getUserAvatar());
+        vh.nick.setText(LocalHost.INSTANCE.getUserName());
+        vh.signature.setText(LocalHost.INSTANCE.getUserSignature());
 
     }
-
+    private void initReq() {
+        mDataUpdateRequest=new PersonDataUpdateRequest();
+        mDataUpdateRequest.setOnResponseListener(this);
+    }
     @Override
     protected void onTitleLeftClick() {
         super.onTitleLeftClick();
         finish();
+    }
+
+    @Override
+    protected void onTitleRightClick(View v) {
+        super.onTitleRightClick(v);
+        mDataUpdateRequest.avatar=fileName;
+        mDataUpdateRequest.username=vh.nick.getText().toString().trim();
+        mDataUpdateRequest.sign_nature=vh.nick.getText().toString().trim();
+        mDataUpdateRequest.post(true);
+
     }
 
     @Override
@@ -75,6 +104,7 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
                 if (resultCode==110){
                     if (data!=null){
                         fileName=data.getStringExtra("filename");
+                        EventBus.getDefault().post(new Events.RefreshAvatarEvent());
                     }
                     vh.avatar.loadImageDefault(LocalHost.INSTANCE.getUserAvatar());
                 }
@@ -93,6 +123,53 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
                     }
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onSuccess(BaseResponse response) {
+        super.onSuccess(response);
+        if (response.getStatus()==1){
+            //请求一次用户详情
+            if (!LocalHost.INSTANCE.getKey().equals("null")&&LocalHost.INSTANCE.getUserId()!=0) {
+                PersonDetailRequest request = new PersonDetailRequest();
+                request.setOnResponseListener(new BaseResponseListener() {
+                    @Override
+                    public void onStart(BaseResponse response) {
+
+                    }
+
+                    @Override
+                    public void onStop(BaseResponse response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(BaseResponse response) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(BaseResponse response) {
+                        if (response.getStatus() == 1) {
+                            UserDetailInfo info = (UserDetailInfo) response.getData();
+                            if (info != null) {
+                                LocalHost.INSTANCE.setUserAvatar(info.avatar);
+                                LocalHost.INSTANCE.setUserId(info.userID);
+                                LocalHost.INSTANCE.setUserName(info.username);
+                                LocalHost.INSTANCE.setUserSignature(info.signNature);
+                                setResult(203);
+                                finish();
+                            }else {
+                                finish();
+                            }
+                        }
+                    }
+                });
+                request.userid=LocalHost.INSTANCE.getUserId();
+                request.post();
+            }
+
         }
     }
 

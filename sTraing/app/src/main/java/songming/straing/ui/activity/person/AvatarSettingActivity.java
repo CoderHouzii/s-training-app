@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import com.socks.library.KLog;
 import com.yalantis.ucrop.UCrop;
 import org.json.JSONObject;
 import songming.straing.R;
@@ -37,6 +38,9 @@ public class AvatarSettingActivity extends BaseActivity implements View.OnClickL
         avatar_preview = (CircleImageView) findViewById(R.id.avatar_preview);
         btn_ok = (Button) findViewById(R.id.btn_ok);
 
+        if (!LocalHost.INSTANCE.getUserAvatar().equals("null")) {
+            avatar_preview.loadImageDefault(LocalHost.INSTANCE.getUserAvatar());
+        }
         mPhotoSelected = new PopupPhotoSelected(this);
 
         avatar_preview.setOnClickListener(this);
@@ -63,9 +67,9 @@ public class AvatarSettingActivity extends BaseActivity implements View.OnClickL
 
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent();
-        intent.putExtra("filename",fileName);
-        setResult(110,intent);
+        Intent intent = new Intent();
+        intent.putExtra("filename", fileName);
+        setResult(110, intent);
         finish();
         super.onBackPressed();
     }
@@ -112,13 +116,15 @@ public class AvatarSettingActivity extends BaseActivity implements View.OnClickL
             JSONObject jsonObject = response.getJSONObject();
             if (jsonObject != null) {
                 String url = jsonObject.optString("url");
+                KLog.d("avatar", url);
                 fileName = jsonObject.optString("fileName");
                 LocalHost.INSTANCE.setUserAvatar(url);
                 avatar_preview.loadImageDefault(url);
                 onBackPressed();
             }
-        }else {
-            ToastUtils.ToastMessage(this,response.getErrorMsg());
+        }
+        else {
+            ToastUtils.ToastMessage(this, response.getErrorMsg());
         }
     }
 }

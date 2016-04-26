@@ -13,9 +13,13 @@ import songming.straing.app.cache.CacheManager;
 import songming.straing.app.config.Config;
 import songming.straing.app.config.LocalHost;
 import songming.straing.app.eventbus.Events;
+import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.base.VolleyManager;
+import songming.straing.app.https.request.PersonDetailRequest;
+import songming.straing.app.interfaces.BaseResponseListener;
 import songming.straing.app.socket.SocketService;
 import songming.straing.app.thread.ThreadPoolManager;
+import songming.straing.model.UserDetailInfo;
 import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.utils.UIHelper;
 

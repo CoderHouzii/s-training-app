@@ -25,6 +25,7 @@ public enum  SocketMessageManager {
             case MessageId.SOCKET_LOGIN_SUCCESS:
                 EventBus.getDefault().post(new Events.StartToMainEvent());
                 EventBus.getDefault().post(new Events.StartHeart());
+                EventBus.getDefault().post(new Events.RefreshDataEvent());
                 break;
             default:
                 break;

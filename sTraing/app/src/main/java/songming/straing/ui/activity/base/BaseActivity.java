@@ -3,6 +3,7 @@ package songming.straing.ui.activity.base;
 import android.app.Activity;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,6 +21,7 @@ import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.upload.UploadManager;
 import songming.straing.app.interfaces.BaseResponseListener;
 import songming.straing.app.interfaces.OnUploadProgressListener;
+import songming.straing.utils.InputMethodUtils;
 import songming.straing.utils.RequestUrlUtils;
 import songming.straing.utils.ToastUtils;
 import songming.straing.utils.UIHelper;
@@ -84,6 +86,7 @@ public class BaseActivity extends Activity implements BaseResponseListener {
             mTitleBar.setOnLeftBtnClickListener(new TitleBar.OnLeftBtnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    InputMethodUtils.hideInputMethod(BaseActivity.this.getWindow().getDecorView());
                     onTitleLeftClick();
                 }
             });
@@ -208,5 +211,14 @@ public class BaseActivity extends Activity implements BaseResponseListener {
             e.printStackTrace();
         }
         return null;
+    }
+
+
+    protected void setClickListener(@NonNull View.OnClickListener listener,View...views){
+        for (View view : views) {
+            if (view!=null){
+                view.setOnClickListener(listener);
+            }
+        }
     }
 }

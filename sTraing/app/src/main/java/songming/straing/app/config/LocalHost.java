@@ -33,6 +33,7 @@ public enum LocalHost {
     }
 
     public void setUserName(String userName) {
+        PreferenceUtils.INSTANCE.setSharedPreferenceData("username",userName);
         sHostInfo.setUserName(userName);
     }
 
@@ -54,12 +55,22 @@ public enum LocalHost {
         sHostInfo.setAvatar(avatar);
     }
 
+    public String getUserSignature(){
+        return sHostInfo.getSignature();
+    }
+
+    public void setUserSignature(String signature){
+        PreferenceUtils.INSTANCE.setSharedPreferenceData("signature",signature);
+        sHostInfo.setSignature(signature);
+    }
+
     static class HostInfo {
         private String key;
         private long userID;
         private String userName;
         private boolean hasLogin;
         private String avatar;
+        private String signature;
 
         public String getKey() {
             return key;
@@ -99,6 +110,14 @@ public enum LocalHost {
 
         public void setAvatar(String avatar) {
             this.avatar = avatar;
+        }
+
+        public String getSignature() {
+            return signature;
+        }
+
+        public void setSignature(String signature) {
+            this.signature = signature;
         }
     }
 

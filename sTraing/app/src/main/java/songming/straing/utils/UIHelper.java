@@ -9,6 +9,7 @@ import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
 import songming.straing.ui.activity.person.AvatarSettingActivity;
 import songming.straing.ui.activity.person.NickAndSignatureSettingActivity;
+import songming.straing.ui.activity.person.PersonIndexActivity;
 import songming.straing.ui.activity.person.PersonSettingActivity;
 
 /**
@@ -116,5 +117,12 @@ public class UIHelper {
                 break;
         }
         c.startActivityForResult(intent, requestCode);
+    }
+
+    /**跳转到个人主页*/
+    public static void startToPersonIndexActivity(Activity c,long userid){
+        Intent intent = new Intent(c, PersonIndexActivity.class);
+        intent.putExtra("userid",userid);
+        c.startActivity(intent);
     }
 }

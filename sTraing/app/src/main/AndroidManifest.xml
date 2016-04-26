@@ -74,6 +74,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
 
+        <!--个人主页-->
+        <activity
+            android:name=".ui.activity.person.PersonIndexActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+
         <!--裁剪图片-->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"

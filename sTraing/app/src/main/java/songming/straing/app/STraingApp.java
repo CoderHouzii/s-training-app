@@ -33,10 +33,14 @@ public class STraingApp extends Application {
         long id = (long) PreferenceUtils.INSTANCE.getSharedPreferenceData("userid", 0l);
         boolean hasLogin = (int) PreferenceUtils.INSTANCE.getSharedPreferenceData("haslogin", 0) == 1;
         String avatar = (String) PreferenceUtils.INSTANCE.getSharedPreferenceData("avatar", "null");
+        String signature=(String) PreferenceUtils.INSTANCE.getSharedPreferenceData("signature", "未设置");
+        String username=(String) PreferenceUtils.INSTANCE.getSharedPreferenceData("username", "未设置");
 
         LocalHost.INSTANCE.setKey(key);
         LocalHost.INSTANCE.setUserId(id);
         LocalHost.INSTANCE.setHasLogin(hasLogin);
         LocalHost.INSTANCE.setUserAvatar(avatar);
+        LocalHost.INSTANCE.setUserSignature(signature);
+        LocalHost.INSTANCE.setUserName(username);
     }
 }
