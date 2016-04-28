@@ -27,6 +27,10 @@ public enum  SocketMessageManager {
                 EventBus.getDefault().post(new Events.StartHeart());
                 EventBus.getDefault().post(new Events.RefreshDataEvent());
                 break;
+            //登出成功
+            case MessageId.SOCKET_LOGOUT_SUCCESS:
+                EventBus.getDefault().post(new Events.StartToLoginEvent());
+                break;
             default:
                 break;
         }

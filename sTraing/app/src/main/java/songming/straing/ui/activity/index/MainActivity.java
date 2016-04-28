@@ -11,12 +11,15 @@ import android.view.View;
 import android.view.Window;
 import java.util.LinkedList;
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import songming.straing.R;
 import songming.straing.app.config.LocalHost;
 import songming.straing.app.eventbus.Events;
 import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.request.PersonDetailRequest;
 import songming.straing.app.interfaces.BaseResponseListener;
+import songming.straing.app.socket.SocketClient;
+import songming.straing.app.socket.SocketService;
 import songming.straing.model.UserDetailInfo;
 import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.ui.activity.login.LoginActivity;
@@ -62,7 +65,16 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
         initView();
         initFragments();
         transateFragment(FRAG_INDEX);
+        EventBus.getDefault().register(this);
     }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
+
 
     private void initView() {
         titlebar = (TitleBar) findViewById(R.id.titlebar);
@@ -192,5 +204,19 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
                 mFragments.valueAt(i).onActivityResult(requestCode,resultCode,data);
             }
         }
+    }
+
+    @Subscribe
+    public void onEvent(Events.ChangeToFragment event) {
+        if (event!=null){
+            transateFragment(event.getFragIndex());
+        }
+    }
+
+    @Subscribe
+    public void onEventMainThread(Events.StartToLoginEvent event) {
+        UIHelper.startToLoginActivity(this);
+        SocketClient.INSTANCE.disconnect();
+        finish();
     }
 }

@@ -14,6 +14,9 @@ import org.greenrobot.eventbus.Subscribe;
 import songming.straing.R;
 import songming.straing.app.config.LocalHost;
 import songming.straing.app.eventbus.Events;
+import songming.straing.app.socket.SocketClient;
+import songming.straing.app.socket.SocketService;
+import songming.straing.app.socket.message.LogoutMessageSend;
 import songming.straing.ui.fragment.base.BaseFragment;
 import songming.straing.utils.ToastUtils;
 import songming.straing.utils.UIHelper;
@@ -39,8 +42,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public void bindData() {
         vh = new ViewHolder(mView);
         vh.layout_person_setting.setOnClickListener(this);
+        vh.btn_exit.setOnClickListener(this);
         vh.avatar.loadImageDefault(LocalHost.INSTANCE.getUserAvatar());
-
         vh.nick.setText(LocalHost.INSTANCE.getUserName());
         vh.signature.setText(LocalHost.INSTANCE.getUserSignature());
     }
@@ -51,6 +54,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.layout_person_setting:
                 //个人资料页
                 UIHelper.startToPersonSettingActivity(mContext, CODE_PERSON_SETTING);
+                break;
+            case R.id.btn_exit:
+                SocketService.CallServiceSend(mContext,new LogoutMessageSend().getMessageData());
                 break;
         }
     }

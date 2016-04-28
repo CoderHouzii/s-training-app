@@ -1,6 +1,7 @@
 package songming.straing.app.eventbus;
 
 import songming.straing.app.socket.SocketMessage;
+import songming.straing.model.MissionInfo;
 
 /**
  * eventbus专属类
@@ -82,6 +83,37 @@ public final class Events {
      */
     public static class RefreshDataEvent{
 
+    }
+
+    /**
+     * 跳转到fragment
+     */
+    public static class ChangeToFragment{
+        public static final int FRAG_INDEX=0x10;
+        public static final int FRAG_FRIENDS=0x11;
+        public static final int FRAG_MISSION=0x12;
+        public static final int FRAG_MESSAGE=0x13;
+        public static final int FRAG_ME=0x14;
+
+        private int fragIndex;
+
+        public ChangeToFragment(int fragIndex) {
+            this.fragIndex = fragIndex;
+        }
+
+        public int getFragIndex() {
+            return fragIndex;
+        }
+
+        public void setFragIndex(int fragIndex) {
+            this.fragIndex = fragIndex;
+        }
+    }
+
+    /**
+     * 更新首页的数据
+     */
+    public static class RefreshMissionDetail{
     }
 
 }
