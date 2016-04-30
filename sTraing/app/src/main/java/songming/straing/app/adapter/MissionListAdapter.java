@@ -83,18 +83,16 @@ public class MissionListAdapter extends BaseAdapter {
                     break;
             }
         } else {
-            convertView.setOnClickListener(null);
             switch (getItemViewType(position)) {
                 case 0:
                     titleHolder = (TitleViewHolder) convertView.getTag();
                     break;
                 case 1:
                     missionHolder = (ViewHolder) convertView.getTag();
-                    convertView.setTag(R.id.mission_info,getItem((position)));
-                    convertView.setOnClickListener(mOnClickListener);
                     break;
             }
         }
+        convertView.setOnClickListener(null);
         switch (getItemViewType(position)) {
             case 0:
                 titleHolder.title.setText(position == 0 ? "今天" : "过去");
@@ -102,6 +100,8 @@ public class MissionListAdapter extends BaseAdapter {
             case 1:
                 if (getItem(position) != null && getItem((position)) instanceof MissionInfo) {
                     MissionInfo info = ((MissionInfo) getItem((position)));
+                    convertView.setTag(R.id.mission_info,info);
+                    convertView.setOnClickListener(mOnClickListener);
                     missionHolder.missionTtile.setText(info.title);
                     switch (info.status) {
                         case 1:

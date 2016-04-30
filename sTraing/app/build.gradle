@@ -49,5 +49,6 @@ dependencies {
     compile 'org.apache.httpcomponents:httpcore:4.3.2'
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
     compile 'io.netty:netty-all:5.0.0.Alpha2'
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
 
 }

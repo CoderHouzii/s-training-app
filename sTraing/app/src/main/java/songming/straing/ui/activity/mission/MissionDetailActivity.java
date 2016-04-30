@@ -3,7 +3,6 @@ package songming.straing.ui.activity.mission;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -11,8 +10,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.apache.http.MethodNotSupportedException;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;

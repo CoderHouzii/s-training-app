@@ -9,16 +9,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
 import songming.straing.R;
 import songming.straing.app.config.LocalHost;
 import songming.straing.app.eventbus.Events;
-import songming.straing.app.socket.SocketClient;
 import songming.straing.app.socket.SocketService;
 import songming.straing.app.socket.message.LogoutMessageSend;
 import songming.straing.ui.fragment.base.BaseFragment;
-import songming.straing.utils.ToastUtils;
 import songming.straing.utils.UIHelper;
 import songming.straing.widget.CircleImageView;
 

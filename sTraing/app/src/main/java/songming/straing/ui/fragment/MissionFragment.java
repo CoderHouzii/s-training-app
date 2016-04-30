@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.greenrobot.eventbus.EventBus;
@@ -37,6 +39,11 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
     private MissionPreLoadRequest mPreLoadRequest;
     private MissionCreateRequest mCreateRequest;
 
+    private Map<String,Integer> typeMap;
+    private Map<String,Integer> locationMap;
+    private Map<String,Integer> drinkMap;
+    private Map<String,Integer> gearsMap;
+
     private boolean isStart=false;
 
     @Override
@@ -47,6 +54,12 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void bindData() {
         vh=new ViewHolder(mView);
+
+        typeMap=new HashMap<>();
+        locationMap=new HashMap<>();
+        drinkMap=new HashMap<>();
+        gearsMap=new HashMap<>();
+
         vh.pinner_start_time.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -111,6 +124,7 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
 
         // type的adapter
         if (vh.pinner_type.getAdapter()==null){
+            saveMapRev(info.types,typeMap);
             String[] data= map2StringArray(info.types);
             ArrayAdapter typeAdapter=new ArrayAdapter(mContext,android.R.layout.simple_spinner_item,data);
             typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -119,6 +133,7 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
 
         // location的adapter
         if (vh.pinner_place.getAdapter()==null){
+            saveMapRev(info.locations,locationMap);
             String[] data= map2StringArray(info.locations);
             ArrayAdapter typeAdapter=new ArrayAdapter(mContext,android.R.layout.simple_spinner_item,data);
             typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -127,6 +142,7 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
 
         // drink的adapter
         if (vh.pinner_drink.getAdapter()==null){
+            saveMapRev(info.drinkings,drinkMap);
             String[] data= map2StringArray(info.drinkings);
             ArrayAdapter typeAdapter=new ArrayAdapter(mContext,android.R.layout.simple_spinner_item,data);
             typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -136,6 +152,7 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
 
         // gears的adapter
         if (vh.pinner_huju.getAdapter()==null){
+            saveMapRev(info.gears,gearsMap);
             String[] data= map2StringArray(info.gears);
             ArrayAdapter typeAdapter=new ArrayAdapter(mContext,android.R.layout.simple_spinner_item,data);
             typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -162,6 +179,33 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
         return result.split("/split/");
         else return null;
     }
+
+    /**
+     * 因为服务器下发的字段并非按顺序递增，而是随机，因此这里需要将key和value反转
+     * value作为key
+     * key作为value
+     * 通过pinner选择的时候，可以通过value得到key
+     *
+     * @param srcMap
+     * @param dstMap
+     */
+    private void saveMapRev(Map<String,String> srcMap,Map<String,Integer> dstMap){
+        if (srcMap==null||srcMap.size()==0)return;
+        int index=0;
+        Iterator iterator=srcMap.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry entry= (Map.Entry) iterator.next();
+            if (entry!=null){
+                int key=Integer.parseInt((String) entry.getKey());
+                String value= (String) entry.getValue();
+                dstMap.put(value,key);
+            }
+            index++;
+        }
+    }
+
+
+
     @Override
     public String getTitle() {
         return "创建任务";
@@ -176,15 +220,15 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
         //休息时间
         int breakTime=Integer.parseInt(vh.pinner_time.getSelectedItem().toString().trim());
         //运动类型
-        int type=vh.pinner_type.getSelectedItemPosition()+1;
+        int type=typeMap.get(vh.pinner_type.getSelectedItem().toString().trim());
         //开始时间
         long startTime=TimeUtils.string2Time(vh.pinner_start_time.getSelectedItem().toString().trim());
         //地点
-        int place=vh.pinner_place.getSelectedItemPosition()+1;
+        int place=locationMap.get(vh.pinner_place.getSelectedItem().toString().trim());
         //饮料
-        int drinkType=vh.pinner_drink.getSelectedItemPosition()+1;
+        int drinkType=drinkMap.get(vh.pinner_drink.getSelectedItem().toString().trim());
         //护具
-        int gear=vh.pinner_huju.getSelectedItemPosition()+1;
+        int gear=gearsMap.get(vh.pinner_huju.getSelectedItem().toString().trim());
 
         mCreateRequest.preset_count=preset_count;
         mCreateRequest.preset_group=groupCount;
@@ -202,6 +246,7 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.create:
+                isStart=false;
                 submit();
                 break;
             case R.id.start:
