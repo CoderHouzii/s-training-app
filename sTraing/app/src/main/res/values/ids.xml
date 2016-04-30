@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="titlebar" type="id"/>
+
+    <item name="mission_info" type="id"/>
 </resources>

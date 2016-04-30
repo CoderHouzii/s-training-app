@@ -1,5 +1,6 @@
 package songming.straing.ui.fragment;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import songming.straing.model.MissionLoadInfo;
 import songming.straing.ui.fragment.base.BaseFragment;
 import songming.straing.utils.TimeUtils;
 import songming.straing.utils.ToastUtils;
+import songming.straing.utils.UIHelper;
 
 /**
  * 创建任务
@@ -34,6 +36,8 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
     private ViewHolder vh;
     private MissionPreLoadRequest mPreLoadRequest;
     private MissionCreateRequest mCreateRequest;
+
+    private boolean isStart=false;
 
     @Override
     public View initView(LayoutInflater inflater, ViewGroup container) {
@@ -89,8 +93,14 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
                     updateData(info);
                     break;
                 case REQ_PRE_CREATE:
-                    EventBus.getDefault().post(new Events.RefreshMissionDetail());
-                    EventBus.getDefault().post(new Events.ChangeToFragment(Events.ChangeToFragment.FRAG_INDEX));
+                    if (!isStart) {
+                        EventBus.getDefault().post(new Events.RefreshMissionDetail());
+                        EventBus.getDefault().post(new Events.ChangeToFragment(Events.ChangeToFragment.FRAG_INDEX));
+                    }else {
+                        MissionInfo info2= (MissionInfo) response.getData();
+                        EventBus.getDefault().post(new Events.RefreshMissionDetail());
+                        UIHelper.startToMissionDetailActivity(mContext,info2);
+                    }
                     break;
             }
         }
@@ -195,6 +205,8 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
                 submit();
                 break;
             case R.id.start:
+                isStart=true;
+                submit();
                 break;
             default:
                 break;
@@ -203,6 +215,13 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==150){
+            EventBus.getDefault().post(new Events.ChangeToFragment(Events.ChangeToFragment.FRAG_INDEX));
+        }
+    }
 
     static class ViewHolder {
         public View rootView;

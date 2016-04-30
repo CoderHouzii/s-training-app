@@ -21,8 +21,8 @@ public class TimeUtils {
      */
     public static boolean compareTimeWithHM(String time) {
         String[] input = time.split(":");
-        if (input[0].equals("00")){
-            input[0]="24";
+        if (input[0].equals("00")) {
+            input[0] = "24";
         }
         Calendar calendar = Calendar.getInstance();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
@@ -35,8 +35,8 @@ public class TimeUtils {
 
     public static long string2Time(String time) {
         String[] input = time.split(":");
-        if (input[0].equals("00")){
-            input[0]="24";
+        if (input[0].equals("00")) {
+            input[0] = "24";
         }
         Calendar calendar = Calendar.getInstance();
         calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
@@ -47,18 +47,18 @@ public class TimeUtils {
     /**
      * 比较传入时间与现在时间是否处于同一天
      *
-     * ture:当前时间比传入时间大 传入时间为昨天
+     * true:当前时间比传入时间大 传入时间为昨天
      * false:当前时间不比传入时间大 传入时间为今天
-     * @param inputTime
-     * @return
      */
-    public static boolean compareCurrentTime(long inputTime){
-        Calendar c=Calendar.getInstance();
+    public static boolean isLastDay(long inputTime) {
+        Calendar c = Calendar.getInstance();
         c.setTimeInMillis(inputTime);
 
-        Calendar current=Calendar.getInstance();
+        Calendar current = Calendar.getInstance();
         current.setTimeInMillis(System.currentTimeMillis());
 
-        return c.get(Calendar.DAY_OF_MONTH)>current.get(Calendar.DAY_OF_MONTH);
+        KLog.d("day", "today>>>>  " + current.get(Calendar.DAY_OF_MONTH) + "       inputDay>>>" +
+                c.get(Calendar.DAY_OF_MONTH));
+        return current.get(Calendar.DAY_OF_MONTH) > c.get(Calendar.DAY_OF_MONTH);
     }
 }

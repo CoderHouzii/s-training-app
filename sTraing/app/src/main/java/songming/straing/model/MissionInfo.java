@@ -38,7 +38,7 @@ public class MissionInfo implements Serializable {
      * training.status 状态：1.创建 2.开始 3.结束 training.isSuccess 0:未达成目标 1:达成
      */
 
-    public int trainingID;
+    public long trainingID;
     public int userID;
     public int type;
     public long beginAt;

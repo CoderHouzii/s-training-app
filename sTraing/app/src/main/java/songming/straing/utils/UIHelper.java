@@ -3,10 +3,15 @@ package songming.straing.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+
 import songming.straing.R;
+import songming.straing.model.MissionInfo;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
+import songming.straing.ui.activity.mission.MissionDetailActivity;
 import songming.straing.ui.activity.person.AvatarSettingActivity;
 import songming.straing.ui.activity.person.NickAndSignatureSettingActivity;
 import songming.straing.ui.activity.person.PersonIndexActivity;
@@ -124,5 +129,14 @@ public class UIHelper {
         Intent intent = new Intent(c, PersonIndexActivity.class);
         intent.putExtra("userid",userid);
         c.startActivity(intent);
+    }
+
+    /**跳转到任务详情主页*/
+    public static void startToMissionDetailActivity(Activity c,@NonNull MissionInfo info){
+        Intent intent = new Intent(c, MissionDetailActivity.class);
+        Bundle bundle=new Bundle();
+        bundle.putSerializable(MissionDetailActivity.INFO,info);
+        intent.putExtra(MissionDetailActivity.BUNDLE_NAME,bundle);
+        c.startActivityForResult(intent,150);
     }
 }

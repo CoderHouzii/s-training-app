@@ -69,7 +69,9 @@ public class BaseActivity extends Activity implements BaseResponseListener {
         mDialogRefreshRunnable = new DialogRefreshRunnable();
     }
 
-    protected void onTitleLeftClick() {}
+    protected void onTitleLeftClick() {
+        finish();
+    }
 
     protected void onTitleRightClick(View v) {}
 

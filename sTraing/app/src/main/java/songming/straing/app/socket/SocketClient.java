@@ -79,6 +79,7 @@ public enum SocketClient {
                 KLog.d(TAG, "成功连接到服务器");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             KLog.e(TAG, "连接失败，打印的异常为>>>>>>>  " + e.toString());
             return false;
         }

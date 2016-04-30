@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import songming.straing.R;
+import songming.straing.app.config.Config;
 import songming.straing.app.config.LocalHost;
 import songming.straing.app.eventbus.Events;
 import songming.straing.app.https.base.BaseResponse;
@@ -216,7 +217,7 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
     @Subscribe
     public void onEventMainThread(Events.StartToLoginEvent event) {
         UIHelper.startToLoginActivity(this);
-        SocketClient.INSTANCE.disconnect();
+        SocketService.CallService(this, Config.SocketIntent.Types.DISCONNECT);
         finish();
     }
 }

@@ -2,6 +2,7 @@ package songming.straing.app.socket;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import songming.straing.app.config.LocalHost;
 import songming.straing.app.eventbus.Events;
 import songming.straing.utils.UIHelper;
 
@@ -30,6 +31,11 @@ public enum  SocketMessageManager {
             //登出成功
             case MessageId.SOCKET_LOGOUT_SUCCESS:
                 EventBus.getDefault().post(new Events.StartToLoginEvent());
+                LocalHost.INSTANCE.setKey("null");
+                LocalHost.INSTANCE.setUserName("null");
+                LocalHost.INSTANCE.setUserId(0);
+                LocalHost.INSTANCE.setUserAvatar("null");
+                LocalHost.INSTANCE.setHasLogin(false);
                 break;
             default:
                 break;

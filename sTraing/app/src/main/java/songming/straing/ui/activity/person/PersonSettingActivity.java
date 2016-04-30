@@ -173,7 +173,7 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
         }
     }
 
-    public static class ViewHolder {
+    static class ViewHolder {
         public View rootView;
         public ImageView arrow;
         public CircleImageView avatar;
