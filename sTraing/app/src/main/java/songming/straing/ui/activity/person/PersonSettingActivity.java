@@ -72,7 +72,7 @@ public class PersonSettingActivity extends BaseActivity implements View.OnClickL
         super.onTitleRightClick(v);
         mDataUpdateRequest.avatar=fileName;
         mDataUpdateRequest.username=vh.nick.getText().toString().trim();
-        mDataUpdateRequest.sign_nature=vh.nick.getText().toString().trim();
+        mDataUpdateRequest.sign_nature=vh.signature.getText().toString().trim();
         mDataUpdateRequest.post(true);
 
     }

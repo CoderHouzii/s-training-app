@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -17,6 +18,7 @@ import java.util.List;
 
 import songming.straing.R;
 import songming.straing.app.https.base.BaseResponse;
+import songming.straing.app.https.request.MissionDetailRequest;
 import songming.straing.app.https.request.MissionFinishRequest;
 import songming.straing.model.MissionInfo;
 import songming.straing.ui.activity.base.BaseActivity;
@@ -27,11 +29,11 @@ import songming.straing.utils.ToastUtils;
  */
 public class MissionDetailActivity extends BaseActivity implements View.OnClickListener {
 
-    public static final String BUNDLE_NAME = "bundle";
-    public static final String INFO = "info";
+    public static final String TRAIN_ID = "id";
 
     private ViewHolder vh;
-    private MissionInfo missionInfo;
+
+    private long trainId = 0;
 
 
     private static final int MODE_TIME_COUNT = 0x20;
@@ -57,6 +59,7 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
 
     private MissionFinishRequest missionFinishRequest;
 
+    private MissionDetailRequest missionDetailRequest;
 
     /**
      * pinner数量:
@@ -75,24 +78,23 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission_detail);
         getData();
+        initReq();
         mHandler = new WeakHandler(this);
         postValue = new ArrayList<>();
         initView();
-        initReq();
-        bindData();
+
+
     }
 
 
     private void getData() {
-        Bundle bundle = getIntent().getBundleExtra(BUNDLE_NAME);
-        if (bundle == null) finish();
-        missionInfo = (MissionInfo) bundle.getSerializable(INFO);
-        if (missionInfo == null) finish();
+        trainId = getIntent().getLongExtra(TRAIN_ID, 0);
+        if (trainId == 0) finish();
     }
 
     private void initView() {
         vh = new ViewHolder(getWindow().getDecorView());
-        setTitleText(missionInfo.title);
+
 
         vh.btn_add.setOnClickListener(this);
 
@@ -103,12 +105,34 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
 
     private void initReq() {
         missionFinishRequest = new MissionFinishRequest();
+        missionFinishRequest.setRequestType(0x15);
         missionFinishRequest.setOnResponseListener(this);
+
+        missionDetailRequest = new MissionDetailRequest();
+        missionDetailRequest.setRequestType(0x16);
+        missionDetailRequest.setOnResponseListener(this);
+        missionDetailRequest.training_id = trainId;
+        missionDetailRequest.execute();
     }
 
-    private void bindData() {
+    private void bindData(MissionInfo missionInfo) {
+        if (missionInfo == null) return;
+
         vh.tx_mission_target.setText(missionInfo.content);
+        setTitleText(missionInfo.title);
+        times[0] = missionInfo.actualConsumTime;
+        times[1] = missionInfo.actualBreakTime;
+        vh.tx_time.setText("用时:" + times[0] + "s");
+        vh.tx_brerak.setText("休息:" + times[1] + "s");
         generatePinner(missionInfo);
+
+        if (missionInfo.status == 3) {
+            vh.action_layout.setVisibility(View.GONE);
+            vh.btn_add.setVisibility(View.GONE);
+        } else {
+            vh.action_layout.setVisibility(View.VISIBLE);
+            vh.btn_add.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -130,6 +154,20 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
             View pinner = LayoutInflater.from(this).inflate(R.layout.item_group_pinner, vh.groups_layout, false);
             if (pinner != null) {
                 ((TextView) pinner.findViewById(R.id.group_count)).setText("第" + (i + 1) + "组");
+                try {
+                    Spinner spinner = (Spinner) pinner.findViewById(R.id.group);
+                    if (info.status == 3) {
+                        spinner.setClickable(false);
+                        spinner.setEnabled(false);
+                    } else {
+                        spinner.setClickable(true);
+                        spinner.setEnabled(true);
+                    }
+                    spinner.setSelection(info.items.get(i).count);
+                    ((TextView) pinner.findViewById(R.id.break_time)).setText("休息:" + info.items.get(i).breakTime + "s");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             vh.groups_layout.addView(pinner);
         }
@@ -200,6 +238,9 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
             currentMode = mode;
     }
 
+
+    private TextView currentBreakTime = null;
+
     /**
      * 更新UI
      *
@@ -210,10 +251,18 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
             case MODE_TIME_COUNT:
                 times[0]++;
                 vh.tx_time.setText("用时:" + times[0] + "s");
+                currentBreakTime=null;
                 break;
             case MODE_TIME_BREAK:
                 times[1]++;
                 vh.tx_brerak.setText("休息:" + times[1] + "s");
+                if (currentBreakTime == null) {
+                    View v = vh.groups_layout.getChildAt(currentPinner);
+                    if (v != null) {
+                        currentBreakTime = (TextView) v.findViewById(R.id.break_time);
+                    }
+                }
+                currentBreakTime.setText("休息:" + mHandler.getBreakTime() + "s");
                 break;
             default:
                 break;
@@ -290,33 +339,40 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
      * 提交
      */
     private void submit() {
-        long trainId= missionInfo.trainingID;
-        int time=times[0];
+        int time = times[0];
 
-        String items="";
-        if (postValue.size()<=0){
-            ToastUtils.ToastMessage(this,"您还没开始任何训练哦，开始后再提交");
-            return;
-        }
+        String items = "";
         for (int i = 0; i < postValue.size(); i++) {
-            if (i!=postValue.size()-1){
-                items+=postValue.get(i).result+",";
-            }else {
-                items+=postValue.get(i).result;
+            if (i != postValue.size() - 1) {
+                items += postValue.get(i).result + ",";
+            } else {
+                items += postValue.get(i).result;
             }
         }
 
-        missionFinishRequest.training_id=trainId;
-        missionFinishRequest.consum_time=time;
-        missionFinishRequest.training_items=items;
+        missionFinishRequest.training_id = trainId;
+        missionFinishRequest.consum_time = time;
+        missionFinishRequest.training_items = items;
         missionFinishRequest.post(true);
     }
 
     @Override
     public void onSuccess(BaseResponse response) {
         super.onSuccess(response);
-        finish();
+        if (response.getStatus() == 1) {
+            switch (response.getRequestType()) {
+                case 0x15:
+                    finish();
+                    break;
+                case 0x16:
+                    bindData((MissionInfo) response.getData());
+                    break;
+                default:
+                    break;
+            }
+        }
     }
+
 
     //=============================================================other class
     static class ViewHolder {
@@ -331,6 +387,7 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
         public Button btn_break;
         public Button btn_start;
         public Button btn_finish;
+        public RelativeLayout action_layout;
 
         public ViewHolder(View rootView) {
             this.rootView = rootView;
@@ -344,6 +401,7 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
             this.btn_break = (Button) rootView.findViewById(R.id.btn_break);
             this.btn_start = (Button) rootView.findViewById(R.id.btn_start);
             this.btn_finish = (Button) rootView.findViewById(R.id.btn_finish);
+            this.action_layout = (RelativeLayout) rootView.findViewById(R.id.action_layout);
         }
 
     }
@@ -415,6 +473,5 @@ public class MissionDetailActivity extends BaseActivity implements View.OnClickL
         }
 
     }
-
 
 }

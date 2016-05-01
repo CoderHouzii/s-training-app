@@ -132,7 +132,7 @@ public class MissionListAdapter extends BaseAdapter {
         public void onClick(View v) {
             if (v.getTag(R.id.mission_info)!=null&&v.getTag(R.id.mission_info) instanceof MissionInfo){
                 MissionInfo info=((MissionInfo) v.getTag(R.id.mission_info));
-                UIHelper.startToMissionDetailActivity((Activity) mContext,info);
+                UIHelper.startToMissionDetailActivity((Activity) mContext,info.trainingID);
             }
         }
     };

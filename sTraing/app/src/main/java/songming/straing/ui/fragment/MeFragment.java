@@ -43,6 +43,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         vh = new ViewHolder(mView);
         vh.layout_person_setting.setOnClickListener(this);
         vh.btn_exit.setOnClickListener(this);
+        vh.layout_article.setOnClickListener(this);
         vh.avatar.loadImageDefault(LocalHost.INSTANCE.getUserAvatar());
         vh.nick.setText(LocalHost.INSTANCE.getUserName());
         vh.signature.setText(LocalHost.INSTANCE.getUserSignature());
@@ -57,6 +58,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.btn_exit:
                 SocketService.CallServiceSend(mContext,new LogoutMessageSend().getMessageData());
+                break;
+            case R.id.layout_article:
+                UIHelper.startToArticleListActivity(mContext, LocalHost.INSTANCE.getUserId());
                 break;
         }
     }

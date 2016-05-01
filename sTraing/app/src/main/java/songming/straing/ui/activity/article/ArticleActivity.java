@@ -2,6 +2,7 @@ package songming.straing.ui.activity.article;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,6 +34,11 @@ public class ArticleActivity extends BaseActivity {
     private void initView() {
         title = (EditText) findViewById(R.id.title);
         content = (EditText) findViewById(R.id.content);
+    }
+
+    @Override
+    protected void onTitleRightClick(View v) {
+        submit();
     }
 
     private void submit() {

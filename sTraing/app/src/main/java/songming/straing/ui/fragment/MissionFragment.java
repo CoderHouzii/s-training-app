@@ -112,7 +112,7 @@ public class MissionFragment extends BaseFragment implements View.OnClickListene
                     }else {
                         MissionInfo info2= (MissionInfo) response.getData();
                         EventBus.getDefault().post(new Events.RefreshMissionDetail());
-                        UIHelper.startToMissionDetailActivity(mContext,info2);
+                        UIHelper.startToMissionDetailActivity(mContext,info2.trainingID);
                     }
                     break;
             }

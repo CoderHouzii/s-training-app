@@ -8,8 +8,10 @@ import android.support.annotation.NonNull;
 
 import songming.straing.R;
 import songming.straing.app.https.request.CreateArticleRequest;
+import songming.straing.app.https.request.RankListRequest;
 import songming.straing.model.MissionInfo;
 import songming.straing.ui.activity.article.ArticleActivity;
+import songming.straing.ui.activity.article.ArticleListActivity;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
@@ -18,6 +20,7 @@ import songming.straing.ui.activity.person.AvatarSettingActivity;
 import songming.straing.ui.activity.person.NickAndSignatureSettingActivity;
 import songming.straing.ui.activity.person.PersonIndexActivity;
 import songming.straing.ui.activity.person.PersonSettingActivity;
+import songming.straing.ui.activity.rank.RankActivity;
 
 /**
  * ui工具类
@@ -150,11 +153,9 @@ public class UIHelper {
     /**
      * 跳转到任务详情主页
      */
-    public static void startToMissionDetailActivity(Activity c, @NonNull MissionInfo info) {
+    public static void startToMissionDetailActivity(Activity c, long id) {
         Intent intent = new Intent(c, MissionDetailActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(MissionDetailActivity.INFO, info);
-        intent.putExtra(MissionDetailActivity.BUNDLE_NAME, bundle);
+        intent.putExtra(MissionDetailActivity.TRAIN_ID, id);
         c.startActivityForResult(intent, 150);
     }
 
@@ -163,6 +164,23 @@ public class UIHelper {
      */
     public static void startToCreateArticleActivity(Activity c) {
         Intent intent = new Intent(c, ArticleActivity.class);
-        c.startActivityForResult(intent,119);
+        c.startActivityForResult(intent,300);
+    }
+
+    /**
+     * 跳转到文章列表
+     */
+    public static void startToArticleListActivity(Activity c,long userid) {
+        Intent intent = new Intent(c, ArticleListActivity.class);
+        intent.putExtra(ArticleListActivity.ARTICLE_USER_ID,userid);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到排行榜
+     */
+    public static void startToRankListActivity(Activity c) {
+        Intent intent = new Intent(c, RankActivity.class);
+        c.startActivity(intent);
     }
 }

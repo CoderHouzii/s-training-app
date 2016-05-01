@@ -21,6 +21,7 @@ import songming.straing.app.https.request.MissionListRequest;
 import songming.straing.model.MissionInfo;
 import songming.straing.ui.fragment.base.BaseFragment;
 import songming.straing.utils.TimeUtils;
+import songming.straing.utils.UIHelper;
 
 /**
  * 首页
@@ -110,6 +111,11 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.rank:
+                UIHelper.startToRankListActivity(mContext);
+                break;
+        }
 
     }
 

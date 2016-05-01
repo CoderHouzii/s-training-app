@@ -45,6 +45,27 @@ public abstract class BaseTableActivity<T> extends BaseActivity implements BaseR
         });
     }
 
+    public void bindListView(int listResId, View headerView, boolean canLoadMore, BaseAdapter adapter) {
+        this.mAdapter = adapter;
+        mListView = (FriendCirclePtrListView) findViewById(listResId);
+        if (headerView != null) mListView.addHeaderView(headerView);
+        mListView.setAdapter(adapter);
+
+        mListView.setOnPullDownRefreshListener(new OnPullDownRefreshListener() {
+            @Override
+            public void onRefreshing(PtrFrameLayout frame) {
+                onPullDownRefresh();
+            }
+        });
+        if (canLoadMore)
+            mListView.setOnLoadMoreRefreshListener(new OnLoadMoreRefreshListener() {
+                @Override
+                public void onRefreshing(PtrFrameLayout frame) {
+                    onLoadMore();
+                }
+            });
+    }
+
     @Override
     public void onStart(BaseResponse response) {
 

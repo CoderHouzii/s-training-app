@@ -62,7 +62,6 @@ public class NickAndSignatureSettingActivity extends BaseActivity {
 
     @Override
     protected void onTitleLeftClick() {
-        super.onTitleLeftClick();
         onBackPressed();
     }
 

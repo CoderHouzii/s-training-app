@@ -27,6 +27,8 @@ public class Config {
 
     public static class CacheName{
         public static final String CACHE_PERSON_DETAIL="personaldetail";
+        public static final String CACHE_ARTICLE_LIST="articlelist";
+
     }
 
 
