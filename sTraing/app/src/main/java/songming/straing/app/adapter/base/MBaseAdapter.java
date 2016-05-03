@@ -19,8 +19,7 @@ public abstract class MBaseAdapter<T, V extends MViewHolder> extends BaseAdapter
 
     public MBaseAdapter(Context context, List<T> datas) {
         mContext = context;
-        this.datas=new ArrayList<>();
-        this.datas.addAll(datas);
+        this.datas=datas;
         mInflater=LayoutInflater.from(context);
     }
 

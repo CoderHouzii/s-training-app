@@ -121,6 +121,19 @@ public class TitleBar extends FrameLayout implements View.OnClickListener {
         }
     }
 
+    public void setRightButtonVisibility(int visibility){
+        if (rightButton!=null){
+            rightButton.setVisibility(visibility);
+        }
+    }
+
+    public int getRightButtonVisibility(){
+        if (rightButton!=null){
+            return rightButton.getVisibility();
+        }
+        return 0;
+    }
+
     public void setLeftButtonVisible(int visible){
         if (leftButton!=null){
             leftButton.setVisibility(visible);

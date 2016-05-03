@@ -17,9 +17,6 @@ import songming.straing.widget.SuperImageView;
  */
 public class ArticleAdapter extends MBaseAdapter<ArticleDetailInfo, ArticleAdapter.ViewHolder> {
 
-
-
-
     public ArticleAdapter(Context context, List<ArticleDetailInfo> datas) {
         super(context, datas);
     }

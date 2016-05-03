@@ -11,6 +11,7 @@ import songming.straing.app.https.request.CreateArticleRequest;
 import songming.straing.app.https.request.RankListRequest;
 import songming.straing.model.MissionInfo;
 import songming.straing.ui.activity.article.ArticleActivity;
+import songming.straing.ui.activity.article.ArticleDetailActivity;
 import songming.straing.ui.activity.article.ArticleListActivity;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
@@ -168,11 +169,27 @@ public class UIHelper {
     }
 
     /**
+     * 跳转到推荐列表
+     */
+    public static void startToArticleListActivity(Activity c) {
+        Intent intent = new Intent(c, ArticleListActivity.class);
+        c.startActivity(intent);
+    }
+    /**
      * 跳转到文章列表
      */
     public static void startToArticleListActivity(Activity c,long userid) {
         Intent intent = new Intent(c, ArticleListActivity.class);
         intent.putExtra(ArticleListActivity.ARTICLE_USER_ID,userid);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到文章详情
+     */
+    public static void startToArticleDetailActivity(Activity c,long article_id) {
+        Intent intent = new Intent(c, ArticleDetailActivity.class);
+        intent.putExtra(ArticleDetailActivity.TAG_ARTICLE_ID,article_id);
         c.startActivity(intent);
     }
 

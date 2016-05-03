@@ -22,16 +22,16 @@ public class ArticleDetailInfo {
      * canDelete : 1
      */
 
-    public UserDetailInfo user;
-
-    public int articleID;
+    public long articleID;
     public String title;
     public String content;
-    public int createAt;
+    public long createAt;
     public int readCount;
     public int likeCount;
     public int dislikeCount;
     public int commentCount;
     public int canDelete;
-//    public List<?> comments;
+
+    public UserDetailInfo user;
+    public List<ArticleCommentInfo> comments;
 }

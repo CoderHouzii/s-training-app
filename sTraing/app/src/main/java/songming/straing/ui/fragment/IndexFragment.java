@@ -115,6 +115,9 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener 
             case R.id.rank:
                 UIHelper.startToRankListActivity(mContext);
                 break;
+            case R.id.article:
+                UIHelper.startToArticleListActivity(mContext);
+                break;
         }
 
     }

@@ -399,6 +399,10 @@ public class FriendCirclePtrListView extends PtrFrameLayout implements PtrHandle
         return mListView.getEmptyView();
     }
 
+    public ListView getListView(){
+        return mListView;
+    }
+
     /**============================================================= InterFace*/
     public interface OnDispatchTouchEventListener{
         boolean OnDispatchTouchEvent(MotionEvent ev);
