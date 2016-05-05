@@ -2,8 +2,15 @@ package songming.straing.app.socket;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.nio.charset.CharsetEncoder;
+
 import songming.straing.app.config.LocalHost;
 import songming.straing.app.eventbus.Events;
+import songming.straing.model.ChatReceiverInfo;
+import songming.straing.utils.JSONUtil;
 import songming.straing.utils.UIHelper;
 
 /**
@@ -36,6 +43,12 @@ public enum  SocketMessageManager {
                 LocalHost.INSTANCE.setUserId(0);
                 LocalHost.INSTANCE.setUserAvatar("null");
                 LocalHost.INSTANCE.setHasLogin(false);
+                break;
+            //个人聊天消息接收
+            case MessageId.SOCKET_F_CHAT_RECEIVE:
+                ChatReceiverInfo info= JSONUtil.toObject(msg.getJsonString(), ChatReceiverInfo.class);
+                EventBus.getDefault().post(new Events.PersonChatEvent(info));
+
                 break;
             default:
                 break;

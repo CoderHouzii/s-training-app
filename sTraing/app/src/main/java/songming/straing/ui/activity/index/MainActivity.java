@@ -173,7 +173,23 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
             titlebar.setTitle("s-Training");
         }
         transaction.show(mFragments.get(value)).commitAllowingStateLoss();
+        if (value==FRAG_FRIENDS){
+            titlebar.setRightButtonVisibility(View.VISIBLE);
+            titlebar.setRightButtonText("添加好友");
+            titlebar.setOnRightBtnClickListener(onRightBtnClickListener);
+        }else {
+            titlebar.setOnRightBtnClickListener(null);
+            titlebar.setRightButtonText("");
+            titlebar.setRightButtonVisibility(View.GONE);
+        }
     }
+
+    private TitleBar.OnRightBtnClickListener onRightBtnClickListener=new TitleBar.OnRightBtnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 
     private long exittime;
 

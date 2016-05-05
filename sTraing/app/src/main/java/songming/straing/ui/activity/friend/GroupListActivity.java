@@ -1,13 +1,11 @@
-package songming.straing.ui.fragment;
+package songming.straing.ui.activity.friend;
 
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,10 +15,9 @@ import java.util.List;
 
 import songming.straing.R;
 import songming.straing.app.https.base.BaseResponse;
-import songming.straing.app.https.request.FriendListRequest;
-import songming.straing.model.UserDetailInfo;
-import songming.straing.ui.fragment.base.BaseFragment;
-import songming.straing.utils.UIHelper;
+import songming.straing.app.https.request.GroupListRequest;
+import songming.straing.model.GroupInfo;
+import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.widget.sortlist.CharacterParser;
 import songming.straing.widget.sortlist.ClearEditText;
 import songming.straing.widget.sortlist.PinyinComparator;
@@ -29,9 +26,9 @@ import songming.straing.widget.sortlist.SortAdapter;
 import songming.straing.widget.sortlist.SortModel;
 
 /**
- * 朋友
+ * 群聊列表
  */
-public class FriendsFragment extends BaseFragment {
+public class GroupListActivity extends BaseActivity {
 
     /**
      * 根据拼音来排列ListView里面的数据类
@@ -50,22 +47,16 @@ public class FriendsFragment extends BaseFragment {
 
     private SortAdapter adapter;
 
-    private FriendListRequest friendListRequest;
+    private GroupListRequest groupListRequest;
 
-    private LinearLayout headerView;
 
-    @Override
-    public View initView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_friends, container, false);
-    }
 
     @Override
-    public void bindData() {
-        datas = new ArrayList<>();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_group);
+        initReq();
         initViews();
-        friendListRequest = new FriendListRequest();
-        friendListRequest.setOnResponseListener(this);
-        friendListRequest.execute();
     }
 
     private void initViews() {
@@ -74,8 +65,8 @@ public class FriendsFragment extends BaseFragment {
 
         pinyinComparator = new PinyinComparator();
 
-        sidrbar = (SideBar) getViewById(R.id.sidrbar);
-        dialog = (TextView) getViewById(R.id.dialog);
+        sidrbar = (SideBar) findViewById(R.id.sidrbar);
+        dialog = (TextView) findViewById(R.id.dialog);
         sidrbar.setTextView(dialog);
 
         //设置右侧触摸监听
@@ -92,30 +83,23 @@ public class FriendsFragment extends BaseFragment {
             }
         });
 
-        sortListView = (ListView) getViewById(R.id.country_lvcountry);
+        sortListView = (ListView) findViewById(R.id.country_lvcountry);
         sortListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 //这里要利用adapter.getItem(position)来获取当前position所对应的对象
-                UserDetailInfo info=adapter.getItem(position-sortListView.getHeaderViewsCount()).getUserInfo();
-                if (info!=null){
-                    UIHelper.startToPersonChatActivity(mContext,info.userID,info.username);
-                }
             }
         });
 
         // 根据a-z进行排序源数据
         Collections.sort(datas, pinyinComparator);
-        headerView = (LinearLayout) LayoutInflater.from(mContext).inflate(R.layout.item_group, null);
-        headerView.setOnClickListener(onHeaderClickListener);
-        sortListView.addHeaderView(headerView);
-        adapter = new SortAdapter(mContext, datas);
+        adapter = new SortAdapter(this, datas);
         sortListView.setAdapter(adapter);
 
 
-        mClearEditText = (ClearEditText) getViewById(R.id.filter_edit);
+        mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
 
         //根据输入框输入值的改变来过滤搜索
         mClearEditText.addTextChangedListener(new TextWatcher() {
@@ -139,12 +123,19 @@ public class FriendsFragment extends BaseFragment {
         });
     }
 
+    private void initReq() {
+        datas = new ArrayList<>();
+        initViews();
+        groupListRequest = new GroupListRequest();
+        groupListRequest.setOnResponseListener(this);
+        groupListRequest.execute();
+    }
 
     @Override
     public void onSuccess(BaseResponse response) {
         super.onSuccess(response);
         if (response.getStatus() == 1) {
-            datas.addAll(filledData((List<UserDetailInfo>) response.getData()));
+            datas.addAll(filledData((List<GroupInfo>) response.getData()));
             adapter.notifyDataSetChanged();
         }
     }
@@ -152,18 +143,18 @@ public class FriendsFragment extends BaseFragment {
     /**
      * 为ListView填充数据
      *
-     * @param userDetailInfos
+     * @param infos
      * @return
      */
-    private List<SortModel> filledData(List<UserDetailInfo> userDetailInfos) {
-        if (userDetailInfos == null || userDetailInfos.size() <= 0) return datas;
+    private List<SortModel> filledData(List<GroupInfo> infos) {
+        if (infos == null || infos.size() <= 0) return datas;
 
         List<SortModel> mSortList = new ArrayList<SortModel>();
-        for (int i = 0; i < userDetailInfos.size(); i++) {
+        for (int i = 0; i < infos.size(); i++) {
             SortModel sortModel = new SortModel();
-            sortModel.setUserInfo(userDetailInfos.get(i));
+            sortModel.setGroupInfo(infos.get(i));
             //汉字转换成拼音
-            String pinyin = characterParser.getSelling(userDetailInfos.get(i).username);
+            String pinyin = characterParser.getSelling(infos.get(i).groupName);
             String sortString = "";
             if (!TextUtils.isEmpty(pinyin))
                 sortString = pinyin.substring(0, 1).toUpperCase();
@@ -207,15 +198,4 @@ public class FriendsFragment extends BaseFragment {
     }
 
 
-    private View.OnClickListener onHeaderClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            UIHelper.startToGroupListActivity(mContext);
-        }
-    };
-
-    @Override
-    public String getTitle() {
-        return "好友列表";
-    }
 }

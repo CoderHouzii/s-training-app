@@ -27,8 +27,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer{
 	 * @param list
 	 */
 	public void updateListView(List<SortModel> list){
-		this.list.clear();
-        this.list.addAll(list);
+		this.list=list;
 		notifyDataSetChanged();
 	}
 
@@ -36,7 +35,7 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer{
 		return this.list.size();
 	}
 
-	public Object getItem(int position) {
+	public SortModel getItem(int position) {
 		return list.get(position);
 	}
 

@@ -13,6 +13,8 @@ import songming.straing.model.MissionInfo;
 import songming.straing.ui.activity.article.ArticleActivity;
 import songming.straing.ui.activity.article.ArticleDetailActivity;
 import songming.straing.ui.activity.article.ArticleListActivity;
+import songming.straing.ui.activity.chat.FriendsChatActivity;
+import songming.straing.ui.activity.friend.GroupListActivity;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
@@ -198,6 +200,24 @@ public class UIHelper {
      */
     public static void startToRankListActivity(Activity c) {
         Intent intent = new Intent(c, RankActivity.class);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到群组列表
+     */
+    public static void startToGroupListActivity(Activity c) {
+        Intent intent = new Intent(c, GroupListActivity.class);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到个人聊天
+     */
+    public static void startToPersonChatActivity(Activity c,long userid,String username) {
+        Intent intent = new Intent(c, FriendsChatActivity.class);
+        intent.putExtra("id",userid);
+        intent.putExtra("name",username);
         c.startActivity(intent);
     }
 }
