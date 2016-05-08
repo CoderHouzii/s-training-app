@@ -1,5 +1,6 @@
-package songming.straing.widget.commentwidget;
+package songming.straing.widget.praisewidget;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextPaint;
@@ -9,30 +10,33 @@ import android.widget.Toast;
 import songming.straing.model.UserDetailInfo;
 import songming.straing.model.UserInfo;
 import songming.straing.utils.UIHelper;
+import songming.straing.widget.span.ClickableSpanEx;
 
 
 /**
- * 评论点击事件
+ * 点击事件
  */
-public class CommentClick extends ClickableSpanEx {
+public class PraiseClick extends ClickableSpanEx {
+    private static final int DEFAULT_COLOR = 0xff517fae;
+    private int color;
     private Context mContext;
     private int textSize;
-    private UserDetailInfo mUserInfo;
+    private UserDetailInfo mPraiseInfo;
 
-    private CommentClick() {}
+    private PraiseClick() {
+    }
 
-    private CommentClick(Builder builder) {
-        super(builder.color,builder.clickEventColor);
+    private PraiseClick(Builder builder) {
+        super(builder.color, builder.clickBgColor);
         mContext = builder.mContext;
-        mUserInfo = builder.mUserInfo;
+        mPraiseInfo = builder.mPraiseInfo;
         this.textSize = builder.textSize;
     }
 
     @Override
     public void onClick(View widget) {
-        if (mUserInfo!=null){
-            UIHelper.startToPersonIndexActivity(mContext,mUserInfo.userID);
-        }
+        if (mPraiseInfo != null)
+            UIHelper.startToPersonIndexActivity(mContext, mPraiseInfo.userID);
     }
 
     @Override
@@ -41,20 +45,21 @@ public class CommentClick extends ClickableSpanEx {
         ds.setTextSize(textSize);
     }
 
+
     public static class Builder {
         private int color;
         private Context mContext;
-        private int textSize=16;
-        private UserDetailInfo mUserInfo;
-        private int clickEventColor;
+        private int textSize = 16;
+        private UserDetailInfo mPraiseInfo;
+        private int clickBgColor;
 
         public Builder(Context context, @NonNull UserDetailInfo info) {
             mContext = context;
-            mUserInfo=info;
+            mPraiseInfo = info;
         }
 
         public Builder setTextSize(int textSize) {
-            this.textSize = UIHelper.sp2px(mContext,textSize);
+            this.textSize = UIHelper.sp2px(mContext, textSize);
             return this;
         }
 
@@ -63,13 +68,13 @@ public class CommentClick extends ClickableSpanEx {
             return this;
         }
 
-        public Builder setClickEventColor(int color){
-            this.clickEventColor=color;
+        public Builder setClickEventColor(int color) {
+            this.clickBgColor = color;
             return this;
         }
 
-        public CommentClick build() {
-            return new CommentClick(this);
+        public PraiseClick build() {
+            return new PraiseClick(this);
         }
     }
 }

@@ -44,9 +44,11 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         vh.layout_person_setting.setOnClickListener(this);
         vh.btn_exit.setOnClickListener(this);
         vh.layout_article.setOnClickListener(this);
+        vh.layout_circle.setOnClickListener(this);
         vh.avatar.loadImageDefault(LocalHost.INSTANCE.getUserAvatar());
         vh.nick.setText(LocalHost.INSTANCE.getUserName());
         vh.signature.setText(LocalHost.INSTANCE.getUserSignature());
+        vh.userId.setText("个人ID："+LocalHost.INSTANCE.getUserId());
     }
 
     @Override
@@ -61,6 +63,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.layout_article:
                 UIHelper.startToArticleListActivity(mContext, LocalHost.INSTANCE.getUserId());
+                break;
+            case R.id.layout_circle:
+                UIHelper.startToCircleActivity(mContext);
                 break;
         }
     }
@@ -95,6 +100,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         public LinearLayout layout_circle;
         public LinearLayout layout_article;
         public LinearLayout layout_setting;
+        public TextView userId;
         public Button btn_exit;
 
         public ViewHolder(View rootView) {
@@ -108,6 +114,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             this.layout_circle = (LinearLayout) rootView.findViewById(R.id.layout_circle);
             this.layout_article = (LinearLayout) rootView.findViewById(R.id.layout_article);
             this.layout_setting = (LinearLayout) rootView.findViewById(R.id.layout_setting);
+            this.userId= (TextView) rootView.findViewById(R.id.person_id);
             this.btn_exit = (Button) rootView.findViewById(R.id.btn_exit);
         }
     }

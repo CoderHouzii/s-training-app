@@ -68,8 +68,8 @@ public class TimeUtils {
         Calendar current = Calendar.getInstance();
         current.setTimeInMillis(System.currentTimeMillis());
 
-        KLog.d("day", "today>>>>  " + current.get(Calendar.DAY_OF_MONTH) + "       inputDay>>>" +
-                c.get(Calendar.DAY_OF_MONTH));
+     /*   KLog.d("day", "today>>>>  " + current.get(Calendar.DAY_OF_MONTH) + "       inputDay>>>" +
+                c.get(Calendar.DAY_OF_MONTH));*/
         return current.get(Calendar.DAY_OF_MONTH) > c.get(Calendar.DAY_OF_MONTH);
     }
 

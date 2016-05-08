@@ -61,4 +61,16 @@
         <attr name="left_btn_src" format="reference"/>
         <attr name="right_btn_text" format="string"/>
     </declare-styleable>
+
+    <!--显示点赞控件-->
+    <declare-styleable name="PraiseWidget">
+        <attr name="click_bg_color"
+              format="color"/>
+        <attr name="font_color"
+              format="color"/>
+        <attr name="font_size"
+              format="dimension"/>
+        <attr name="like_icon"
+              format="reference"/>
+    </declare-styleable>
 </resources>

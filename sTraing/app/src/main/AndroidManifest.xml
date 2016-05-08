@@ -131,6 +131,11 @@
             android:name=".ui.activity.friend.FriendAddActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <!--圈-->
+        <activity
+            android:name=".ui.activity.circle.CircleActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
     </application>
 
 </manifest>

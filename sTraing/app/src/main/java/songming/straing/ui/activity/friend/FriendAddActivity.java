@@ -30,7 +30,6 @@ public class FriendAddActivity extends BaseActivity {
 
     private ClearEditText filter_edit;
     private CircleImageView avatar;
-    private ImageView ic_add;
     private TextView nick;
     private TextView desc;
     private LinearLayout desc_layout;
@@ -38,6 +37,7 @@ public class FriendAddActivity extends BaseActivity {
 
     private PersonDetailRequest personDetailRequest;
     private Button search;
+    private ImageView ic_add;
 
     private FriendAddRequest friendAddRequest;
 

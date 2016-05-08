@@ -14,6 +14,7 @@ import songming.straing.ui.activity.article.ArticleActivity;
 import songming.straing.ui.activity.article.ArticleDetailActivity;
 import songming.straing.ui.activity.article.ArticleListActivity;
 import songming.straing.ui.activity.chat.FriendsChatActivity;
+import songming.straing.ui.activity.circle.CircleActivity;
 import songming.straing.ui.activity.friend.FriendAddActivity;
 import songming.straing.ui.activity.friend.GroupListActivity;
 import songming.straing.ui.activity.index.MainActivity;
@@ -148,7 +149,7 @@ public class UIHelper {
     /**
      * 跳转到个人主页
      */
-    public static void startToPersonIndexActivity(Activity c, long userid) {
+    public static void startToPersonIndexActivity(Context c, long userid) {
         Intent intent = new Intent(c, PersonIndexActivity.class);
         intent.putExtra("userid", userid);
         c.startActivity(intent);
@@ -228,5 +229,13 @@ public class UIHelper {
     public static void startToAddFriendActivity(Activity c) {
         Intent intent = new Intent(c, FriendAddActivity.class);
         c.startActivityForResult(intent,233);
+    }
+
+    /**
+     * 跳转到圈
+     */
+    public static void startToCircleActivity(Activity c) {
+        Intent intent = new Intent(c, CircleActivity.class);
+        c.startActivity(intent);
     }
 }

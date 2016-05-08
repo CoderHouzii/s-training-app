@@ -10,27 +10,26 @@ import android.util.Log;
 import android.widget.TextView;
 
 import songming.straing.model.ArticleCommentInfo;
-import songming.straing.model.CommentInfo;
 
 /**
  * 评论控件
  */
-public class CommentWidget extends TextView {
+public class ArticleCommentWidget extends TextView {
     private static final String TAG = "CommentWidget";
     //用户名颜色
     private int textColor = 0xff517fae;
     private static final int textSize = 14;
     SpannableStringBuilderAllVer mSpannableStringBuilderAllVer;
 
-    public CommentWidget(Context context) {
+    public ArticleCommentWidget(Context context) {
         this(context, null);
     }
 
-    public CommentWidget(Context context, AttributeSet attrs) {
+    public ArticleCommentWidget(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public CommentWidget(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ArticleCommentWidget(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setMovementMethod(LinkMovementMethod.getInstance());
         setOnTouchListener(new ClickableSpanEx.ClickableSpanSelector());
@@ -39,14 +38,14 @@ public class CommentWidget extends TextView {
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public CommentWidget(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public ArticleCommentWidget(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         setMovementMethod(LinkMovementMethod.getInstance());
         this.setHighlightColor(0x00000000);
         setTextSize(textSize);
     }
 
-    public void setCommentText(CommentInfo info) {
+    public void setCommentText(ArticleCommentInfo info) {
         if (info == null) return;
         try {
             setTag(info);
@@ -57,14 +56,14 @@ public class CommentWidget extends TextView {
         }
     }
 
-    private void createCommentStringBuilder(@NonNull CommentInfo info) {
+    private void createCommentStringBuilder(@NonNull ArticleCommentInfo info) {
         if (mSpannableStringBuilderAllVer == null) {
             mSpannableStringBuilderAllVer = new SpannableStringBuilderAllVer();
         } else {
             mSpannableStringBuilderAllVer.clear();
             mSpannableStringBuilderAllVer.clearSpans();
         }
-        String content = "： " + info.text + "\0";
+        String content = "： " + info.content + "\0";
         boolean isApply = (info.replyUser == null);
         // 用户B为空，证明是一条原创评论
         if (info.user != null && isApply) {

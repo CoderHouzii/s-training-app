@@ -59,6 +59,7 @@ public enum SocketClient {
 
     public synchronized boolean send(byte[] data) {
         if (isConnected()) {
+            KLog.d("socket","正在发送消息："+new String(data));
             mChannel.writeAndFlush(data);
             return true;
         }

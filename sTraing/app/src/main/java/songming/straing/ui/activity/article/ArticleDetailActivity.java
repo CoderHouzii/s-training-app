@@ -20,7 +20,7 @@ import songming.straing.model.ArticleCommentInfo;
 import songming.straing.model.ArticleDetailInfo;
 import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.utils.TimeUtils;
-import songming.straing.widget.commentwidget.CommentWidget;
+import songming.straing.widget.commentwidget.ArticleCommentWidget;
 
 /**
  * 文章详情
@@ -113,9 +113,9 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         if (vh.layout_comment.getChildCount() > 0) vh.layout_comment.removeAllViews();
 
         for (ArticleCommentInfo comment : comments) {
-            CommentWidget commentWidget = new CommentWidget(this);
-            commentWidget.setCommentText(comment);
-            vh.layout_comment.addView(commentWidget, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            ArticleCommentWidget articleCommentWidget = new ArticleCommentWidget(this);
+            articleCommentWidget.setCommentText(comment);
+            vh.layout_comment.addView(articleCommentWidget, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         }
     }
 
