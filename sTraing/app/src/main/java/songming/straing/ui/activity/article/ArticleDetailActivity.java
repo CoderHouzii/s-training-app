@@ -1,18 +1,21 @@
 package songming.straing.ui.activity.article;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
 
 import songming.straing.R;
 import songming.straing.app.https.base.BaseResponse;
+import songming.straing.app.https.request.ArticleCommentAddRequest;
 import songming.straing.app.https.request.ArticleDetailRequest;
 import songming.straing.app.https.request.ArticlePraiseActionRequest;
-import songming.straing.app.https.request.CreateArticleRequest;
 import songming.straing.model.ArticleCommentInfo;
 import songming.straing.model.ArticleDetailInfo;
 import songming.straing.ui.activity.base.BaseActivity;
@@ -29,14 +32,20 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     private ViewHolder vh;
     private ArticleDetailRequest mArticleDetailRequest;
     private ArticlePraiseActionRequest mPraiseRequest;
+    private ArticleCommentAddRequest commentAddRequest;
 
     private long articleID;
+    private EditText ed_input;
+    private TextView btn_send;
+    private LinearLayout ll_input;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_detail);
+        initView();
         getData();
         vh = new ViewHolder(getWindow().getDecorView());
         setClickListener(this, vh.read_good, vh.read_bad);
@@ -59,6 +68,10 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         mPraiseRequest.article_id = articleID;
         mPraiseRequest.setRequestType(10);
         mPraiseRequest.setOnResponseListener(this);
+
+        commentAddRequest=new ArticleCommentAddRequest();
+        commentAddRequest.setRequestType(11);
+        commentAddRequest.setOnResponseListener(this);
     }
 
 
@@ -73,12 +86,17 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
                 case 10:
                     mArticleDetailRequest.execute();
                     break;
+                case 11:
+                    ed_input.setText("");
+                    mArticleDetailRequest.execute();
+                    break;
             }
         }
     }
 
     private void upgradeArticleView(ArticleDetailInfo data) {
         if (data == null) return;
+        setTitleText(data.title);
         String nick = data.user.username;
         String time = TimeUtils.longToString(TimeUtils.yyyy_MM_dd, data.createAt);
         vh.article_creator_nick.setText(nick + " - " + time);
@@ -113,7 +131,34 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
                 mPraiseRequest.type = 2;
                 mPraiseRequest.execute(true);
                 break;
+            case R.id.btn_send:
+                submit();
+                break;
         }
+    }
+
+    private void initView() {
+        ed_input = (EditText) findViewById(R.id.ed_input);
+        btn_send = (TextView) findViewById(R.id.btn_send);
+        ll_input = (LinearLayout) findViewById(R.id.ll_input);
+
+        btn_send.setOnClickListener(this);
+    }
+
+    private void submit() {
+        // validate
+        String input = ed_input.getText().toString().trim();
+        if (TextUtils.isEmpty(input)) {
+            Toast.makeText(this, "评论不能为空哦", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        commentAddRequest.article_id=articleID;
+        commentAddRequest.content=input;
+        commentAddRequest.post();
+
+
+
     }
 
     static class ViewHolder {

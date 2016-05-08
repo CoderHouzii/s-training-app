@@ -187,6 +187,7 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
     private TitleBar.OnRightBtnClickListener onRightBtnClickListener=new TitleBar.OnRightBtnClickListener() {
         @Override
         public void onClick(View v) {
+            UIHelper.startToAddFriendActivity(MainActivity.this);
 
         }
     };

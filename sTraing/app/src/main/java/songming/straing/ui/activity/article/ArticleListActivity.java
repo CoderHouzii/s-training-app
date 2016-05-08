@@ -9,6 +9,7 @@ import java.util.List;
 
 import songming.straing.R;
 import songming.straing.app.adapter.ArticleAdapter;
+import songming.straing.app.config.LocalHost;
 import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.request.ArticleListRequest;
 import songming.straing.app.https.request.ArticleRecommedRequest;
@@ -23,8 +24,8 @@ import songming.straing.widget.ArticleActionPopup;
  */
 public class ArticleListActivity extends BaseTableActivity<ArticleDetailInfo> implements ArticleActionPopup.OnArticleActionClickListener {
 
-    enum Mode{
-        RECOMMED,USER
+    enum Mode {
+        RECOMMED, USER
     }
 
     private Mode mode;
@@ -47,8 +48,8 @@ public class ArticleListActivity extends BaseTableActivity<ArticleDetailInfo> im
 
     private void getData() {
         userid = getIntent().getLongExtra(ARTICLE_USER_ID, 0);
-        if (userid == 0) mode=Mode.RECOMMED;
-        else mode=Mode.USER;
+        if (userid == 0) mode = Mode.RECOMMED;
+        else mode = Mode.USER;
     }
 
     @Override
@@ -57,19 +58,26 @@ public class ArticleListActivity extends BaseTableActivity<ArticleDetailInfo> im
     }
 
     private int position;
+
     private void initView() {
 
-        if (mode==Mode.RECOMMED)mTitleBar.setRightButtonVisibility(View.GONE);
-        else mTitleBar.setRightButtonVisibility(View.VISIBLE);
-        bindListView(R.id.list,null,new ArticleAdapter(this,datas));
+        if (mode == Mode.RECOMMED) mTitleBar.setRightButtonVisibility(View.GONE);
+        else {
+            if (userid == LocalHost.INSTANCE.getUserId())
+                mTitleBar.setRightButtonVisibility(View.VISIBLE);
+            else
+                mTitleBar.setRightButtonVisibility(View.GONE);
+        }
 
-        mArticleActionPopup=new ArticleActionPopup(this);
+        bindListView(R.id.list, null, new ArticleAdapter(this, datas));
+
+        mArticleActionPopup = new ArticleActionPopup(this);
         mArticleActionPopup.setOnArticleActionClickListener(this);
 
         mListView.getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                ArticleListActivity.this.position=position;
+                ArticleListActivity.this.position = position;
                 mArticleActionPopup.showPopupWindow();
                 return true;
             }
@@ -78,15 +86,15 @@ public class ArticleListActivity extends BaseTableActivity<ArticleDetailInfo> im
         mListView.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                long articleId=datas.get(position).articleID;
-                UIHelper.startToArticleDetailActivity(ArticleListActivity.this,articleId);
+                long articleId = datas.get(position).articleID;
+                UIHelper.startToArticleDetailActivity(ArticleListActivity.this, articleId);
             }
         });
 
     }
 
     private void initReq() {
-        if (mode==Mode.USER) {
+        if (mode == Mode.USER) {
             mListRequest = new ArticleListRequest();
             mListRequest.setOnResponseListener(this);
             mListRequest.target_id = userid;
@@ -97,8 +105,8 @@ public class ArticleListActivity extends BaseTableActivity<ArticleDetailInfo> im
                 mAdapter.notifyDataSetChanged();
             }
             mListRequest.execute();
-        }else {
-            mRecommedRequest=new ArticleRecommedRequest();
+        } else {
+            mRecommedRequest = new ArticleRecommedRequest();
             mRecommedRequest.setOnResponseListener(this);
             mRecommedRequest.execute();
         }
@@ -115,20 +123,20 @@ public class ArticleListActivity extends BaseTableActivity<ArticleDetailInfo> im
 
     @Override
     public void onPullDownRefresh() {
-        if (mode==Mode.USER) {
+        if (mode == Mode.USER) {
             mListRequest.start = 0;
             mListRequest.execute();
-        }else {
-            mRecommedRequest.start=0;
+        } else {
+            mRecommedRequest.start = 0;
             mRecommedRequest.execute();
         }
     }
 
     @Override
     public void onLoadMore() {
-        if (mode==Mode.USER) {
+        if (mode == Mode.USER) {
             mListRequest.execute();
-        }else {
+        } else {
             mRecommedRequest.execute();
         }
     }

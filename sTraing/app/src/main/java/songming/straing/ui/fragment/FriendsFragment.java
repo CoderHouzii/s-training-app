@@ -1,5 +1,6 @@
 package songming.straing.ui.fragment;
 
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -11,11 +12,15 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import songming.straing.R;
+import songming.straing.app.eventbus.Events;
 import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.request.FriendListRequest;
 import songming.straing.model.UserDetailInfo;
@@ -144,6 +149,7 @@ public class FriendsFragment extends BaseFragment {
     public void onSuccess(BaseResponse response) {
         super.onSuccess(response);
         if (response.getStatus() == 1) {
+            datas.clear();
             datas.addAll(filledData((List<UserDetailInfo>) response.getData()));
             adapter.notifyDataSetChanged();
         }
@@ -213,6 +219,14 @@ public class FriendsFragment extends BaseFragment {
             UIHelper.startToGroupListActivity(mContext);
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==233){
+            friendListRequest.execute(true);
+        }
+    }
 
     @Override
     public String getTitle() {

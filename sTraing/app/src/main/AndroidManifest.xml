@@ -126,7 +126,11 @@
             android:name=".ui.activity.chat.FriendsChatActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize"/>
-
+        <!--添加好友-->
+        <activity
+            android:name=".ui.activity.friend.FriendAddActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
     </application>
 
 </manifest>

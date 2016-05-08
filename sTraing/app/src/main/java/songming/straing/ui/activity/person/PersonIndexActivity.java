@@ -26,10 +26,10 @@ public class PersonIndexActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_index);
-        userid=getIntent().getLongExtra("userid",-1);
-        if (userid==-1)finish();
-        initReq();
+        userid=getIntent().getLongExtra("userid",0);
+        if (userid==0)finish();
         vh=new ViewHolder(getWindow().getDecorView());
+        initReq();
 
     }
 

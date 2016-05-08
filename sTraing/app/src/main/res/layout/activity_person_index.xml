@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
     <songming.straing.widget.TitleBar
         android:id="@id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:titleText="主页"
-        app:right_btn_text="添加好友"/>
+        app:right_btn_text="添加好友"
+        app:titleText="主页"/>
 
     <songming.straing.widget.CircleImageView
         android:id="@+id/avatar"
@@ -19,6 +20,7 @@
         android:layout_marginTop="40dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_no_photo"/>
+
     <TextView
         android:id="@+id/person_id"
         android:layout_width="wrap_content"
@@ -28,101 +30,112 @@
         android:text="ID:10486 | momo"/>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
+        android:orientation="horizontal"
         android:weightSum="9">
+
         <TextView
             android:id="@+id/practise"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="5dp"
             android:layout_weight="3"
             android:background="@drawable/bg_black_frame"
-            android:gravity="center"
-            android:text="锻炼"
             android:drawableTop="@drawable/ic_practise"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="锻炼"
             />
+
         <TextView
             android:id="@+id/circle"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="5dp"
             android:layout_weight="3"
             android:background="@drawable/bg_black_frame"
-            android:gravity="center"
-            android:text="圈子"
             android:drawableTop="@drawable/ic_circle"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="圈子"
             />
+
         <TextView
             android:id="@+id/article"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="5dp"
             android:layout_weight="3"
             android:background="@drawable/bg_black_frame"
-            android:gravity="center"
-            android:text="圈子"
             android:drawableTop="@drawable/ic_article"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="圈子"
             />
     </LinearLayout>
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/bg_black_frame">
+        android:background="@drawable/bg_black_frame"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/level"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:paddingLeft="16dp"
             android:gravity="center_vertical"
+            android:paddingLeft="16dp"
             android:text="等级:"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/line_bg"
-            android:layout_marginLeft="64dp"/>
+            android:layout_marginLeft="64dp"
+            android:background="@color/line_bg"/>
+
         <TextView
             android:id="@+id/city"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:paddingLeft="16dp"
             android:gravity="center_vertical"
+            android:paddingLeft="16dp"
             android:text="城市:"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/line_bg"
-            android:layout_marginLeft="64dp"/>
+            android:layout_marginLeft="64dp"
+            android:background="@color/line_bg"/>
+
         <TextView
             android:id="@+id/work"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:paddingLeft="16dp"
             android:gravity="center_vertical"
+            android:paddingLeft="16dp"
             android:text="职业:"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/line_bg"
-            android:layout_marginLeft="64dp"/>
+            android:layout_marginLeft="64dp"
+            android:background="@color/line_bg"/>
 
         <TextView
             android:id="@+id/signature"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:paddingLeft="16dp"
             android:gravity="center_vertical"
+            android:paddingLeft="16dp"
             android:text="签名:"/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/line_bg"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="64dp"
-            android:layout_marginBottom="8dp"/>
+            android:background="@color/line_bg"/>
 
     </LinearLayout>
 

@@ -136,5 +136,9 @@ public final class Events {
             this.chatReceiverInfo = chatReceiverInfo;
         }
     }
-
+    /**
+     * 更新好友的数据
+     */
+    public static class RefreshFriendEvent {
+    }
 }

@@ -14,6 +14,7 @@ import songming.straing.ui.activity.article.ArticleActivity;
 import songming.straing.ui.activity.article.ArticleDetailActivity;
 import songming.straing.ui.activity.article.ArticleListActivity;
 import songming.straing.ui.activity.chat.FriendsChatActivity;
+import songming.straing.ui.activity.friend.FriendAddActivity;
 import songming.straing.ui.activity.friend.GroupListActivity;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
@@ -219,5 +220,13 @@ public class UIHelper {
         intent.putExtra("id",userid);
         intent.putExtra("name",username);
         c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到添加好友
+     */
+    public static void startToAddFriendActivity(Activity c) {
+        Intent intent = new Intent(c, FriendAddActivity.class);
+        c.startActivityForResult(intent,233);
     }
 }
