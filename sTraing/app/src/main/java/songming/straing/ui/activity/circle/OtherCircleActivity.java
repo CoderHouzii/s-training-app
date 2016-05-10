@@ -9,30 +9,38 @@ import android.widget.TextView;
 import java.util.List;
 
 import songming.straing.R;
-import songming.straing.app.https.request.CircleListRequest;
+import songming.straing.app.https.request.OtherCircleListRequest;
 import songming.straing.model.MomentsInfo;
-import songming.straing.moments.base.adapter.CircleBaseAdapter;
 import songming.straing.moments.base.adapter.CircleAdapter;
+import songming.straing.moments.base.adapter.CircleBaseAdapter;
 import songming.straing.moments.item.ItemOnlyChar;
 import songming.straing.ui.activity.base.BaseTableActivity;
 import songming.straing.widget.ptrwidget.FriendCirclePtrListView;
 
 /**
- * 圈
+ * 他人的圈
  */
-public class CircleActivity extends BaseTableActivity<MomentsInfo> {
+public class OtherCircleActivity extends BaseTableActivity<MomentsInfo> {
 
-    private CircleListRequest circleListRequest;
+    private OtherCircleListRequest circleListRequest;
     private ViewHolder vh;
+
+    private long target_user_id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_circle);
+        getData();
         initView();
         initReq();
 
+    }
+
+    private void getData() {
+        target_user_id = getIntent().getLongExtra("userid", 0);
+        if (target_user_id == 0) finish();
     }
 
     private void initView() {
@@ -42,9 +50,10 @@ public class CircleActivity extends BaseTableActivity<MomentsInfo> {
     }
 
     private void initReq() {
-        circleListRequest = new CircleListRequest();
+        circleListRequest = new OtherCircleListRequest();
         circleListRequest.setOnResponseListener(this);
-        List<MomentsInfo> cache = circleListRequest.loadCache();
+        circleListRequest.target_user_id = target_user_id;
+        List<MomentsInfo> cache = circleListRequest.loadCache(target_user_id);
         if (cache != null && cache.size() > 0) {
             datas.clear();
             datas.addAll(cache);
@@ -55,7 +64,7 @@ public class CircleActivity extends BaseTableActivity<MomentsInfo> {
 
     @Override
     public void onPullDownRefresh() {
-        circleListRequest.start=0;
+        circleListRequest.start = 0;
         circleListRequest.execute();
 
     }

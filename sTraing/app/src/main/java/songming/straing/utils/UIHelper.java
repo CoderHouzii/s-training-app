@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import songming.straing.R;
 import songming.straing.app.https.request.CreateArticleRequest;
@@ -15,6 +18,7 @@ import songming.straing.ui.activity.article.ArticleDetailActivity;
 import songming.straing.ui.activity.article.ArticleListActivity;
 import songming.straing.ui.activity.chat.FriendsChatActivity;
 import songming.straing.ui.activity.circle.CircleActivity;
+import songming.straing.ui.activity.circle.OtherCircleActivity;
 import songming.straing.ui.activity.friend.FriendAddActivity;
 import songming.straing.ui.activity.friend.GroupListActivity;
 import songming.straing.ui.activity.index.MainActivity;
@@ -78,6 +82,26 @@ public class UIHelper {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    /**
+     * 隐藏软键盘
+     */
+    public static void hideInputMethod(View view) {
+        InputMethodManager imm = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public static void hideInputMethod(final View view, long delayMillis) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideInputMethod(view);
+            }
+        }, delayMillis);
     }
 
     //=============================================================START TO ACTIVITY METHODS
@@ -236,6 +260,15 @@ public class UIHelper {
      */
     public static void startToCircleActivity(Activity c) {
         Intent intent = new Intent(c, CircleActivity.class);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到别人的圈
+     */
+    public static void startToOtherCircleActivity(Activity c,long targetId) {
+        Intent intent = new Intent(c, OtherCircleActivity.class);
+        intent.putExtra("userid",targetId);
         c.startActivity(intent);
     }
 }

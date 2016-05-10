@@ -11,15 +11,20 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.Locale;
 
+import razerdp.basepopup.InputMethodUtils;
 import songming.straing.R;
+import songming.straing.app.config.LocalHost;
 import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.request.ArticleCommentAddRequest;
+import songming.straing.app.https.request.ArticleCommentDelRequest;
 import songming.straing.app.https.request.ArticleDetailRequest;
 import songming.straing.app.https.request.ArticlePraiseActionRequest;
 import songming.straing.model.ArticleCommentInfo;
 import songming.straing.model.ArticleDetailInfo;
 import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.utils.TimeUtils;
+import songming.straing.utils.UIHelper;
+import songming.straing.widget.DeleteCommentPopup;
 import songming.straing.widget.commentwidget.ArticleCommentWidget;
 
 /**
@@ -33,12 +38,19 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     private ArticleDetailRequest mArticleDetailRequest;
     private ArticlePraiseActionRequest mPraiseRequest;
     private ArticleCommentAddRequest commentAddRequest;
+    private ArticleCommentDelRequest articleCommentDelRequest;
 
     private long articleID;
     private EditText ed_input;
     private TextView btn_send;
-    private LinearLayout ll_input;
 
+    private LinearLayout ll_input;
+    private DeleteCommentPopup deleteCommentPopup;
+
+    private long comment_id;
+    private long replyUserId;
+
+    private long creatorUserId=0;
 
 
     @Override
@@ -47,7 +59,6 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_article_detail);
         initView();
         getData();
-        vh = new ViewHolder(getWindow().getDecorView());
         setClickListener(this, vh.read_good, vh.read_bad);
         initReq();
     }
@@ -72,6 +83,11 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         commentAddRequest=new ArticleCommentAddRequest();
         commentAddRequest.setRequestType(11);
         commentAddRequest.setOnResponseListener(this);
+
+
+        articleCommentDelRequest=new ArticleCommentDelRequest();
+        articleCommentDelRequest.setRequestType(12);
+        articleCommentDelRequest.setOnResponseListener(this);
     }
 
 
@@ -88,7 +104,13 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
                     break;
                 case 11:
                     ed_input.setText("");
+                    ed_input.setHint("输入您想说的");
                     mArticleDetailRequest.execute();
+                    replyUserId=0;
+                    break;
+                case 12:
+                    mArticleDetailRequest.execute();
+                    comment_id=0;
                     break;
             }
         }
@@ -96,6 +118,7 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
 
     private void upgradeArticleView(ArticleDetailInfo data) {
         if (data == null) return;
+        creatorUserId=data.user.userID;
         setTitleText(data.title);
         String nick = data.user.username;
         String time = TimeUtils.longToString(TimeUtils.yyyy_MM_dd, data.createAt);
@@ -115,9 +138,40 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         for (ArticleCommentInfo comment : comments) {
             ArticleCommentWidget articleCommentWidget = new ArticleCommentWidget(this);
             articleCommentWidget.setCommentText(comment);
+            articleCommentWidget.setOnClickListener(onCommentClickListener);
             vh.layout_comment.addView(articleCommentWidget, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         }
     }
+
+    private View.OnClickListener onCommentClickListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (v instanceof ArticleCommentWidget){
+                ArticleCommentInfo info=((ArticleCommentWidget) v).getData();
+                if (info!=null){
+                    comment_id=info.articleCommentID;
+                    if (info.canDelete==1){
+                        deleteCommentPopup.showPopupWindow();
+                    }else {
+                        replyUserId=info.replyUser.userID;
+                        ed_input.setHint("回复"+info.replyUser.username+"：");
+                    }
+
+                }
+
+            }
+        }
+    };
+
+    private DeleteCommentPopup.OnDeleteCommentClickListener onDeleteCommentClickListener=new DeleteCommentPopup.OnDeleteCommentClickListener() {
+        @Override
+        public void onDelClick(View v) {
+            articleCommentDelRequest.comment_id=comment_id;
+            articleCommentDelRequest.execute(true);
+            deleteCommentPopup.dismiss();
+
+        }
+    };
 
 
     @Override
@@ -138,11 +192,22 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
     }
 
     private void initView() {
+        vh = new ViewHolder(getWindow().getDecorView());
+
         ed_input = (EditText) findViewById(R.id.ed_input);
         btn_send = (TextView) findViewById(R.id.btn_send);
         ll_input = (LinearLayout) findViewById(R.id.ll_input);
 
         btn_send.setOnClickListener(this);
+
+        deleteCommentPopup=new DeleteCommentPopup(this);
+        deleteCommentPopup.setOnDeleteCommentClickListener(onDeleteCommentClickListener);
+        vh.article_creator_nick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.startToPersonIndexActivity(ArticleDetailActivity.this,creatorUserId);
+            }
+        });
     }
 
     private void submit() {
@@ -155,9 +220,12 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
 
         commentAddRequest.article_id=articleID;
         commentAddRequest.content=input;
+        if (replyUserId!=-1){
+            commentAddRequest.reply_id=replyUserId;
+        }
         commentAddRequest.post();
 
-
+        UIHelper.hideInputMethod(ed_input);
 
     }
 

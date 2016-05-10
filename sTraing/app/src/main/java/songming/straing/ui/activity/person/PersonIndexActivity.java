@@ -36,6 +36,7 @@ public class PersonIndexActivity extends BaseActivity implements View.OnClickLis
     private void initReq() {
         mPersonDetailRequest=new PersonDetailRequest();
         mPersonDetailRequest.setOnResponseListener(this);
+        mPersonDetailRequest.userid=userid;
 
         UserDetailInfo info=mPersonDetailRequest.loadCache(userid);
         updateView(info);
@@ -78,6 +79,11 @@ public class PersonIndexActivity extends BaseActivity implements View.OnClickLis
             case R.id.practise:
                 break;
             case R.id.circle:
+                if (userid==LocalHost.INSTANCE.getUserId()){
+                    UIHelper.startToCircleActivity(this);
+                }else {
+                    UIHelper.startToOtherCircleActivity(this,userid);
+                }
                 break;
             case R.id.article:
                 UIHelper.startToArticleListActivity(this,userid);

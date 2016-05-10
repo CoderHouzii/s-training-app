@@ -27,6 +27,7 @@
                 android:id="@+id/article_creator_nick"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
+                android:textColor="@color/nick"
                 tools:text="作者昵称 - 2016/08/08"/>
 
             <View

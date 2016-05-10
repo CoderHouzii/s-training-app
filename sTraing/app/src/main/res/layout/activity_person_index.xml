@@ -9,7 +9,6 @@
         android:id="@id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:right_btn_text="添加好友"
         app:titleText="主页"/>
 
     <songming.straing.widget.CircleImageView

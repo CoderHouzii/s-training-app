@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
         getdata();
         initView();
         initData();
+        EventBus.getDefault().register(this);
     }
 
     private void getdata() {
@@ -102,13 +104,24 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
         ed_input.setText("");
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Subscribe
-    public void onEvent(Events.PersonChatEvent event) {
-        ChatReceiverInfo info=event.getChatReceiverInfo();
-        if (info!=null){
-            getOtherAvatar(info.text,info.rid);
-        }
+    public void onEvent(final Events.PersonChatEvent event) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ChatReceiverInfo info=event.getChatReceiverInfo();
+                if (info!=null){
+                    getOtherAvatar(info.text,Long.parseLong(info.sid));
+                }
+            }
+        });
+
     }
 
     String otherAvatar;
@@ -141,6 +154,7 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
             });
+            detailRequest.execute();
         } else
             refreshData(content, receiveId);
     }

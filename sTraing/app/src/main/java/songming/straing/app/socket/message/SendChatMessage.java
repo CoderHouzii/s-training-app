@@ -11,16 +11,18 @@ import songming.straing.app.socket.SendSocketMessage;
  */
 public class SendChatMessage extends SendSocketMessage{
     private String key;
-    private long sid;
-    private long rid;
-    private long create_at;
+    private String sid;
+    private String rid;
+    private String create_at;
     private String text;
 
     public SendChatMessage(String key, long sid, long rid, String text) {
         this.key = key;
-        this.sid = sid;
-        this.rid = rid;
+        this.sid = String.valueOf(sid);
+        this.rid = String.valueOf(rid);
         this.text = text;
+        this.create_at= String.valueOf(System.currentTimeMillis());
+
     }
 
     @Override
@@ -29,6 +31,7 @@ public class SendChatMessage extends SendSocketMessage{
         object.put("key",key);
         object.put("sid",sid);
         object.put("rid",rid);
+        object.put("create_at",create_at);
         object.put("text",text);
         return object;
     }

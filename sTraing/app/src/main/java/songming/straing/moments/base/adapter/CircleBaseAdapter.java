@@ -17,7 +17,7 @@ import songming.straing.moments.base.adapter.viewholder.BaseItemView;
  * 适配器抽象
  */
 public abstract class CircleBaseAdapter<T> extends BaseAdapter {
-    private static final String TAG = "FriendCircleAdapter";
+    private static final String TAG = "CircleAdapter";
     //数据
     protected List<T> datas;
     //类型集合

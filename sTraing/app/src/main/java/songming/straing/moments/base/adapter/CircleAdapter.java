@@ -8,9 +8,9 @@ import songming.straing.model.MomentsInfo;
 /**
  * 圈适配器
  */
-public class FriendCircleAdapter extends CircleBaseAdapter<MomentsInfo> {
+public class CircleAdapter extends CircleBaseAdapter<MomentsInfo> {
 
-    public FriendCircleAdapter(Activity context, Builder<MomentsInfo> mBuilder) {
+    public CircleAdapter(Activity context, Builder<MomentsInfo> mBuilder) {
         super(context, mBuilder);
     }
 

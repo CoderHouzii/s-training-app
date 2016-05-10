@@ -46,7 +46,9 @@ public enum  SocketMessageManager {
                 break;
             //个人聊天消息接收
             case MessageId.SOCKET_F_CHAT_RECEIVE:
-                ChatReceiverInfo info= JSONUtil.toObject(msg.getJsonString(), ChatReceiverInfo.class);
+                String resolveString=msg.getJsonString().replace("\\","");
+                resolveString= resolveString.substring(1, resolveString.length()-1);
+                ChatReceiverInfo info= JSONUtil.toObject(resolveString, ChatReceiverInfo.class);
                 EventBus.getDefault().post(new Events.PersonChatEvent(info));
 
                 break;
