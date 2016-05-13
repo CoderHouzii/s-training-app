@@ -13,11 +13,16 @@ import android.widget.TextView;
 import java.util.List;
 
 import songming.straing.R;
+import songming.straing.app.config.LocalHost;
 import songming.straing.model.CommentInfo;
 import songming.straing.model.MomentsInfo;
+import songming.straing.model.MomentsShareInfo;
+import songming.straing.moments.MomentsManager;
+import songming.straing.ui.activity.person.AvatarSettingActivity;
 import songming.straing.utils.TimeUtils;
 import songming.straing.utils.UIHelper;
 import songming.straing.widget.CommentPopup;
+import songming.straing.widget.DeleteCommentPopup;
 import songming.straing.widget.SuperImageView;
 import songming.straing.widget.commentwidget.ArticleCommentWidget;
 import songming.straing.widget.commentwidget.CommentWidget;
@@ -46,7 +51,11 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
     protected LinearLayout commentLayout;
 
     //中间内容层
-    protected RelativeLayout contentLayout;
+    protected RelativeLayout shareLayout;
+    protected TextView shareNick;
+    protected TextView shareContent;
+
+    protected MomentsManager momentsManager;
 
     private MomentsInfo mInfo;
     private int curPos;
@@ -54,7 +63,7 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
     //评论区的view对象池
     private static final CommentPool COMMENT_TEXT_POOL = new CommentPool(35);
 
-    private int commentPaddintRight=0;
+    private int commentPaddintRight = 0;
 
     public BaseItemDelegate() {
     }
@@ -67,7 +76,7 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
 
     @Override
     public void onBindData(int position, @NonNull View v, @NonNull MomentsInfo data, final int dynamicType) {
-        if (commentPaddintRight==0)commentPaddintRight= UIHelper.dipToPx(context,8f);
+        if (commentPaddintRight == 0) commentPaddintRight = UIHelper.dipToPx(context, 8f);
 
         mInfo = data;
         curPos = position;
@@ -77,14 +86,31 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
         bindData(position, v, data, dynamicType);
     }
 
-    /** 共有数据绑定 */
-    private void bindShareData(MomentsInfo data) {
+    /**
+     * 共有数据绑定
+     */
+    private void bindShareData(final MomentsInfo data) {
         avatar.loadImageDefault(data.user.avatar);
         nick.setText(data.user.username);
         textField.setText(data.text);
 
 
-        createTime.setText(TimeUtils.longToString(TimeUtils.yyyy_MM_dd,data.createAt));
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.startToOtherCircleActivity(getActivityContext(), data.user.userID);
+            }
+        });
+        nick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UIHelper.startToOtherCircleActivity(getActivityContext(), data.user.userID);
+            }
+        });
+
+        setShareContent(data.tranferMoment);
+
+        createTime.setText(TimeUtils.longToString(TimeUtils.yyyy_MM_dd, data.createAt));
         setCommentPraiseLayoutVisibility(data);
         //点赞
         praiseWidget.setDatas(data.likeUsers);
@@ -92,21 +118,54 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
         addCommentWidget(data.replys);
     }
 
-    /** 绑定共用部分 */
+    private void setShareContent(MomentsShareInfo tranferMoment) {
+        if (tranferMoment == null) {
+            shareLayout.setVisibility(View.GONE);
+            return;
+        }
+        shareLayout.setVisibility(View.VISIBLE);
+        if (tranferMoment.user != null) {
+            shareNick.setText(tranferMoment.user.username);
+            shareNick.setTag(tranferMoment.user.userID);
+            shareNick.setOnClickListener(onShareNickClickListener);
+        }
+        shareContent.setText(tranferMoment.text);
+
+    }
+
+    private View.OnClickListener onShareNickClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            long id = (long) v.getTag();
+            if (id != 0) {
+                UIHelper.startToPersonIndexActivity(getActivityContext(), id);
+            }
+        }
+    };
+
+    /**
+     * 绑定共用部分
+     */
     private void bindView(View v) {
         if (avatar == null) avatar = (SuperImageView) v.findViewById(R.id.avatar);
         if (nick == null) nick = (TextView) v.findViewById(R.id.nick);
         if (textField == null) textField = (TextView) v.findViewById(R.id.item_text_field);
 
+        if (shareLayout == null) shareLayout = (RelativeLayout) v.findViewById(R.id.share_content);
+        if (shareNick == null) shareNick = (TextView) v.findViewById(R.id.share_nick);
+        if (shareContent == null) shareContent = (TextView) v.findViewById(R.id.share_text);
+
         if (createTime == null) createTime = (TextView) v.findViewById(R.id.create_time);
         if (commentImage == null) commentImage = (ImageView) v.findViewById(R.id.comment_press);
-        if (commentButton == null) commentButton = (FrameLayout) v.findViewById(R.id.comment_button);
+        if (commentButton == null)
+            commentButton = (FrameLayout) v.findViewById(R.id.comment_button);
         if (commentAndPraiseLayout == null) {
             commentAndPraiseLayout = (LinearLayout) v.findViewById(R.id.comment_praise_layout);
         }
         if (praiseWidget == null) praiseWidget = (PraiseWidget) v.findViewById(R.id.praise);
         if (line == null) line = v.findViewById(R.id.divider);
-        if (commentLayout == null) commentLayout = (LinearLayout) v.findViewById(R.id.comment_layout);
+        if (commentLayout == null)
+            commentLayout = (LinearLayout) v.findViewById(R.id.comment_layout);
         if (mCommentPopup == null) mCommentPopup = new CommentPopup(context);
 
         avatar.setOnClickListener(this);
@@ -116,36 +175,34 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
         commentButton.setOnClickListener(this);
     }
 
-    /** 是否有点赞或者评论 */
+    /**
+     * 是否有点赞或者评论
+     */
     private void setCommentPraiseLayoutVisibility(MomentsInfo data) {
         if ((data.replys == null || data.replys.size() == 0) &&
                 (data.likeUsers == null || data.likeUsers.size() == 0)) {
             //全空，取消显示
             commentAndPraiseLayout.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             //某项不空，则展示layout
             commentAndPraiseLayout.setVisibility(View.VISIBLE);
             //点赞或者评论某个为空，分割线不展示
             if (data.replys == null || data.replys.size() == 0 ||
                     data.likeUsers == null || data.likeUsers.size() == 0) {
                 line.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 line.setVisibility(View.VISIBLE);
             }
             //点赞为空，取消点赞控件的可见性
             if (data.likeUsers == null || data.likeUsers.size() == 0) {
                 praiseWidget.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 praiseWidget.setVisibility(View.VISIBLE);
             }
             //评论
             if (data.replys == null || data.replys.size() == 0) {
                 commentLayout.setVisibility(View.GONE);
-            }
-            else {
+            } else {
                 commentLayout.setVisibility(View.VISIBLE);
             }
         }
@@ -177,7 +234,7 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
                     params.topMargin = 1;
                     params.bottomMargin = 1;
                     commentWidget.setLayoutParams(params);
-                    commentWidget.setPadding(0,0,commentPaddintRight,0);
+                    commentWidget.setPadding(0, 0, commentPaddintRight, 0);
                     commentWidget.setLineSpacing(4, 1);
                 }
                 commentWidget.setBackgroundDrawable(
@@ -186,8 +243,7 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
                 commentWidget.setOnLongClickListener(this);
                 commentLayout.addView(commentWidget);
             }
-        }
-        else if (childCount > commentList.size()) {
+        } else if (childCount > commentList.size()) {
             //当前的view的数目比list的长度大，则减去对应的view
             commentLayout.removeViews(commentList.size(), childCount - commentList.size());
         }
@@ -214,18 +270,46 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
 
         //评论的click
         if (v instanceof CommentWidget) {
+            final CommentInfo info = ((CommentWidget) v).getData();
+            if (info.canDelete==1) {
+                final DeleteCommentPopup deleteCommentPopup = new DeleteCommentPopup(getActivityContext());
+                deleteCommentPopup.setOnDeleteCommentClickListener(new DeleteCommentPopup.OnDeleteCommentClickListener() {
+                    @Override
+                    public void onDelClick(View v) {
+                        if (momentsManager != null) {
+                            momentsManager.deleteComment(info.replyID);
+                            deleteCommentPopup.dismiss();
+                        }
+                    }
+                });
+                deleteCommentPopup.showPopupWindow();
 
+            } else
+                momentsManager.addComment(info.momentID, info.replyUser.userID, info.replyUser.username);
         }
     }
 
     private CommentPopup.OnCommentPopupClickListener mPopupClickListener
             = new CommentPopup.OnCommentPopupClickListener() {
         @Override
-        public void onLikeClick(View v, MomentsInfo info) {
+        public void onLikeClick(View v, MomentsInfo info, boolean hasPraise) {
+            if (momentsManager != null && info != null) {
+                momentsManager.onPraise(info.momentID, hasPraise ? 2 : 1);
+            }
         }
 
         @Override
         public void onCommentClick(View v, MomentsInfo info) {
+            if (momentsManager != null && info != null) {
+                momentsManager.addDynamicComment(info.momentID);
+            }
+        }
+
+        @Override
+        public void onShareClick(long transfer_id) {
+            if (momentsManager != null) {
+                momentsManager.onShare(transfer_id);
+            }
         }
     };
 
@@ -246,6 +330,11 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
 
     public void clearCommentPool() {
         COMMENT_TEXT_POOL.clearPool();
+    }
+
+    @Override
+    public void setManager(MomentsManager manager) {
+        this.momentsManager = manager;
     }
 
     //=============================================================

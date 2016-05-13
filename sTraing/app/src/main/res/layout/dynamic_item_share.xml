@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <include layout="@layout/include_item_header"/>
 
@@ -12,7 +12,7 @@
         android:id="@+id/share_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="72dp"
+        android:layout_marginLeft="96dp"
         android:layout_marginRight="16dp"
         android:background="@color/click_bg"
         android:paddingBottom="8dp"
@@ -45,6 +45,7 @@
             />
 
     </RelativeLayout>
+
     <include layout="@layout/include_item_bottom"/>
     <!--点赞控件/评论控件-->
 

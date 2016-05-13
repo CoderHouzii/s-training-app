@@ -24,6 +24,8 @@ public abstract class BaseTableActivity<T> extends BaseActivity implements BaseR
     protected List<T> datas = new ArrayList<>();
     protected BaseAdapter mAdapter;
 
+    private boolean needReset = false;
+
 
     public void bindListView(int listResId, View headerView, BaseAdapter adapter) {
         this.mAdapter = adapter;
@@ -87,13 +89,29 @@ public abstract class BaseTableActivity<T> extends BaseActivity implements BaseR
         }
     }
 
+    public boolean isNeedReset() {
+        return needReset;
+    }
+
+    public void setNeedReset(boolean needReset) {
+        this.needReset = needReset;
+    }
+
     @Override
     public void onSuccess(BaseResponse response) {
+        if (response.getStatus() == 0) {
+            mListView.refreshComplete();
+            if (mListView != null && mListView.getCurMode() == PullMode.FROM_BOTTOM) {
+                mListView.loadmoreCompelete();
+            }
+            ToastUtils.ToastMessage(this, response.getErrorMsg());
+        }
         if (response.getRequestType() == 0) {
             if (response.getStatus() == 1) {
                 List<T> newDatas = (List<T>) response.getData();
-                if (mListView != null && mListView.getCurMode() == PullMode.FROM_START) {
+                if (mListView != null && mListView.getCurMode() == PullMode.FROM_START || needReset) {
                     datas.clear();
+                    needReset = false;
                 }
                 mListView.setHasMore(response.getHasMore());
                 datas.addAll(newDatas);

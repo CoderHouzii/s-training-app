@@ -197,6 +197,7 @@ public class ArticleDetailActivity extends BaseActivity implements View.OnClickL
         ed_input = (EditText) findViewById(R.id.ed_input);
         btn_send = (TextView) findViewById(R.id.btn_send);
         ll_input = (LinearLayout) findViewById(R.id.ll_input);
+        ll_input.setVisibility(View.VISIBLE);
 
         btn_send.setOnClickListener(this);
 

@@ -92,7 +92,7 @@ public class CommentWidget extends TextView {
         setText(mSpannableStringBuilderAllVer);
     }
 
-    public ArticleCommentInfo getData() throws ClassCastException {
-        return (ArticleCommentInfo) getTag();
+    public CommentInfo getData() throws ClassCastException {
+        return (CommentInfo) getTag();
     }
 }

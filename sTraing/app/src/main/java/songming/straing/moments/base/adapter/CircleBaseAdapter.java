@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import java.util.HashMap;
 import java.util.List;
 
+import songming.straing.moments.MomentsManager;
 import songming.straing.moments.base.adapter.viewholder.BaseItemView;
 
 
@@ -24,12 +25,14 @@ public abstract class CircleBaseAdapter<T> extends BaseAdapter {
     protected HashMap<Integer, Class<? extends BaseItemView<T>>> itemInfos;
     protected Activity context;
     protected LayoutInflater mInflater;
+    private MomentsManager momentsManager;
 
     public CircleBaseAdapter(Activity context, Builder<T> mBuilder) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         datas = mBuilder.datas;
         itemInfos = mBuilder.itemInfos;
+        momentsManager=mBuilder.momentsManager;
     }
 
 
@@ -82,6 +85,7 @@ public abstract class CircleBaseAdapter<T> extends BaseAdapter {
             view = (BaseItemView) convertView.getTag();
         }
         view.setActivityContext(context);
+        view.setManager(momentsManager);
         view.onFindView(convertView);
         view.onBindData(position, convertView, getItem(position), dynamicType);
 
@@ -92,6 +96,7 @@ public abstract class CircleBaseAdapter<T> extends BaseAdapter {
         private HashMap<Integer, Class<? extends BaseItemView<T>>> itemInfos;
         private Activity context;
         private List<T> datas;
+        private MomentsManager momentsManager;
 
         public Builder() {
             itemInfos = new HashMap<>();
@@ -110,6 +115,11 @@ public abstract class CircleBaseAdapter<T> extends BaseAdapter {
 
         public Builder setDatas(List<T> datas) {
             this.datas = datas;
+            return this;
+        }
+
+        public Builder addManager(MomentsManager manager){
+            momentsManager=manager;
             return this;
         }
 

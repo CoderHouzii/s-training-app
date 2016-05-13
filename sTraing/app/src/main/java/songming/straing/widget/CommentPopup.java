@@ -34,6 +34,7 @@ public class CommentPopup extends BasePopupWindow implements View.OnClickListene
 
     private RelativeLayout mLikeClikcLayout;
     private RelativeLayout mCommentClickLayout;
+    private RelativeLayout mShareClickLayout;
 
     private MomentsInfo mMomentsInfo;
 
@@ -55,12 +56,16 @@ public class CommentPopup extends BasePopupWindow implements View.OnClickListene
 
         mLikeClikcLayout = (RelativeLayout) mPopupView.findViewById(R.id.item_like);
         mCommentClickLayout = (RelativeLayout) mPopupView.findViewById(R.id.item_comment);
+        mShareClickLayout= (RelativeLayout) findViewById(R.id.item_share);
 
         mLikeClikcLayout.setOnClickListener(this);
         mCommentClickLayout.setOnClickListener(this);
+        mShareClickLayout.setOnClickListener(this);
 
         buildAnima();
     }
+
+    private boolean hasPraise=false;
 
     private void buildAnima() {
         mScaleAnimation = new ScaleAnimation(1f, 2.5f, 1f, 2.5f, Animation.RELATIVE_TO_SELF, 0.5f,
@@ -143,7 +148,7 @@ public class CommentPopup extends BasePopupWindow implements View.OnClickListene
         switch (v.getId()) {
             case R.id.item_like:
                 if (mOnCommentPopupClickListener != null) {
-                    mOnCommentPopupClickListener.onLikeClick(v, mMomentsInfo);
+                    mOnCommentPopupClickListener.onLikeClick(v, mMomentsInfo,hasPraise);
                     mLikeView.clearAnimation();
                     mLikeView.startAnimation(mScaleAnimation);
                 }
@@ -154,6 +159,11 @@ public class CommentPopup extends BasePopupWindow implements View.OnClickListene
                     mPopupWindow.dismiss();
                 }
                 break;
+            case R.id.item_share:
+                if (mOnCommentPopupClickListener!=null){
+                    mOnCommentPopupClickListener.onShareClick(mMomentsInfo.momentID);
+                    mPopupWindow.dismiss();
+                }
         }
     }
     //=============================================================Getter/Setter
@@ -168,21 +178,25 @@ public class CommentPopup extends BasePopupWindow implements View.OnClickListene
 
     public void setMomentsInfo(MomentsInfo info) {
         if (info == null) return;
+        hasPraise=false;
         mMomentsInfo = info;
         if (info.likeUsers != null && info.likeUsers.size() > 0) {
             for (UserDetailInfo likeUser : info.likeUsers) {
                 if (likeUser.userID == LocalHost.INSTANCE.getUserId()) {
-                    mLikeText.setText("取消");
+                    hasPraise=true;
                 }
             }
         }
+        mLikeText.setText(hasPraise?"赞":"取消");
     }
 
     //=============================================================InterFace
     public interface OnCommentPopupClickListener {
-        void onLikeClick(View v, MomentsInfo info);
+        void onLikeClick(View v, MomentsInfo info,boolean hasPraise);
 
         void onCommentClick(View v, MomentsInfo info);
+
+        void onShareClick(long transfer_id);
     }
 
     static class WeakHandler extends Handler {
