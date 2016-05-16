@@ -18,6 +18,8 @@ import songming.straing.ui.activity.article.ArticleDetailActivity;
 import songming.straing.ui.activity.article.ArticleListActivity;
 import songming.straing.ui.activity.chat.FriendsChatActivity;
 import songming.straing.ui.activity.circle.CircleActivity;
+import songming.straing.ui.activity.circle.CircleCreateActivity;
+import songming.straing.ui.activity.circle.DynamicDetailActivity;
 import songming.straing.ui.activity.circle.OtherCircleActivity;
 import songming.straing.ui.activity.friend.FriendAddActivity;
 import songming.straing.ui.activity.friend.GroupListActivity;
@@ -270,5 +272,22 @@ public class UIHelper {
         Intent intent = new Intent(c, OtherCircleActivity.class);
         intent.putExtra("userid",targetId);
         c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到动态详情
+     */
+    public static void startToDynamicDetailActivity(Activity c,long momentid) {
+        Intent intent = new Intent(c, DynamicDetailActivity.class);
+        intent.putExtra("momentid",momentid);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到动态创建
+     */
+    public static void startToDynamicCreateActivity(Activity c) {
+        Intent intent = new Intent(c, CircleCreateActivity.class);
+        c.startActivityForResult(intent,111);
     }
 }

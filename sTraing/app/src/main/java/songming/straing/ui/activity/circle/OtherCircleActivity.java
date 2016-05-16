@@ -13,7 +13,7 @@ import songming.straing.app.https.request.OtherCircleListRequest;
 import songming.straing.model.MomentsInfo;
 import songming.straing.moments.base.adapter.CircleAdapter;
 import songming.straing.moments.base.adapter.CircleBaseAdapter;
-import songming.straing.moments.item.ItemOnlyChar;
+import songming.straing.moments.item.ItemOther;
 import songming.straing.ui.activity.base.BaseTableActivity;
 import songming.straing.widget.ptrwidget.FriendCirclePtrListView;
 
@@ -45,7 +45,7 @@ public class OtherCircleActivity extends BaseTableActivity<MomentsInfo> {
 
     private void initView() {
         vh = new ViewHolder(getWindow().getDecorView());
-        CircleBaseAdapter.Builder<MomentsInfo> builder = new CircleBaseAdapter.Builder<MomentsInfo>(datas).addType(0, ItemOnlyChar.class).build();
+        CircleBaseAdapter.Builder<MomentsInfo> builder = new CircleBaseAdapter.Builder<MomentsInfo>(datas).addType(0, ItemOther.class).build();
         bindListView(R.id.list, null, new CircleAdapter(this, builder));
     }
 

@@ -1,9 +1,11 @@
-package songming.straing.moments.base.adapter.viewholder;
+package songming.straing.ui.activity.circle;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -12,31 +14,34 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import razerdp.basepopup.InputMethodUtils;
 import songming.straing.R;
-import songming.straing.app.config.LocalHost;
+import songming.straing.app.https.base.BaseResponse;
+import songming.straing.app.https.request.CircleDetailRequest;
+import songming.straing.app.https.request.CircleListRequest;
+import songming.straing.app.https.request.MomentsCommentAddRequest;
+import songming.straing.app.https.request.MomentsCommentDelRequest;
+import songming.straing.app.https.request.MomentsPraiseRequest;
+import songming.straing.app.https.request.MomentsShareRequest;
 import songming.straing.model.CommentInfo;
 import songming.straing.model.MomentsInfo;
 import songming.straing.model.MomentsShareInfo;
 import songming.straing.moments.MomentsManager;
-import songming.straing.ui.activity.person.AvatarSettingActivity;
+import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.utils.TimeUtils;
 import songming.straing.utils.UIHelper;
 import songming.straing.widget.CommentPopup;
 import songming.straing.widget.DeleteCommentPopup;
+import songming.straing.widget.SharePopup;
 import songming.straing.widget.SuperImageView;
 import songming.straing.widget.commentwidget.ArticleCommentWidget;
 import songming.straing.widget.commentwidget.CommentWidget;
 import songming.straing.widget.praisewidget.PraiseWidget;
 
-
 /**
- *
+ * 动态详情
  */
-public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
-        View.OnClickListener,
-        View.OnLongClickListener,
-        ViewGroup.OnHierarchyChangeListener {
-    protected Activity context;
+public class DynamicDetailActivity extends BaseActivity implements View.OnClickListener, View.OnLongClickListener, ViewGroup.OnHierarchyChangeListener {
     //顶部
     protected SuperImageView avatar;
     protected TextView nick;
@@ -54,37 +59,133 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
     protected RelativeLayout shareLayout;
     protected TextView shareNick;
     protected TextView shareContent;
-
-    protected MomentsManager momentsManager;
-
     private MomentsInfo mInfo;
-    private int curPos;
-
+    private CommentPopup mCommentPopup;
     //评论区的view对象池
     private static final CommentPool COMMENT_TEXT_POOL = new CommentPool(35);
 
     private int commentPaddintRight = 0;
+    private long momentid;
+    private CircleDetailRequest circleDetailRequest;
 
-    public BaseItemDelegate() {
-    }
+    private MomentsPraiseRequest praiseRequest;
+    private MomentsCommentDelRequest commentDelRequest;
+    private MomentsCommentAddRequest commentAddRequest;
+    private MomentsShareRequest momentsShareRequest;
 
-    public BaseItemDelegate(Activity context) {
-        this.context = context;
-    }
+    public static final int REQ_PRAISE = 0x15;
+    public static final int REQ_COMMENT_DEL = 0x16;
+    public static final int REQ_COMMENT_ADD = 0x17;
+    public static final int REQ_SHARE = 0x18;
 
-    private CommentPopup mCommentPopup;
+
+    private EditText ed_input;
+    private TextView btn_send;
+    private LinearLayout ll_input;
 
     @Override
-    public void onBindData(int position, @NonNull View v, @NonNull MomentsInfo data, final int dynamicType) {
-        if (commentPaddintRight == 0) commentPaddintRight = UIHelper.dipToPx(context, 8f);
-
-        mInfo = data;
-        curPos = position;
-        //初始化共用部分
-        bindView(v);
-        bindShareData(data);
-        bindData(position, v, data, dynamicType);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.dynamic_detail);
+        getdata();
+        initView();
+        initReq();
     }
+
+    private void getdata() {
+        momentid = getIntent().getLongExtra("momentid", 0);
+        if (momentid == 0) finish();
+    }
+
+    private void initView() {
+        if (avatar == null) avatar = (SuperImageView) findViewById(R.id.avatar);
+        if (nick == null) nick = (TextView) findViewById(R.id.nick);
+        if (textField == null) textField = (TextView) findViewById(R.id.item_text_field);
+
+        if (shareLayout == null) shareLayout = (RelativeLayout) findViewById(R.id.share_content);
+        if (shareNick == null) shareNick = (TextView) findViewById(R.id.share_nick);
+        if (shareContent == null) shareContent = (TextView) findViewById(R.id.share_text);
+
+        if (createTime == null) createTime = (TextView) findViewById(R.id.create_time);
+        if (commentImage == null) commentImage = (ImageView) findViewById(R.id.comment_press);
+        if (commentButton == null)
+            commentButton = (FrameLayout) findViewById(R.id.comment_button);
+        if (commentAndPraiseLayout == null) {
+            commentAndPraiseLayout = (LinearLayout) findViewById(R.id.comment_praise_layout);
+        }
+        if (praiseWidget == null) praiseWidget = (PraiseWidget) findViewById(R.id.praise);
+        if (line == null) line = findViewById(R.id.divider);
+        if (commentLayout == null)
+            commentLayout = (LinearLayout) findViewById(R.id.comment_layout);
+        if (mCommentPopup == null) mCommentPopup = new CommentPopup(this);
+
+        ed_input = (EditText) findViewById(R.id.ed_input);
+        btn_send = (TextView) findViewById(R.id.btn_send);
+        ll_input = (LinearLayout) findViewById(R.id.ll_input);
+
+        btn_send.setOnClickListener(this);
+
+        avatar.setOnClickListener(this);
+        nick.setOnClickListener(this);
+        textField.setOnLongClickListener(this);
+
+        commentButton.setOnClickListener(this);
+    }
+
+    private void initReq() {
+        circleDetailRequest = new CircleDetailRequest();
+        circleDetailRequest.moment_id = momentid;
+        circleDetailRequest.setRequestType(0x11);
+        circleDetailRequest.setOnResponseListener(this);
+        circleDetailRequest.execute(true);
+
+        praiseRequest = new MomentsPraiseRequest();
+        praiseRequest.setOnResponseListener(this);
+        praiseRequest.setRequestType(REQ_PRAISE);
+
+        commentDelRequest = new MomentsCommentDelRequest();
+        commentDelRequest.setOnResponseListener(this);
+        commentDelRequest.setRequestType(REQ_COMMENT_DEL);
+
+        commentAddRequest = new MomentsCommentAddRequest();
+        commentAddRequest.setOnResponseListener(this);
+        commentAddRequest.setRequestType(REQ_COMMENT_ADD);
+
+        momentsShareRequest = new MomentsShareRequest();
+        momentsShareRequest.setOnResponseListener(this);
+        momentsShareRequest.setRequestType(REQ_SHARE);
+    }
+
+    @Override
+    public void onSuccess(BaseResponse response) {
+        super.onSuccess(response);
+        if (response.getStatus() == 1) {
+            switch (response.getRequestType()) {
+                case 0x11:
+                    bindData2View((MomentsInfo) response.getData());
+                    break;
+                case REQ_PRAISE:
+                case REQ_COMMENT_DEL:
+                    circleDetailRequest.execute(true);
+                    break;
+                case REQ_COMMENT_ADD:
+                    circleDetailRequest.execute(true);
+                    reply_user_id = 0;
+                    break;
+                case REQ_SHARE:
+                    circleDetailRequest.execute(true);
+                    break;
+            }
+        }
+    }
+
+    private void bindData2View(MomentsInfo info) {
+        if (info == null) return;
+        mInfo = info;
+        bindShareData(info);
+
+    }
+
 
     /**
      * 共有数据绑定
@@ -98,13 +199,13 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.startToOtherCircleActivity(getActivityContext(), data.user.userID);
+                UIHelper.startToOtherCircleActivity(DynamicDetailActivity.this, data.user.userID);
             }
         });
         nick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UIHelper.startToOtherCircleActivity(getActivityContext(), data.user.userID);
+                UIHelper.startToOtherCircleActivity(DynamicDetailActivity.this, data.user.userID);
             }
         });
 
@@ -138,51 +239,10 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
         public void onClick(View v) {
             long id = (long) v.getTag();
             if (id != 0) {
-                UIHelper.startToPersonIndexActivity(getActivityContext(), id);
+                UIHelper.startToPersonIndexActivity(DynamicDetailActivity.this, id);
             }
         }
     };
-
-    /**
-     * 绑定共用部分
-     */
-    private void bindView(View v) {
-        if (avatar == null) avatar = (SuperImageView) v.findViewById(R.id.avatar);
-        if (nick == null) nick = (TextView) v.findViewById(R.id.nick);
-        if (textField == null) textField = (TextView) v.findViewById(R.id.item_text_field);
-
-        if (shareLayout == null) shareLayout = (RelativeLayout) v.findViewById(R.id.share_content);
-        if (shareNick == null) shareNick = (TextView) v.findViewById(R.id.share_nick);
-        if (shareContent == null) shareContent = (TextView) v.findViewById(R.id.share_text);
-
-        if (createTime == null) createTime = (TextView) v.findViewById(R.id.create_time);
-        if (commentImage == null) commentImage = (ImageView) v.findViewById(R.id.comment_press);
-        if (commentButton == null)
-            commentButton = (FrameLayout) v.findViewById(R.id.comment_button);
-        if (commentAndPraiseLayout == null) {
-            commentAndPraiseLayout = (LinearLayout) v.findViewById(R.id.comment_praise_layout);
-        }
-        if (praiseWidget == null) praiseWidget = (PraiseWidget) v.findViewById(R.id.praise);
-        if (line == null) line = v.findViewById(R.id.divider);
-        if (commentLayout == null)
-            commentLayout = (LinearLayout) v.findViewById(R.id.comment_layout);
-        if (mCommentPopup == null) mCommentPopup = new CommentPopup(context);
-
-        avatar.setOnClickListener(this);
-        nick.setOnClickListener(this);
-        textField.setOnLongClickListener(this);
-
-        commentButton.setOnClickListener(this);
-
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mInfo!=null){
-                    UIHelper.startToDynamicDetailActivity(getActivityContext(),mInfo.momentID);
-                }
-            }
-        });
-    }
 
     /**
      * 是否有点赞或者评论
@@ -237,7 +297,7 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
             for (int i = 0; i < subCount; i++) {
                 CommentWidget commentWidget = COMMENT_TEXT_POOL.get();
                 if (commentWidget == null) {
-                    commentWidget = new CommentWidget(context);
+                    commentWidget = new CommentWidget(this);
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     params.topMargin = 1;
@@ -247,7 +307,7 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
                     commentWidget.setLineSpacing(4, 1);
                 }
                 commentWidget.setBackgroundDrawable(
-                        context.getResources().getDrawable(R.drawable.selector_comment_widget));
+                        this.getResources().getDrawable(R.drawable.selector_comment_widget));
                 commentWidget.setOnClickListener(this);
                 commentWidget.setOnLongClickListener(this);
                 commentLayout.addView(commentWidget);
@@ -263,6 +323,8 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
         }
     }
 
+    private long reply_user_id;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -273,6 +335,17 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
                 mCommentPopup.setOnCommentPopupClickListener(mPopupClickListener);
                 mCommentPopup.showPopupWindow(commentImage);
                 break;
+            case R.id.btn_send:
+                commentAddRequest.moment_id = momentid;
+                if (reply_user_id != 0) {
+                    commentAddRequest.reply_user_id = reply_user_id;
+                }
+                commentAddRequest.content = ed_input.getText().toString().trim();
+                commentAddRequest.post(true);
+                ed_input.setHint("输入您想说的：");
+                ed_input.setText("");
+                UIHelper.hideInputMethod(ed_input);
+                break;
             default:
                 break;
         }
@@ -280,21 +353,24 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
         //评论的click
         if (v instanceof CommentWidget) {
             final CommentInfo info = ((CommentWidget) v).getData();
-            if (info.canDelete==1) {
-                final DeleteCommentPopup deleteCommentPopup = new DeleteCommentPopup(getActivityContext());
+            if (info.canDelete == 1) {
+                final DeleteCommentPopup deleteCommentPopup = new DeleteCommentPopup(this);
                 deleteCommentPopup.setOnDeleteCommentClickListener(new DeleteCommentPopup.OnDeleteCommentClickListener() {
                     @Override
                     public void onDelClick(View v) {
-                        if (momentsManager != null) {
-                            momentsManager.deleteComment(info.replyID);
-                            deleteCommentPopup.dismiss();
-                        }
+                        commentDelRequest.reply_id = info.replyID;
+                        commentDelRequest.execute(true);
+                        deleteCommentPopup.dismiss();
                     }
                 });
                 deleteCommentPopup.showPopupWindow();
 
-            } else
-                momentsManager.addComment(info.momentID, info.replyUser.userID, info.replyUser.username);
+            } else {
+                reply_user_id = info.replyUser.userID;
+                ll_input.setVisibility(View.VISIBLE);
+                InputMethodUtils.showInputMethod(ed_input);
+                ed_input.setHint("回复" + info.replyUser.username + "：");
+            }
         }
     }
 
@@ -302,23 +378,30 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
             = new CommentPopup.OnCommentPopupClickListener() {
         @Override
         public void onLikeClick(View v, MomentsInfo info, boolean hasPraise) {
-            if (momentsManager != null && info != null) {
-                momentsManager.onPraise(info.momentID, hasPraise ? 2 : 1);
-            }
+            praiseRequest.moment_id = momentid;
+            praiseRequest.type = hasPraise ? 2 : 1;
+            praiseRequest.execute(true);
         }
 
         @Override
         public void onCommentClick(View v, MomentsInfo info) {
-            if (momentsManager != null && info != null) {
-                momentsManager.addDynamicComment(info.momentID);
-            }
+            ll_input.setVisibility(View.VISIBLE);
+            InputMethodUtils.showInputMethod(ed_input);
+            ed_input.setHint("输入您想说的");
         }
 
         @Override
-        public void onShareClick(long transfer_id) {
-            if (momentsManager != null) {
-                momentsManager.onShare(transfer_id);
-            }
+        public void onShareClick(final long transfer_id) {
+            SharePopup sharePopup = new SharePopup(DynamicDetailActivity.this);
+            sharePopup.setOnOkButtonClickEvent(new SharePopup.OnOkButtonClickEvent() {
+                @Override
+                public void onTextGet(String content) {
+                    momentsShareRequest.content = content;
+                    momentsShareRequest.transfer_id = transfer_id;
+                    momentsShareRequest.post(true);
+                }
+            });
+            sharePopup.showPopupWindow();
         }
     };
 
@@ -341,24 +424,6 @@ public abstract class BaseItemDelegate implements BaseItemView<MomentsInfo>,
         COMMENT_TEXT_POOL.clearPool();
     }
 
-    @Override
-    public void setManager(MomentsManager manager) {
-        this.momentsManager = manager;
-    }
-
-    //=============================================================
-    @Override
-    public Activity getActivityContext() {
-        return context;
-    }
-
-    @Override
-    public void setActivityContext(Activity context) {
-        this.context = context;
-    }
-
-
-    protected abstract void bindData(int position, @NonNull View v, @NonNull MomentsInfo data, final int dynamicType);
 
     //=============================================================pool class
     static class CommentPool {

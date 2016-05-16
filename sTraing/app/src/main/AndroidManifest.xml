@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="songming.straing">
+          package="songming.straing">
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <!--允许应用程序改变网络状态-->
@@ -21,12 +21,12 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMSS"/>
 
     <application
+        android:name=".app.STraingApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:name=".app.STraingApp"
         android:label="@string/app_name"
-        android:supportsRtl="true"
         android:largeHeap="true"
+        android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.AppStart">
             <intent-filter>
@@ -139,6 +139,16 @@
         <!--他人圈-->
         <activity
             android:name=".ui.activity.circle.OtherCircleActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--动态详情-->
+        <activity
+            android:name=".ui.activity.circle.DynamicDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+        <!--动态创建-->
+        <activity
+            android:name=".ui.activity.circle.CircleCreateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
     </application>

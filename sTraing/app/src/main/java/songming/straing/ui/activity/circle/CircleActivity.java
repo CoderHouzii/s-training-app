@@ -1,5 +1,6 @@
 package songming.straing.ui.activity.circle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.view.View;
@@ -92,11 +93,11 @@ public class CircleActivity extends BaseTableActivity<MomentsInfo> implements Mo
         momentsShareRequest.setRequestType(REQ_SHARE);
     }
 
+
     @Override
     public void onPullDownRefresh() {
         circleListRequest.start = 0;
         circleListRequest.execute();
-
     }
 
     @Override
@@ -125,6 +126,12 @@ public class CircleActivity extends BaseTableActivity<MomentsInfo> implements Mo
                     break;
             }
         }
+    }
+
+    @Override
+    protected void onTitleRightClick(View v) {
+        super.onTitleRightClick(v);
+        UIHelper.startToDynamicCreateActivity(this);
     }
 
     private long momentsid;
@@ -201,6 +208,14 @@ public class CircleActivity extends BaseTableActivity<MomentsInfo> implements Mo
 
                 break;
         }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        setNeedReset(true);
+        onPullDownRefresh();
     }
 
     static class ViewHolder {

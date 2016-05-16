@@ -187,7 +187,7 @@ public class CommentPopup extends BasePopupWindow implements View.OnClickListene
                 }
             }
         }
-        mLikeText.setText(hasPraise?"赞":"取消");
+        mLikeText.setText(hasPraise?"取消":"赞 ");
     }
 
     //=============================================================InterFace

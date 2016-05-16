@@ -73,6 +73,7 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
         ed_input = (EditText) findViewById(R.id.ed_input);
         btn_send = (TextView) findViewById(R.id.btn_send);
         ll_input = (LinearLayout) findViewById(R.id.ll_input);
+        ll_input.setVisibility(View.VISIBLE);
 
         btn_send.setOnClickListener(this);
     }
