@@ -9,4 +9,5 @@ public class ChatReceiverInfo {
     public String rid;
     public String create_at;
     public String text;
+    public String avatar;
 }

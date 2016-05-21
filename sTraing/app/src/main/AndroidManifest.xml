@@ -151,6 +151,12 @@
             android:name=".ui.activity.circle.CircleCreateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"/>
+
+        <!--好友列表-->
+        <activity
+            android:name=".ui.activity.friend.FriendListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

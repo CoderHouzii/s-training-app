@@ -18,6 +18,7 @@ import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.request.GroupListRequest;
 import songming.straing.model.GroupInfo;
 import songming.straing.ui.activity.base.BaseActivity;
+import songming.straing.utils.UIHelper;
 import songming.straing.widget.sortlist.CharacterParser;
 import songming.straing.widget.sortlist.ClearEditText;
 import songming.straing.widget.sortlist.PinyinComparator;
@@ -90,6 +91,7 @@ public class GroupListActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 //这里要利用adapter.getItem(position)来获取当前position所对应的对象
+                UIHelper.startToGroupChatActivity(GroupListActivity.this,datas.get(position).getGroupInfo().memberCount);
             }
         });
 

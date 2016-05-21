@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import songming.straing.R;
 import songming.straing.app.https.request.CreateArticleRequest;
 import songming.straing.app.https.request.RankListRequest;
+import songming.straing.model.GroupChatInfo;
 import songming.straing.model.MissionInfo;
 import songming.straing.ui.activity.article.ArticleActivity;
 import songming.straing.ui.activity.article.ArticleDetailActivity;
@@ -22,6 +23,7 @@ import songming.straing.ui.activity.circle.CircleCreateActivity;
 import songming.straing.ui.activity.circle.DynamicDetailActivity;
 import songming.straing.ui.activity.circle.OtherCircleActivity;
 import songming.straing.ui.activity.friend.FriendAddActivity;
+import songming.straing.ui.activity.friend.FriendListActivity;
 import songming.straing.ui.activity.friend.GroupListActivity;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
@@ -250,6 +252,15 @@ public class UIHelper {
     }
 
     /**
+     * 跳转到个人聊天
+     */
+    public static void startToGroupChatActivity(Activity c, int count) {
+        Intent intent = new Intent(c, FriendsChatActivity.class);
+        intent.putExtra("mode",FriendsChatActivity.MODE_GROUP);
+        intent.putExtra("memberscount",count);
+        c.startActivity(intent);
+    }
+    /**
      * 跳转到添加好友
      */
     public static void startToAddFriendActivity(Activity c) {
@@ -289,5 +300,13 @@ public class UIHelper {
     public static void startToDynamicCreateActivity(Activity c) {
         Intent intent = new Intent(c, CircleCreateActivity.class);
         c.startActivityForResult(intent,111);
+    }
+
+    /**
+     * 跳转到动态创建
+     */
+    public static void startToFriendListActivity(Activity c) {
+        Intent intent = new Intent(c, FriendListActivity.class);
+        c.startActivity(intent);
     }
 }

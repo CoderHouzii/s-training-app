@@ -52,6 +52,14 @@ public enum  SocketMessageManager {
                 EventBus.getDefault().post(new Events.PersonChatEvent(info));
 
                 break;
+            //群聊天消息接收
+            case MessageId.SOCKET_G_CHAT_RECEIVE:
+                String receivemsg=msg.getJsonString().replace("\\","");
+                receivemsg= receivemsg.substring(1, receivemsg.length()-1);
+                ChatReceiverInfo groupInfo= JSONUtil.toObject(receivemsg, ChatReceiverInfo.class);
+                EventBus.getDefault().post(new Events.GroupChatEvent(groupInfo));
+
+                break;
             default:
                 break;
         }

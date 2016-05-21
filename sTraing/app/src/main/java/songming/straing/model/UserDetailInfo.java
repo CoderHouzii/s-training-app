@@ -28,4 +28,6 @@ public class UserDetailInfo implements Serializable {
     public int rank;
     public int score;
     public int canEdit;
+
+    public boolean hasSelected;
 }

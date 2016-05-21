@@ -136,6 +136,26 @@ public final class Events {
             this.chatReceiverInfo = chatReceiverInfo;
         }
     }
+
+    /**
+     * 群组聊天
+     */
+    public static class GroupChatEvent {
+
+        private ChatReceiverInfo chatReceiverInfo;
+
+        public ChatReceiverInfo getChatReceiverInfo() {
+            return chatReceiverInfo;
+        }
+
+        public void setChatReceiverInfo(ChatReceiverInfo chatReceiverInfo) {
+            this.chatReceiverInfo = chatReceiverInfo;
+        }
+
+        public GroupChatEvent(ChatReceiverInfo chatReceiverInfo) {
+            this.chatReceiverInfo = chatReceiverInfo;
+        }
+    }
     /**
      * 更新好友的数据
      */
