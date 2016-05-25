@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    >
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="16dp"
+        >
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:textSize="16sp"
-                android:text="任务标题"/>
+                android:text="任务标题"
+                />
 
             <EditText
                 android:id="@+id/mission_title"
@@ -28,30 +33,35 @@
                 android:layout_marginLeft="16dp"
                 android:hint="请输入标题"
                 android:textSize="14sp"
-                android:background="@null"/>
+                android:background="@null"
+                />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/line_bg"/>
+            android:background="@color/line_bg"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="预设目标："/>
+                android:text="预设目标："
+                />
 
             <Spinner
                 android:id="@+id/pinner_target"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/target"/>
+                android:entries="@array/target"
+                />
 
         </LinearLayout>
 
@@ -59,18 +69,21 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="预设组数："/>
+                android:text="预设组数："
+                />
 
             <Spinner
                 android:id="@+id/pinner_group"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/group"/>
+                android:entries="@array/group"
+                />
 
         </LinearLayout>
 
@@ -78,18 +91,21 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="预设休息时间/(s)："/>
+                android:text="预设休息时间/(s)："
+                />
 
             <Spinner
                 android:id="@+id/pinner_time"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/target"/>
+                android:entries="@array/target"
+                />
 
         </LinearLayout>
 
@@ -97,18 +113,20 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="运动类型："/>
+                android:text="运动类型："
+                />
 
             <Spinner
                 android:id="@+id/pinner_type"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/type"/>
+                />
 
         </LinearLayout>
 
@@ -116,18 +134,21 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="预设开始时间："/>
+                android:text="预设开始时间："
+                />
 
             <Spinner
                 android:id="@+id/pinner_start_time"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/start_time"/>
+                android:entries="@array/start_time"
+                />
 
         </LinearLayout>
 
@@ -135,18 +156,20 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="选择健身地点："/>
+                android:text="选择健身地点："
+                />
 
             <Spinner
                 android:id="@+id/pinner_place"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/place"/>
+                />
 
         </LinearLayout>
 
@@ -154,18 +177,20 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="选择补充饮料："/>
+                android:text="选择补充饮料："
+                />
 
             <Spinner
                 android:id="@+id/pinner_drink"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/drink"/>
+                />
 
         </LinearLayout>
 
@@ -173,20 +198,23 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:gravity="right">
+            android:gravity="right"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="选择护具："/>
+                android:text="选择护具："
+                />
 
             <Spinner
                 android:id="@+id/pinner_huju"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:entries="@array/huju"/>
+                />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_marginTop="16dp"
             android:orientation="horizontal"
@@ -194,7 +222,9 @@
             android:layout_height="45dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:weightSum="6">
+            android:weightSum="6"
+            >
+
             <Button
                 android:id="@+id/create"
                 android:layout_width="0dp"
@@ -203,11 +233,15 @@
                 android:background="@drawable/bg_button_green"
                 android:text="创建"
                 android:textSize="16sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                />
+
             <Space
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                />
+
             <Button
                 android:id="@+id/start"
                 android:layout_width="0dp"
@@ -216,7 +250,8 @@
                 android:background="@drawable/bg_button_red"
                 android:text="马上开始"
                 android:textSize="16sp"
-                android:textColor="@color/white"/>
+                android:textColor="@color/white"
+                />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

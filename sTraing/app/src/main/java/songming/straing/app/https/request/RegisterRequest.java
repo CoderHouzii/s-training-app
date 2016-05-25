@@ -1,8 +1,10 @@
 package songming.straing.app.https.request;
 
 import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import songming.straing.app.STraingApp;
 import songming.straing.app.config.Config;
 import songming.straing.app.config.LocalHost;
@@ -25,7 +27,7 @@ public class RegisterRequest extends BaseHttpRequestClient {
 
     @Override
     public void parseResponse(BaseResponse response, JSONObject json, int start, boolean hasMore) throws JSONException {
-        if (response.getStatus()==1){
+        if (response.getStatus() == 1) {
             LocalHost.INSTANCE.setKey(json.optString("key"));
             LocalHost.INSTANCE.setUserId(json.optLong("userID"));
             LocalHost.INSTANCE.setHasLogin(true);

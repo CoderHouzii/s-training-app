@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <songming.straing.widget.TitleBar
+        android:id="@id/titlebar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:right_btn_text="发布"
+        app:titleText="创建文章" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/bg_article"
+            android:hint="请输入标题"
+            android:paddingLeft="8dp"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/line_bg" />
+
+        <EditText
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_article"
+            android:gravity="top"
+            android:hint="请输入正文内容"
+            android:minEms="50"
+            android:minLines="50"
+            android:padding="8dp"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>

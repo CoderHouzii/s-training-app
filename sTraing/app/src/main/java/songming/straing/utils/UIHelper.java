@@ -3,14 +3,37 @@ package songming.straing.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+
 import songming.straing.R;
+import songming.straing.app.https.request.CreateArticleRequest;
+import songming.straing.app.https.request.RankListRequest;
+import songming.straing.model.GroupChatInfo;
+import songming.straing.model.MissionInfo;
+import songming.straing.ui.activity.article.ArticleActivity;
+import songming.straing.ui.activity.article.ArticleDetailActivity;
+import songming.straing.ui.activity.article.ArticleListActivity;
+import songming.straing.ui.activity.chat.FriendsChatActivity;
+import songming.straing.ui.activity.circle.CircleActivity;
+import songming.straing.ui.activity.circle.CircleCreateActivity;
+import songming.straing.ui.activity.circle.DynamicDetailActivity;
+import songming.straing.ui.activity.circle.OtherCircleActivity;
+import songming.straing.ui.activity.friend.FriendAddActivity;
+import songming.straing.ui.activity.friend.FriendListActivity;
+import songming.straing.ui.activity.friend.GroupListActivity;
 import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
+import songming.straing.ui.activity.mission.MissionDetailActivity;
 import songming.straing.ui.activity.person.AvatarSettingActivity;
 import songming.straing.ui.activity.person.NickAndSignatureSettingActivity;
 import songming.straing.ui.activity.person.PersonIndexActivity;
 import songming.straing.ui.activity.person.PersonSettingActivity;
+import songming.straing.ui.activity.rank.RankActivity;
 
 /**
  * ui工具类
@@ -65,9 +88,31 @@ public class UIHelper {
         return result;
     }
 
+    /**
+     * 隐藏软键盘
+     */
+    public static void hideInputMethod(View view) {
+        InputMethodManager imm = (InputMethodManager) view.getContext()
+                .getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (imm != null) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public static void hideInputMethod(final View view, long delayMillis) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideInputMethod(view);
+            }
+        }, delayMillis);
+    }
+
     //=============================================================START TO ACTIVITY METHODS
 
-    /** 跳转到登录页面 */
+    /**
+     * 跳转到登录页面
+     */
     public static void startToLoginActivity(Activity c) {
         Intent intent = new Intent(c, LoginActivity.class);
         c.startActivity(intent);
@@ -75,13 +120,17 @@ public class UIHelper {
 
     }
 
-    /** 跳转到注册页面 */
+    /**
+     * 跳转到注册页面
+     */
     public static void startToRegisterActivity(Activity c) {
         Intent intent = new Intent(c, RegisterActivity.class);
         c.startActivity(intent);
     }
 
-    /** 跳转到主页 */
+    /**
+     * 跳转到主页
+     */
     public static void startToMainActivity(Activity c) {
         Intent intent = new Intent(c, MainActivity.class);
         c.startActivity(intent);
@@ -89,23 +138,29 @@ public class UIHelper {
         c.finish();
     }
 
-    /** 跳转到个人资料页 */
+    /**
+     * 跳转到个人资料页
+     */
     public static void startToPersonSettingActivity(Activity c, int requestCode) {
         Intent intent = new Intent(c, PersonSettingActivity.class);
         c.startActivityForResult(intent, requestCode);
     }
 
-    /** 跳转到头像设置 */
+    /**
+     * 跳转到头像设置
+     */
     public static void startToAvatarSettingActivity(Activity c, int requestCode) {
         Intent intent = new Intent(c, AvatarSettingActivity.class);
         c.startActivityForResult(intent, requestCode);
     }
 
-    /** 跳转到昵称设置 */
+    /**
+     * 跳转到昵称设置
+     */
     public static void startToNickSettingActivity(Activity c, @NickAndSignatureSettingActivity.Mode
     int mode, String text, int requestCode) {
         Intent intent = new Intent(c, NickAndSignatureSettingActivity.class);
-        intent.putExtra("mode",mode);
+        intent.putExtra("mode", mode);
         switch (mode) {
             case NickAndSignatureSettingActivity.MODE_NICK:
                 intent.putExtra("nick", text);
@@ -119,10 +174,139 @@ public class UIHelper {
         c.startActivityForResult(intent, requestCode);
     }
 
-    /**跳转到个人主页*/
-    public static void startToPersonIndexActivity(Activity c,long userid){
+    /**
+     * 跳转到个人主页
+     */
+    public static void startToPersonIndexActivity(Context c, long userid) {
         Intent intent = new Intent(c, PersonIndexActivity.class);
-        intent.putExtra("userid",userid);
+        intent.putExtra("userid", userid);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到任务详情主页
+     */
+    public static void startToMissionDetailActivity(Activity c, long id) {
+        Intent intent = new Intent(c, MissionDetailActivity.class);
+        intent.putExtra(MissionDetailActivity.TRAIN_ID, id);
+        c.startActivityForResult(intent, 150);
+    }
+
+    /**
+     * 跳转到创建文章
+     */
+    public static void startToCreateArticleActivity(Activity c) {
+        Intent intent = new Intent(c, ArticleActivity.class);
+        c.startActivityForResult(intent,300);
+    }
+
+    /**
+     * 跳转到推荐列表
+     */
+    public static void startToArticleListActivity(Activity c) {
+        Intent intent = new Intent(c, ArticleListActivity.class);
+        c.startActivity(intent);
+    }
+    /**
+     * 跳转到文章列表
+     */
+    public static void startToArticleListActivity(Activity c,long userid) {
+        Intent intent = new Intent(c, ArticleListActivity.class);
+        intent.putExtra(ArticleListActivity.ARTICLE_USER_ID,userid);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到文章详情
+     */
+    public static void startToArticleDetailActivity(Activity c,long article_id) {
+        Intent intent = new Intent(c, ArticleDetailActivity.class);
+        intent.putExtra(ArticleDetailActivity.TAG_ARTICLE_ID,article_id);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到排行榜
+     */
+    public static void startToRankListActivity(Activity c) {
+        Intent intent = new Intent(c, RankActivity.class);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到群组列表
+     */
+    public static void startToGroupListActivity(Activity c) {
+        Intent intent = new Intent(c, GroupListActivity.class);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到个人聊天
+     */
+    public static void startToPersonChatActivity(Activity c,long userid,String username) {
+        Intent intent = new Intent(c, FriendsChatActivity.class);
+        intent.putExtra("id",userid);
+        intent.putExtra("name",username);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到个人聊天
+     */
+    public static void startToGroupChatActivity(Activity c, int count) {
+        Intent intent = new Intent(c, FriendsChatActivity.class);
+        intent.putExtra("mode",FriendsChatActivity.MODE_GROUP);
+        intent.putExtra("memberscount",count);
+        c.startActivity(intent);
+    }
+    /**
+     * 跳转到添加好友
+     */
+    public static void startToAddFriendActivity(Activity c) {
+        Intent intent = new Intent(c, FriendAddActivity.class);
+        c.startActivityForResult(intent,233);
+    }
+
+    /**
+     * 跳转到圈
+     */
+    public static void startToCircleActivity(Activity c) {
+        Intent intent = new Intent(c, CircleActivity.class);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到别人的圈
+     */
+    public static void startToOtherCircleActivity(Activity c,long targetId) {
+        Intent intent = new Intent(c, OtherCircleActivity.class);
+        intent.putExtra("userid",targetId);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到动态详情
+     */
+    public static void startToDynamicDetailActivity(Activity c,long momentid) {
+        Intent intent = new Intent(c, DynamicDetailActivity.class);
+        intent.putExtra("momentid",momentid);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到动态创建
+     */
+    public static void startToDynamicCreateActivity(Activity c) {
+        Intent intent = new Intent(c, CircleCreateActivity.class);
+        c.startActivityForResult(intent,111);
+    }
+
+    /**
+     * 跳转到动态创建
+     */
+    public static void startToFriendListActivity(Activity c) {
+        Intent intent = new Intent(c, FriendListActivity.class);
         c.startActivity(intent);
     }
 }

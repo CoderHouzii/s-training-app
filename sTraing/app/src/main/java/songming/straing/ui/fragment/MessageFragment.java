@@ -10,6 +10,8 @@ import songming.straing.ui.fragment.base.BaseFragment;
  * 消息
  */
 public class MessageFragment extends BaseFragment{
+
+
     @Override
     public View initView(LayoutInflater inflater, ViewGroup container) {
         return inflater.inflate(R.layout.fragment_message,container,false);

@@ -9,14 +9,21 @@ import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+
 import java.util.LinkedList;
+
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import songming.straing.R;
+import songming.straing.app.config.Config;
 import songming.straing.app.config.LocalHost;
 import songming.straing.app.eventbus.Events;
 import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.request.PersonDetailRequest;
 import songming.straing.app.interfaces.BaseResponseListener;
+import songming.straing.app.socket.SocketClient;
+import songming.straing.app.socket.SocketService;
 import songming.straing.model.UserDetailInfo;
 import songming.straing.ui.activity.base.BaseActivity;
 import songming.straing.ui.activity.login.LoginActivity;
@@ -44,11 +51,11 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
 
     private int currentPos;
 
-    private static final int FRAG_INDEX=0x10;
-    private static final int FRAG_FRIENDS=0x11;
-    private static final int FRAG_MISSION=0x12;
-    private static final int FRAG_MESSAGE=0x13;
-    private static final int FRAG_ME=0x14;
+    private static final int FRAG_INDEX = 0x10;
+    private static final int FRAG_FRIENDS = 0x11;
+    private static final int FRAG_MISSION = 0x12;
+    private static final int FRAG_MESSAGE = 0x13;
+    private static final int FRAG_ME = 0x14;
 
     private BaseFragment currentFrag;
 
@@ -62,7 +69,15 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
         initView();
         initFragments();
         transateFragment(FRAG_INDEX);
+        EventBus.getDefault().register(this);
     }
+
+    @Override
+    protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
+
 
     private void initView() {
         titlebar = (TitleBar) findViewById(R.id.titlebar);
@@ -74,7 +89,7 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
 
     private void initReq() {
         //请求一次用户详情
-        if (!LocalHost.INSTANCE.getKey().equals("null")&&LocalHost.INSTANCE.getUserId()!=0) {
+        if (!LocalHost.INSTANCE.getKey().equals("null") && LocalHost.INSTANCE.getUserId() != 0) {
             PersonDetailRequest request = new PersonDetailRequest();
             request.setOnResponseListener(new BaseResponseListener() {
                 @Override
@@ -106,7 +121,7 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
                     }
                 }
             });
-            request.userid=LocalHost.INSTANCE.getUserId();
+            request.userid = LocalHost.INSTANCE.getUserId();
             request.post();
         }
     }
@@ -153,14 +168,43 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
         for (int i = 0; i < mFragments.size(); i++) {
             transaction.hide(mFragments.valueAt(i));
         }
-        currentFrag=mFragments.get(value);
-        if (currentFrag!=null){
+        currentFrag = mFragments.get(value);
+        if (currentFrag != null) {
             titlebar.setTitle(currentFrag.getTitle());
-        }else {
+        } else {
             titlebar.setTitle("s-Training");
         }
         transaction.show(mFragments.get(value)).commitAllowingStateLoss();
+        if (value == FRAG_FRIENDS) {
+            titlebar.setRightButtonVisibility(View.VISIBLE);
+            titlebar.setRightButtonText("添加好友");
+            titlebar.setOnRightBtnClickListener(onRightBtnClickListener);
+        } else if (value == FRAG_MESSAGE) {
+            titlebar.setRightButtonVisibility(View.VISIBLE);
+            titlebar.setRightButtonText("添加群聊");
+            titlebar.setOnRightBtnClickListener(onMessageRightClickListener);
+        } else {
+            titlebar.setOnRightBtnClickListener(null);
+            titlebar.setRightButtonText("");
+            titlebar.setRightButtonVisibility(View.GONE);
+        }
     }
+
+    private TitleBar.OnRightBtnClickListener onRightBtnClickListener = new TitleBar.OnRightBtnClickListener() {
+        @Override
+        public void onClick(View v) {
+            UIHelper.startToAddFriendActivity(MainActivity.this);
+
+        }
+    };
+
+    private TitleBar.OnRightBtnClickListener onMessageRightClickListener = new TitleBar.OnRightBtnClickListener() {
+        @Override
+        public void onClick(View v) {
+            UIHelper.startToFriendListActivity(MainActivity.this);
+
+        }
+    };
 
     private long exittime;
 
@@ -171,8 +215,7 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
                 if ((System.currentTimeMillis() - exittime) > 2000) {
                     ToastUtils.ToastMessage(this, "再点一次退出");
                     exittime = System.currentTimeMillis();
-                }
-                else {
+                } else {
                     moveTaskToBack(false);
                 }
                 return true;
@@ -185,12 +228,26 @@ public class MainActivity extends FragmentActivity implements BottomTabBar.OnBot
         super.onActivityResult(requestCode, resultCode, data);
 
         /**解决fragment的onActivityResult不回调的问题*/
-        if (currentFrag!=null){
-            currentFrag.onActivityResult(requestCode,resultCode,data);
-        }else {
+        if (currentFrag != null) {
+            currentFrag.onActivityResult(requestCode, resultCode, data);
+        } else {
             for (int i = 0; i < mFragments.size(); i++) {
-                mFragments.valueAt(i).onActivityResult(requestCode,resultCode,data);
+                mFragments.valueAt(i).onActivityResult(requestCode, resultCode, data);
             }
         }
+    }
+
+    @Subscribe
+    public void onEvent(Events.ChangeToFragment event) {
+        if (event != null) {
+            transateFragment(event.getFragIndex());
+        }
+    }
+
+    @Subscribe
+    public void onEventMainThread(Events.StartToLoginEvent event) {
+        UIHelper.startToLoginActivity(this);
+        SocketService.CallService(this, Config.SocketIntent.Types.DISCONNECT);
+        finish();
     }
 }

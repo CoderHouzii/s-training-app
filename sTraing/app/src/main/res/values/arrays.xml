@@ -12,6 +12,19 @@
         <item>1</item>
         <item>2</item>
         <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
     </string-array>
 
     <string-array name="time">
@@ -20,14 +33,6 @@
         <item>120</item>
     </string-array>
 
-    <string-array name="type">
-        <item>俯卧撑</item>
-        <item>哑铃飞鸟</item>
-        <item>哑铃推胸</item>
-        <item>引体向上宽握</item>
-        <item>引体向上窄握</item>
-        <item>站姿哑铃推举</item>
-    </string-array>
 
     <string-array name="start_time">
         <item>00:45</item>
@@ -56,24 +61,39 @@
         <item>23:45</item>
     </string-array>
 
-    <string-array name="place">
-        <item>室外/操场</item>
-        <item>室内/健身房</item>
-        <item>室内/自备健身器材</item>
+    <string-array name="pick_count">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+
     </string-array>
 
-    <string-array name="drink">
-        <item>肌肉科技</item>
-        <item>普通蛋白粉</item>
-        <item>脱脂牛奶</item>
-        <item>功能饮料</item>
-        <item>无</item>
-    </string-array>
-
-    <string-array name="huju">
-        <item>nike</item>
-        <item>迪卡侬</item>
-        <item>其他</item>
-        <item>无</item>
-    </string-array>
 </resources>

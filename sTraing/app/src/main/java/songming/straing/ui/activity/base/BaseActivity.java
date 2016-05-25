@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import com.socks.library.KLog;
+import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +69,9 @@ public class BaseActivity extends Activity implements BaseResponseListener {
         mDialogRefreshRunnable = new DialogRefreshRunnable();
     }
 
-    protected void onTitleLeftClick() {}
+    protected void onTitleLeftClick() {
+        finish();
+    }
 
     protected void onTitleRightClick(View v) {}
 
@@ -123,7 +126,7 @@ public class BaseActivity extends Activity implements BaseResponseListener {
     }
 
     @Override
-    public void onSuccess(BaseResponse response) {
+    public void onSuccess(BaseResponse response)   {
         if (mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
@@ -197,11 +200,6 @@ public class BaseActivity extends Activity implements BaseResponseListener {
 
     }
 
-    @Subscribe
-    public void onEvent(Events.StartToLoginEvent event) {
-        UIHelper.startToLoginActivity(this);
-        finish();
-    }
 
     public <V extends View> V getView(int resId) {
         try {

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:paddingBottom="16dp">
+    <include layout="@layout/include_item_header" android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/nick"
+        android:layout_below="@id/nick"
+        android:layout_marginLeft="48dp"
+        android:layout_marginTop="8dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/share_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="72dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/click_bg"
+        android:paddingBottom="8dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="8dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        >
+
+        <TextView
+            android:id="@+id/share_nick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/avatar"
+            android:layout_toRightOf="@id/avatar"
+            android:textColor="@color/nick"
+            android:textSize="12sp"
+            tools:text="羽翼君"/>
+
+        <TextView
+            android:id="@+id/share_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/share_nick"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/front_dark_gray"
+            android:textSize="12sp"
+            tools:text="this is share"
+            />
+
+    </RelativeLayout>
+    <include layout="@layout/include_item_bottom" android:visibility="gone"/>
+
+</LinearLayout>

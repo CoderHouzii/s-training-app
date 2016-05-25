@@ -59,6 +59,7 @@ public enum SocketClient {
 
     public synchronized boolean send(byte[] data) {
         if (isConnected()) {
+            KLog.d("socket","正在发送消息："+new String(data));
             mChannel.writeAndFlush(data);
             return true;
         }
@@ -79,6 +80,7 @@ public enum SocketClient {
                 KLog.d(TAG, "成功连接到服务器");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             KLog.e(TAG, "连接失败，打印的异常为>>>>>>>  " + e.toString());
             return false;
         }

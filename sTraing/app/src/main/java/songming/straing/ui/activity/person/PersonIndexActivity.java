@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import songming.straing.R;
+import songming.straing.app.config.LocalHost;
 import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.request.PersonDetailRequest;
 import songming.straing.model.UserDetailInfo;
 import songming.straing.ui.activity.base.BaseActivity;
+import songming.straing.utils.UIHelper;
 import songming.straing.widget.CircleImageView;
 
 /**
@@ -24,16 +26,17 @@ public class PersonIndexActivity extends BaseActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_person_index);
-        userid=getIntent().getLongExtra("userid",-1);
-        if (userid==-1)finish();
-        initReq();
+        userid=getIntent().getLongExtra("userid",0);
+        if (userid==0)finish();
         vh=new ViewHolder(getWindow().getDecorView());
+        initReq();
 
     }
 
     private void initReq() {
         mPersonDetailRequest=new PersonDetailRequest();
         mPersonDetailRequest.setOnResponseListener(this);
+        mPersonDetailRequest.userid=userid;
 
         UserDetailInfo info=mPersonDetailRequest.loadCache(userid);
         updateView(info);
@@ -76,8 +79,14 @@ public class PersonIndexActivity extends BaseActivity implements View.OnClickLis
             case R.id.practise:
                 break;
             case R.id.circle:
+                if (userid==LocalHost.INSTANCE.getUserId()){
+                    UIHelper.startToCircleActivity(this);
+                }else {
+                    UIHelper.startToOtherCircleActivity(this,userid);
+                }
                 break;
             case R.id.article:
+                UIHelper.startToArticleListActivity(this,userid);
                 break;
             case R.id.signature:
                 break;

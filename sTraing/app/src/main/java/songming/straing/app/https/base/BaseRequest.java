@@ -2,13 +2,16 @@ package songming.straing.app.https.base;
 
 import android.text.TextUtils;
 import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -52,19 +55,21 @@ public class BaseRequest extends Request<BaseResponse> {
             JSONTokener jsonParser = new JSONTokener(responseStr);
             JSONObject json = null;
             json = (JSONObject) jsonParser.nextValue();
-            if (json!=null) {
+            if (json != null) {
                 baseResponse.setStatus(json.optInt("status"));
-                start=json.optInt("start");
+                start = json.optInt("start");
                 baseResponse.setErrorMsg(json.optString("msg"));
                 baseResponse.setErrorCode(json.optInt("code"));
-                hasMore=json.optInt("more")==1;
+                hasMore = json.optInt("more") == 1;
+                baseResponse.setStart(start);
+                baseResponse.setHasMore(hasMore);
             }
             baseResponse.setJsonStr(responseStr);
             baseResponse.setJSONObject(json);
 
             baseResponse.setStart(start);
             baseResponse.setHasMore(hasMore);
-            mClient.parseResponse(baseResponse, json,start,hasMore);
+            mClient.parseResponse(baseResponse, json, start, hasMore);
         } catch (JSONException e) {
             e.printStackTrace();
             Log.e(TAG, ">>>>>>json解析失败<<<<<<<<\n\n" + ">>>>>>>>>>>>>>>>>>>>>该json字符串为：" + responseStr + "\n" +

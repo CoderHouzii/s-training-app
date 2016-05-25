@@ -42,6 +42,9 @@ public class MessageId {
     // 接收
     public static final int SOCKET_G_CHAT_RECEIVE=21010;
 
+    /**============================================================= 强制下线*/
+    public static final int SOCKET_EXIT=21005;
+
 
 
 

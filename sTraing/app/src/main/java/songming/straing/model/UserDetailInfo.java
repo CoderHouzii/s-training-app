@@ -19,7 +19,7 @@ public class UserDetailInfo implements Serializable {
      * canEdit : 1
      */
 
-    public int userID;
+    public long userID;
     public String username;
     public String signNature;
     public String phone;
@@ -28,4 +28,6 @@ public class UserDetailInfo implements Serializable {
     public int rank;
     public int score;
     public int canEdit;
+
+    public boolean hasSelected;
 }

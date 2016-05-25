@@ -1,10 +1,12 @@
 package songming.straing.app.https.base;
 
 import android.util.Log;
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.socks.library.KLog;
 import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONException;
@@ -47,6 +49,7 @@ public abstract class BaseHttpRequestClient implements Response.Listener<BaseRes
         mBaseRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 3, 1.0f));
         mBaseRequest.setShouldCache(false);
         mBaseRequest.setTag(this.getClass().getSimpleName());
+        KLog.d("requestUrl",mBaseRequest.getUrl());
         postStart();
         VolleyManager.INSTANCE.addQueue(mBaseRequest);
     }
@@ -65,12 +68,20 @@ public abstract class BaseHttpRequestClient implements Response.Listener<BaseRes
         mBaseRequest.setRetryPolicy(new DefaultRetryPolicy(5 * 1000, 3, 1.0f));
         mBaseRequest.setShouldCache(false);
         mBaseRequest.setTag(this.getClass().getSimpleName());
+        try {
+            if (mBaseRequest!=null)
+            KLog.d("requestUrl",mBaseRequest.getUrl()+"\n"+"body>>>>>>>>  "+new String(mBaseRequest.getBody()));
+        } catch (AuthFailureError authFailureError) {
+            authFailureError.printStackTrace();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
         postStart();
         VolleyManager.INSTANCE.addQueue(mBaseRequest);
     }
 
     public void post() {
-        this.post(true);
+        this.post(false);
     }
 
     //=============================================================状态回调

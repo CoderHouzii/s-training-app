@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/popup_bg"
+    >
+
+    <LinearLayout
+        android:id="@+id/popup_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/popup_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/article_action"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_comment_selector"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:text="删除"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="16sp"/>
+
+        <View
+            style="@style/line_margintop0"
+            android:layout_marginRight="16dp"/>
+
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_comment_selector"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:text="取消"
+            android:textColor="@color/front_black"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+</RelativeLayout>
