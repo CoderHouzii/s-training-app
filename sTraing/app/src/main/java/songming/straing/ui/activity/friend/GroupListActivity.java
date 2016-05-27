@@ -51,7 +51,6 @@ public class GroupListActivity extends BaseActivity {
     private GroupListRequest groupListRequest;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +90,7 @@ public class GroupListActivity extends BaseActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 //这里要利用adapter.getItem(position)来获取当前position所对应的对象
-                UIHelper.startToGroupChatActivity(GroupListActivity.this,datas.get(position).getGroupInfo().memberCount);
+                UIHelper.startToGroupChatActivity(GroupListActivity.this, datas.get(position).getGroupInfo().memberCount, datas.get(position).getGroupInfo().groupID);
             }
         });
 
