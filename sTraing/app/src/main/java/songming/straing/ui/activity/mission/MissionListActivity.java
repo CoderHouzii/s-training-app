@@ -58,8 +58,8 @@ public class MissionListActivity extends BaseActivity {
     private void initReq() {
         mMissionListRequest = new MissionListRequest();
         mMissionListRequest.setOnResponseListener(this);
-        mMissionListRequest.userid = LocalHost.INSTANCE.getUserId();
-        changeData(mMissionListRequest.loadCache(LocalHost.INSTANCE.getUserId()));
+        mMissionListRequest.userid = userid;
+        changeData(mMissionListRequest.loadCache(userid));
         mAdapter.notifyDataSetChanged();
         mMissionListRequest.execute();
 
