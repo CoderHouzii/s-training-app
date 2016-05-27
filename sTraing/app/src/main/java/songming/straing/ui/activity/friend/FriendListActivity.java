@@ -74,7 +74,7 @@ public class FriendListActivity extends BaseActivity {
                     adapter.notifyDataSetChanged();
                     break;
                 case 0x12:
-                    UIHelper.startToGroupChatActivity(this, ((GroupChatInfo) response.getData()).memberCount);
+                    UIHelper.startToGroupChatActivity(this, ((GroupChatInfo) response.getData()).memberCount,((GroupChatInfo) response.getData()).groupID);
                     finish();
                     break;
             }

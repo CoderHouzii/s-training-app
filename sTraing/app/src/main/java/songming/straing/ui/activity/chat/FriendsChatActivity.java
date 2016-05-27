@@ -62,6 +62,7 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
     private int mode = MODE_FRIEND;
 
     private int personCount;
+    private long groupid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +90,12 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
             }
         } else if (mode == MODE_GROUP) {
             personCount =  getIntent().getIntExtra("memberscount",0);
+            groupid=getIntent().getLongExtra("groupid",0);
+            if (groupid==0){
+                finish();
+                return;
+            }
+
             setTitleText("群聊" + String.format(Locale.getDefault(), "(%d 人)", personCount));
         }
     }
@@ -126,7 +133,15 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
             Toast.makeText(this, "不能输入空内容哦", Toast.LENGTH_SHORT).show();
             return;
         }
-        SocketService.CallServiceSend(this, new SendChatMessage(LocalHost.INSTANCE.getKey(), LocalHost.INSTANCE.getUserId(), friendId, input).getMessageData());
+        switch (mode){
+            case MODE_FRIEND:
+                SocketService.CallServiceSend(this, new SendChatMessage(LocalHost.INSTANCE.getKey(), LocalHost.INSTANCE.getUserId(), friendId, input).getMessageData());
+                break;
+            case MODE_GROUP:
+                SocketService.CallServiceSend(this, new SendChatMessage(LocalHost.INSTANCE.getKey(), LocalHost.INSTANCE.getUserId(), groupid, input).getMessageData());
+                break;
+
+        }
         refreshData(input, LocalHost.INSTANCE.getUserId());
         ed_input.setText("");
     }

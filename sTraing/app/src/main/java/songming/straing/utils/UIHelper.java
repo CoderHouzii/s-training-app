@@ -198,7 +198,7 @@ public class UIHelper {
      */
     public static void startToCreateArticleActivity(Activity c) {
         Intent intent = new Intent(c, ArticleActivity.class);
-        c.startActivityForResult(intent,300);
+        c.startActivityForResult(intent, 300);
     }
 
     /**
@@ -208,21 +208,22 @@ public class UIHelper {
         Intent intent = new Intent(c, ArticleListActivity.class);
         c.startActivity(intent);
     }
+
     /**
      * 跳转到文章列表
      */
-    public static void startToArticleListActivity(Activity c,long userid) {
+    public static void startToArticleListActivity(Activity c, long userid) {
         Intent intent = new Intent(c, ArticleListActivity.class);
-        intent.putExtra(ArticleListActivity.ARTICLE_USER_ID,userid);
+        intent.putExtra(ArticleListActivity.ARTICLE_USER_ID, userid);
         c.startActivity(intent);
     }
 
     /**
      * 跳转到文章详情
      */
-    public static void startToArticleDetailActivity(Activity c,long article_id) {
+    public static void startToArticleDetailActivity(Activity c, long article_id) {
         Intent intent = new Intent(c, ArticleDetailActivity.class);
-        intent.putExtra(ArticleDetailActivity.TAG_ARTICLE_ID,article_id);
+        intent.putExtra(ArticleDetailActivity.TAG_ARTICLE_ID, article_id);
         c.startActivity(intent);
     }
 
@@ -245,28 +246,30 @@ public class UIHelper {
     /**
      * 跳转到个人聊天
      */
-    public static void startToPersonChatActivity(Activity c,long userid,String username) {
+    public static void startToPersonChatActivity(Activity c, long userid, String username) {
         Intent intent = new Intent(c, FriendsChatActivity.class);
-        intent.putExtra("id",userid);
-        intent.putExtra("name",username);
+        intent.putExtra("id", userid);
+        intent.putExtra("name", username);
         c.startActivity(intent);
     }
 
     /**
      * 跳转到个人聊天
      */
-    public static void startToGroupChatActivity(Activity c, int count) {
+    public static void startToGroupChatActivity(Activity c, int count, long groupid) {
         Intent intent = new Intent(c, FriendsChatActivity.class);
-        intent.putExtra("mode",FriendsChatActivity.MODE_GROUP);
-        intent.putExtra("memberscount",count);
+        intent.putExtra("mode", FriendsChatActivity.MODE_GROUP);
+        intent.putExtra("memberscount", count);
+        intent.putExtra("groupid", groupid);
         c.startActivity(intent);
     }
+
     /**
      * 跳转到添加好友
      */
     public static void startToAddFriendActivity(Activity c) {
         Intent intent = new Intent(c, FriendAddActivity.class);
-        c.startActivityForResult(intent,233);
+        c.startActivityForResult(intent, 233);
     }
 
     /**
@@ -280,18 +283,18 @@ public class UIHelper {
     /**
      * 跳转到别人的圈
      */
-    public static void startToOtherCircleActivity(Activity c,long targetId) {
+    public static void startToOtherCircleActivity(Activity c, long targetId) {
         Intent intent = new Intent(c, OtherCircleActivity.class);
-        intent.putExtra("userid",targetId);
+        intent.putExtra("userid", targetId);
         c.startActivity(intent);
     }
 
     /**
      * 跳转到动态详情
      */
-    public static void startToDynamicDetailActivity(Activity c,long momentid) {
+    public static void startToDynamicDetailActivity(Activity c, long momentid) {
         Intent intent = new Intent(c, DynamicDetailActivity.class);
-        intent.putExtra("momentid",momentid);
+        intent.putExtra("momentid", momentid);
         c.startActivity(intent);
     }
 
@@ -300,7 +303,7 @@ public class UIHelper {
      */
     public static void startToDynamicCreateActivity(Activity c) {
         Intent intent = new Intent(c, CircleCreateActivity.class);
-        c.startActivityForResult(intent,111);
+        c.startActivityForResult(intent, 111);
     }
 
     /**
@@ -314,8 +317,9 @@ public class UIHelper {
     /**
      * 跳转到动态创建
      */
-    public static void startToPersonMissionListActivity(Activity c,long userid) {
+    public static void startToPersonMissionListActivity(Activity c, long userid) {
         Intent intent = new Intent(c, MissionListActivity.class);
+        intent.putExtra("userid", userid);
         c.startActivity(intent);
     }
 }
