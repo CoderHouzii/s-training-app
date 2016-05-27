@@ -12,6 +12,7 @@ import java.util.List;
 
 import songming.straing.R;
 import songming.straing.model.ChatInfo;
+import songming.straing.utils.UIHelper;
 import songming.straing.widget.CircleImageView;
 
 /**
@@ -64,7 +65,7 @@ public class ChatAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LeftViewHolder leftViewHolder = null;
         RightViewHolder rightViewHolder = null;
         if (convertView == null) {
@@ -102,11 +103,23 @@ public class ChatAdapter extends BaseAdapter {
                 rightViewHolder = (RightViewHolder) convertView.getTag();
                 rightViewHolder.avatar.loadImageDefault(getItem(position).second.avatar);
                 rightViewHolder.content.setText(getItem(position).second.content);
+                rightViewHolder.avatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIHelper.startToPersonIndexActivity(context,getItem(position).second.userid);
+                    }
+                });
                 break;
             case 2:
                 leftViewHolder = (LeftViewHolder) convertView.getTag();
                 leftViewHolder.avatar.loadImageDefault(getItem(position).second.avatar);
                 leftViewHolder.content.setText(getItem(position).second.content);
+                leftViewHolder.avatar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        UIHelper.startToPersonIndexActivity(context,getItem(position).second.userid);
+                    }
+                });
                 break;
         }
 

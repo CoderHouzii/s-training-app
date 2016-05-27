@@ -6,9 +6,11 @@ package songming.straing.model;
 public class ChatInfo {
     public String avatar;
     public String content;
+    public long userid;
 
-    public ChatInfo(String avatar, String content) {
+    public ChatInfo(String avatar, String content,long userid) {
         this.avatar = avatar;
         this.content = content;
+        this.userid=userid;
     }
 }

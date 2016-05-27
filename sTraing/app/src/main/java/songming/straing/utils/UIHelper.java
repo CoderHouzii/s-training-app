@@ -29,6 +29,7 @@ import songming.straing.ui.activity.index.MainActivity;
 import songming.straing.ui.activity.login.LoginActivity;
 import songming.straing.ui.activity.login.RegisterActivity;
 import songming.straing.ui.activity.mission.MissionDetailActivity;
+import songming.straing.ui.activity.mission.MissionListActivity;
 import songming.straing.ui.activity.person.AvatarSettingActivity;
 import songming.straing.ui.activity.person.NickAndSignatureSettingActivity;
 import songming.straing.ui.activity.person.PersonIndexActivity;
@@ -307,6 +308,14 @@ public class UIHelper {
      */
     public static void startToFriendListActivity(Activity c) {
         Intent intent = new Intent(c, FriendListActivity.class);
+        c.startActivity(intent);
+    }
+
+    /**
+     * 跳转到动态创建
+     */
+    public static void startToPersonMissionListActivity(Activity c,long userid) {
+        Intent intent = new Intent(c, MissionListActivity.class);
         c.startActivity(intent);
     }
 }

@@ -15,6 +15,7 @@ import java.util.List;
 
 import songming.straing.R;
 import songming.straing.app.adapter.MissionListAdapter;
+import songming.straing.app.config.LocalHost;
 import songming.straing.app.eventbus.Events;
 import songming.straing.app.https.base.BaseResponse;
 import songming.straing.app.https.request.MissionListRequest;
@@ -64,7 +65,8 @@ public class IndexFragment extends BaseFragment implements View.OnClickListener 
     private void initReq() {
         mMissionListRequest=new MissionListRequest();
         mMissionListRequest.setOnResponseListener(this);
-        changeData(mMissionListRequest.loadCache());
+        mMissionListRequest.userid=LocalHost.INSTANCE.getUserId();
+        changeData(mMissionListRequest.loadCache(LocalHost.INSTANCE.getUserId()));
         mAdapter.notifyDataSetChanged();
         mMissionListRequest.execute();
 

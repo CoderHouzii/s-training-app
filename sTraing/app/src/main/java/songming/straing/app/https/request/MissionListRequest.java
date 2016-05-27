@@ -18,12 +18,13 @@ import songming.straing.utils.RequestUrlUtils;
  * 任务列表
  */
 public class MissionListRequest extends BaseHttpRequestClient {
+    public long userid;
     @Override
     public String setUrl() {
         return new RequestUrlUtils.Builder().setHost(Config.HOST)
                                             .setPath("/training/list")
                                             .addParam("key", LocalHost.INSTANCE.getKey())
-                                            .addParam("target_user_id", LocalHost.INSTANCE.getUserId())
+                                            .addParam("target_user_id", userid)
                                             .addParam("start", 0)
                                             .addParam("count", 100)
                                             .build();
@@ -36,12 +37,12 @@ public class MissionListRequest extends BaseHttpRequestClient {
                     new TypeToken<ArrayList<MissionInfo>>() {}.getType());
             response.setData(list);
 
-            CacheManager.INSTANCE.save("mission_list" + LocalHost.INSTANCE.getUserId(), json.optString("trainings"));
+            CacheManager.INSTANCE.save("mission_list" + userid, json.optString("trainings"));
         }
     }
 
-    public List<MissionInfo> loadCache() {
-        return JSONUtil.toList(CacheManager.INSTANCE.loadCacheString("mission_list" + LocalHost.INSTANCE.getUserId()),
+    public List<MissionInfo> loadCache(long id) {
+        return JSONUtil.toList(CacheManager.INSTANCE.loadCacheString("mission_list" + id),
                 new TypeToken<ArrayList<MissionInfo>>() {}.getType());
     }
 }

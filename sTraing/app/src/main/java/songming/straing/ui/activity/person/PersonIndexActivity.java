@@ -77,6 +77,7 @@ public class PersonIndexActivity extends BaseActivity implements View.OnClickLis
             case R.id.avatar:
                 break;
             case R.id.practise:
+                UIHelper.startToPersonMissionListActivity(this,userid);
                 break;
             case R.id.circle:
                 if (userid==LocalHost.INSTANCE.getUserId()){

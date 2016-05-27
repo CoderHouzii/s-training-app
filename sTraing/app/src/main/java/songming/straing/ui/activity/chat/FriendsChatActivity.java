@@ -138,6 +138,20 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
     }
 
     @Subscribe
+    public void onEvent(final Events.PersonChatEvent event) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ChatReceiverInfo info = event.getChatReceiverInfo();
+                if (info != null) {
+                    getOtherAvatar(info.text, Long.parseLong(info.sid));
+                }
+            }
+        });
+    }
+
+
+    @Subscribe
     public void onEvent(final Events.GroupChatEvent event) {
         runOnUiThread(new Runnable() {
             @Override
@@ -188,9 +202,9 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
     private void refreshData(String content, long receiveId) {
         Pair<Integer, ChatInfo> infoPair;
         if (receiveId == LocalHost.INSTANCE.getUserId()) {
-            infoPair = new Pair<>(ChatAdapter.RIGHT, new ChatInfo(LocalHost.INSTANCE.getUserAvatar(), content));
+            infoPair = new Pair<>(ChatAdapter.RIGHT, new ChatInfo(LocalHost.INSTANCE.getUserAvatar(), content,receiveId));
         } else {
-            infoPair = new Pair<>(ChatAdapter.LEFT, new ChatInfo(otherAvatar, content));
+            infoPair = new Pair<>(ChatAdapter.LEFT, new ChatInfo(otherAvatar, content,receiveId));
         }
 
         datas.add(infoPair);
@@ -201,9 +215,9 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
         if (info == null) return;
         Pair<Integer, ChatInfo> infoPair;
         if (Long.parseLong(info.rid.trim()) == LocalHost.INSTANCE.getUserId()) {
-            infoPair = new Pair<>(ChatAdapter.RIGHT, new ChatInfo(LocalHost.INSTANCE.getUserAvatar(), info.text));
+            infoPair = new Pair<>(ChatAdapter.RIGHT, new ChatInfo(LocalHost.INSTANCE.getUserAvatar(), info.text,Long.parseLong(info.rid.trim())));
         } else {
-            infoPair = new Pair<>(ChatAdapter.LEFT, new ChatInfo(info.avatar, info.text));
+            infoPair = new Pair<>(ChatAdapter.LEFT, new ChatInfo(info.avatar, info.text,Long.parseLong(info.rid.trim())));
         }
 
         datas.add(infoPair);

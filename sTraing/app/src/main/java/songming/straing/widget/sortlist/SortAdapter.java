@@ -11,6 +11,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import songming.straing.R;
+import songming.straing.utils.UIHelper;
 import songming.straing.widget.CircleImageView;
 
 public class SortAdapter extends BaseAdapter implements SectionIndexer {
@@ -76,6 +77,14 @@ public class SortAdapter extends BaseAdapter implements SectionIndexer {
         } else {
             viewHolder.circleImageView.setVisibility(View.GONE);
         }
+
+        viewHolder.circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (list.get(position).getUserInfo() != null)
+                    UIHelper.startToPersonIndexActivity(mContext, list.get(position).getUserInfo().userID);
+            }
+        });
 
         return view;
 
