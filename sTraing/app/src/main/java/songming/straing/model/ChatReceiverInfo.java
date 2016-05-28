@@ -7,6 +7,7 @@ public class ChatReceiverInfo {
     public String key;
     public String sid;
     public String rid;
+    public String rgid;
     public String create_at;
     public String text;
     public String avatar;

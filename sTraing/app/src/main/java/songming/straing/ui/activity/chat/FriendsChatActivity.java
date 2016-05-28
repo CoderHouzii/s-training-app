@@ -30,6 +30,7 @@ import songming.straing.app.interfaces.BaseResponseListener;
 import songming.straing.app.socket.SendSocketMessage;
 import songming.straing.app.socket.SocketService;
 import songming.straing.app.socket.message.SendChatMessage;
+import songming.straing.app.socket.message.SendGroupChatMessage;
 import songming.straing.model.ChatInfo;
 import songming.straing.model.ChatReceiverInfo;
 import songming.straing.model.GroupChatInfo;
@@ -138,7 +139,7 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
                 SocketService.CallServiceSend(this, new SendChatMessage(LocalHost.INSTANCE.getKey(), LocalHost.INSTANCE.getUserId(), friendId, input).getMessageData());
                 break;
             case MODE_GROUP:
-                SocketService.CallServiceSend(this, new SendChatMessage(LocalHost.INSTANCE.getKey(), LocalHost.INSTANCE.getUserId(), groupid, input).getMessageData());
+                SocketService.CallServiceSend(this, new SendGroupChatMessage(LocalHost.INSTANCE.getKey(), LocalHost.INSTANCE.getUserId(), groupid, input).getMessageData());
                 break;
 
         }
@@ -229,10 +230,10 @@ public class FriendsChatActivity extends BaseActivity implements View.OnClickLis
     private void refreshGroupData(ChatReceiverInfo info) {
         if (info == null) return;
         Pair<Integer, ChatInfo> infoPair;
-        if (Long.parseLong(info.rid.trim()) == LocalHost.INSTANCE.getUserId()) {
-            infoPair = new Pair<>(ChatAdapter.RIGHT, new ChatInfo(LocalHost.INSTANCE.getUserAvatar(), info.text,Long.parseLong(info.rid.trim())));
+        if (Long.parseLong(info.rgid.trim()) == LocalHost.INSTANCE.getUserId()) {
+            infoPair = new Pair<>(ChatAdapter.RIGHT, new ChatInfo(LocalHost.INSTANCE.getUserAvatar(), info.text,Long.parseLong(info.rgid.trim())));
         } else {
-            infoPair = new Pair<>(ChatAdapter.LEFT, new ChatInfo(info.avatar, info.text,Long.parseLong(info.rid.trim())));
+            infoPair = new Pair<>(ChatAdapter.LEFT, new ChatInfo(info.avatar, info.text,Long.parseLong(info.rgid.trim())));
         }
 
         datas.add(infoPair);
