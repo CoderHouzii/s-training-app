@@ -1,7 +1,6 @@
 package songming.straing.widget;
 
 /**
- * Created by 大灯泡 on 2015/9/22.
  */
 
 import android.content.Context;

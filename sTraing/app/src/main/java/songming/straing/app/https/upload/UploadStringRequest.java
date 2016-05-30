@@ -10,7 +10,6 @@ import songming.straing.app.https.base.BaseHttpRequestClient;
 import songming.straing.app.https.base.BaseRequest;
 
 /**
- * Created by 大灯泡 on 2016/4/9.
  * 文件上传请求
  */
 public class UploadStringRequest extends BaseRequest {

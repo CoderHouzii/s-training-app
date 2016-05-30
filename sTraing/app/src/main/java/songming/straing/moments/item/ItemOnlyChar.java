@@ -8,7 +8,6 @@ import songming.straing.model.MomentsInfo;
 import songming.straing.moments.base.adapter.viewholder.BaseItemDelegate;
 
 /**
- * Created by 大灯泡 on 2016/2/25.
  * 只有文字的朋友圈item
  *
  */

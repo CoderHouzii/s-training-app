@@ -21,7 +21,6 @@ import songming.straing.widget.commentwidget.SpannableStringBuilderAllVer;
 import songming.straing.widget.span.CustomImageSpan;
 
 /**
- * Created by 大灯泡 on 2016/2/21.
  * 点赞显示控件
  */
 public class PraiseWidget extends TextView {

@@ -9,7 +9,6 @@ import songming.straing.model.MomentsInfo;
 import songming.straing.moments.base.adapter.viewholder.BaseItemDelegate;
 
 /**
- * Created by 大灯泡 on 2016/5/16.
  */
 public class ItemOther extends BaseItemDelegate {
     private TextView text;
